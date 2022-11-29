@@ -61,8 +61,10 @@ contract DistributedBetting
         //TODO
     }
 
-
-
+    function sell_NFT(address receiver) external
+    {
+        //TODO
+    }
 
 
 
