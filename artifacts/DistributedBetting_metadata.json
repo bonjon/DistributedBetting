@@ -1,0 +1,174 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "PRICE",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "stake",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "bet",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "NFT_hash",
+						"type": "bytes32"
+					}
+				],
+				"name": "buy_NFT",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "NFT_hash",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "superTokenPrice",
+						"type": "uint256"
+					}
+				],
+				"name": "forge_NFT",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "NFT_hash",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "ethPrice",
+						"type": "uint256"
+					}
+				],
+				"name": "get_NFT",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "mint",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "winner",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "pay4win",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "NFT_hash",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "ethPrice",
+						"type": "uint256"
+					}
+				],
+				"name": "sell_NFT",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Betting.sol": "DistributedBetting"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Betting.sol": {
+			"keccak256": "0x12143b6e57222c9e547f4424875e6bc355d9712ae19120e8c688de2a95a704a1",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://ff95de93d621a9ecf7a750fd894130086c8c560d6d6a157a7962ee65cc735b94",
+				"dweb:/ipfs/QmQyZY9MUdzt25VmAXSBZFYVujNUuGG7fb16Tug6FEq4ou"
+			]
+		}
+	},
+	"version": 1
+}

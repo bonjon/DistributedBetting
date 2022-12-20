@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity >=0.8.0 <0.9.0;
 
 contract DistributedBetting
 {
@@ -17,7 +17,19 @@ contract DistributedBetting
     // (they can only be obtained winning bettings)
     mapping(address => uint) internal superTokens;
 
-    //TODO NFT
+    // The fields of the NFT
+    struct NFT
+    {
+        bytes32 imageHash; // the hash of the image of the card
+        bool selling; // whether the owner is selling the card
+        uint superTokenPrice; // the price in super tokens
+        uint ethPrice; // the price in ether
+        address owner; // the owner of the NFT
+    }
+
+    mapping(bytes32 => NFT) NFTs;
+    //TODO events
+    //TODO contact oracle
 
     constructor()
     {
@@ -36,12 +48,7 @@ contract DistributedBetting
         creator.transfer(msg.value);
     }
 
-    function get_reward(uint stake) external
-    {
-        //TODO
-    }
-
-    function bet(uint stake, uint amount) external
+    function bet(bytes32 stake, uint amount) external
     {
         require(entryTokens[msg.sender] + superTokens[msg.sender] >= amount,"You're a jerk, again!");
         if (entryTokens[msg.sender] >= amount)
@@ -52,21 +59,59 @@ contract DistributedBetting
             entryTokens[msg.sender] = 0;
             superTokens[msg.sender] -= remaining;
         }
-        //TODO do we need to save the stake?
     }
 
-    function buy_NFT(uint amount) external
+    function forge_NFT(bytes32 NFT_hash, uint superTokenPrice) external
     {
-        require(superTokens[msg.sender] >= amount);
-        //TODO
+        require(msg.sender == creator, "You are not the contract owner");
+        require(NFTs[NFT_hash].imageHash == 0, "The NFT already exists");
+        NFTs[NFT_hash] = NFT(NFT_hash, false, superTokenPrice,0,creator);
     }
 
-    function sell_NFT(address receiver) external
+    function get_NFT(bytes32 NFT_hash, uint ethPrice) external
+    {   
+        // the NFT has never been got by anyone (with superTokens)
+        require(NFTs[NFT_hash].owner == creator,"the NFT has never been got by anyone (with superTokens)");
+        // the sender has enough super tokens to get the NFT
+        require(superTokens[msg.sender] >= NFTs[NFT_hash].superTokenPrice,"the sender has not enough super tokens to get the NFT");
+        // decrease the super tokens from the sender account
+        superTokens[msg.sender] -= NFTs[NFT_hash].superTokenPrice;
+        // make the sender the new owner of the NFT
+        NFTs[NFT_hash].owner = msg.sender;
+        // if the ethPrice is greater than 0, start selling the NFT for ether
+        NFTs[NFT_hash].selling = (ethPrice != 0);
+        if (NFTs[NFT_hash].selling)
+            NFTs[NFT_hash].ethPrice = ethPrice;
+    }
+
+    function sell_NFT(bytes32 NFT_hash, uint ethPrice) external
     {
-        //TODO
+        // you need to be the owner of the NFT
+        require(msg.sender == NFTs[NFT_hash].owner,"you need to be the owner of the NFT");
+        // set the price to what you decided and start selling it
+        NFTs[NFT_hash].ethPrice = ethPrice;
+        NFTs[NFT_hash].selling = true;
     }
 
+    function buy_NFT(bytes32 NFT_hash) payable external
+    {
+        // the NFT is not being sold
+        require(NFTs[NFT_hash].selling,"the NFT is not being sold");
+        // you need enough ether to buy the NFT
+        require(msg.value >= NFTs[NFT_hash].ethPrice,"you need enough ether to buy the NFT");
+        // send the money to the old owner
+        payable(NFTs[NFT_hash].owner).transfer(msg.value);
+        // the sender is now the new owner
+        NFTs[NFT_hash].owner = msg.sender;
+        
+    }
 
+    function pay4win(address winner, uint amount) external
+    {
+        //TODO require oracle
+        superTokens[winner] += amount;
+    }
 
+    //TODO function to destroy contract...
 
 }
