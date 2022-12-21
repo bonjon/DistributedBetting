@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+	<meta charset="utf-8">
+	<head>
+		<title>DBet</title>
+		<!-- fancy styling of the page -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body>
+		<main class="container">
+			<header>
+				<h1>Welcome to our Distributed Betting Application</h1>
+			</header>
+			<form onSubmit="checkLegalAddress(); return false" id="address" action="page.html" method="POST">
+                <div class="form-group">
+                    <label for="bet">Can you please enter your wallet address:</label>
+                    <input type="text" class="form-control" id="bet" placeholder="0x...">
+            </form>
+		</main>
+	</body>
+    
+<!-- Javascript libraries (to ease life) -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!--  Our connection to the blockchain -->
+<script src="js/web3.min.js"></script>
+<!--  Comment the line above and uncomment the lime below to switch to web3.js
+           v. 0.2.0 -->
+<!--	<script src="js/web3-020.min.js"></script>  -->
+<!--
+          Custom script
+-->
+
+<script>
+function checkLegalAddress(){
+    var address = document.getElementById("bet").value;
+    if (web3.utils.isAddress(address)){
+        localStorage.setItem("address", address);
+        localStorage.setItem("ABI", JSON.stringify(contractAbi));
+        localStorage.setItem("contractAddress", contractAddress);
+        document.getElementById("address").submit();
+    } else {
+        alert("Illegal address");
+    }
+}
+//function callContract() {
+//    contract.methods.mint().send({from: senderAddress, value: web3.utils.toWei("0.1", "ether")});
+//}
+// Initialisation of Web3
+if (typeof web3 !== 'undefined') {
+	  web3 = new Web3(web3.currentProvider);
+	} else {
+	  // set the provider you want from Web3.providers
+	  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
+	}
+
+  // ---------------------------------------------------------------------------
+	// Set the contract ABI. Copy-paste it from the Remix IDE
+	var contractAbi = [
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "stake",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "bet",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "NFT_hash",
+				"type": "bytes32"
+			}
+		],
+		"name": "buy_NFT",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "NFT_hash",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "superTokenPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "forge_NFT",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "NFT_hash",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "ethPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "get_NFT",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "mint",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "winner",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "pay4win",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "NFT_hash",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint256",
+				"name": "ethPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "sell_NFT",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "entryTokens",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "PRICE",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "superTokens",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
+	// Insert your contract ABI there
+
+  // ---------------------------------------------------------------------------
+	// Set contract address. Copy-paste it from the Remix IDE
+	var contractAddress = '0xA42655DC1bB4bdb4094CBbdd667C08bd090d5009';
+	// Insert your contract address there
+
+  // ---------------------------------------------------------------------------
+  // Set the contract
+	var contract =
+	// OLD syntax is being used here
+	// web3.eth.contract(contractAbi).at(contractAddress);
+	// current syntax below
+	new web3.eth.Contract(contractAbi, contractAddress);
+</script>

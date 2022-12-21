@@ -11,11 +11,11 @@ contract DistributedBetting
     address payable internal creator;
 
     // these tokens can be bought with ether and can be used to bet
-    mapping(address => uint) internal entryTokens;  
+    mapping(address => uint) public entryTokens;  
 
     // these tokens can be used to buy NFT and to bet
     // (they can only be obtained winning bettings)
-    mapping(address => uint) internal superTokens;
+    mapping(address => uint) public superTokens;
 
     // The fields of the NFT
     struct NFT
@@ -27,7 +27,7 @@ contract DistributedBetting
         address owner; // the owner of the NFT
     }
 
-    mapping(bytes32 => NFT) NFTs;
+    mapping(bytes32 => NFT) public NFTs;
     //TODO events
     //TODO contact oracle
 

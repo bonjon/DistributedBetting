@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+	<meta charset="utf-8">
+	<head>
+		<title>DBet</title>
+		<!-- fancy styling of the page -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body>
+		<main class="container">
+			<header>
+				<h1>Account Details</h1>
+                <p>You have:</p>
+                <p id="entryTokens">0</p>
+                <p>Entry Tokens</p>
+                <p id="superTokens">0</p>
+                <p>Super Tokens</p>
+                <p id="ether">0</p>
+                <p>Ether</p>
+			</header>
+		</main>
+	</body>
+<!-- Javascript libraries (to ease life) -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!--  Our connection to the blockchain -->
+<script src="js/web3.min.js"></script>
+<script>
+    var myAddress = localStorage.getItem("address");
+    if (typeof web3 !== 'undefined') {
+	  web3 = new Web3(web3.currentProvider);
+	} else {
+	  // set the provider you want from Web3.providers
+	  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
+	}
+    var ABI = JSON.parse(localStorage.getItem("ABI"));
+    var contract =
+	// OLD syntax is being used here
+	// web3.eth.contract(contractAbi).at(contractAddress);
+	// current syntax below
+	new web3.eth.Contract(ABI, localStorage.getItem("contractAddress"));
+    contract.methods.entryTokens(myAddress).call().then(function(result) {
+        document.getElementById("entryTokens").innerHTML = result;
+    });
+    contract.methods.superTokens(myAddress).call().then(function(result) {
+        document.getElementById("superTokens").innerHTML = result;
+    });
+    web3.eth.getBalance(myAddress).then(function(result) {
+        document.getElementById("ether").innerHTML = web3.utils.fromWei(result, "ether");
+    });
+</script>
