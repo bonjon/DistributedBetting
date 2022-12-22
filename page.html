@@ -6,18 +6,42 @@
 		<!-- fancy styling of the page -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 	</head>
-	<body>
+	<body style="background-color:#201e26">
+        <nav>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color:white">Bet</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color:white">Market</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color:white">Recap Bets</a>
+                </li>
+                <li class="nav-item ml-auto">
+                    <a class="nav-link disabled" style="color:white">
+                        <img src="img/entrytoken.webp" width="30" height="30" class="d-inline-block align-top" alt="">
+                        <label id="entryTokens">0</label>
+                    </a>
+                </li>
+                <li class="nav-item">
+                        <a class="nav-link disabled" style="color:white">
+                            <img src="img/supertoken.webp" width="30" height="30" class="d-inline-block align-top" alt="">
+                            <label id="superTokens">0</label>
+                        </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" style="color:white">
+                        <img src="img/ethereum.webp" width="30" height="30" class="d-inline-block align-top" alt="">
+                        <label id="ether">0</label>
+                    </a>
+                <li class="nav-item">
+                    <a class="nav-link disabled" style="color:white" id="address">0x...</a>
+                </li>
+            </ul>
+        </nav>
 		<main class="container">
-			<header>
-				<h1>Account Details</h1>
-                <p>You have:</p>
-                <p id="entryTokens">0</p>
-                <p>Entry Tokens</p>
-                <p id="superTokens">0</p>
-                <p>Super Tokens</p>
-                <p id="ether">0</p>
-                <p>Ether</p>
-			</header>
+			
 		</main>
 	</body>
 <!-- Javascript libraries (to ease life) -->
@@ -27,6 +51,7 @@
 <script src="js/web3.min.js"></script>
 <script>
     var myAddress = localStorage.getItem("address");
+    document.getElementById("address").innerHTML = myAddress;
     if (typeof web3 !== 'undefined') {
 	  web3 = new Web3(web3.currentProvider);
 	} else {
