@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html style="min-height: 100%;" lang="en">
 	<meta charset="utf-8">
 	<head>
-		<title>DBet</title>
+		<title>Bet Page</title>
 		<!-- fancy styling of the page -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 	</head>
-	<body style="background-color:#201e26; font-family: 'Poppins';">
-        <nav>
-            <ul class="navbar nav-tabs">
+	<body style="background-image:linear-gradient(#201e26, black); font-family: 'Poppins';">
+        <nav style="background-color: #201e26;">
+            <ul class="navbar nav-tabs" style="border: none">
                 <li class="nav-item">
                     <a class="nav-link active" href="#" style="color:white; background-color: #201e26;">Bet</a>
                 </li>
@@ -111,6 +111,11 @@
     
     var entryTokensPrice = 0;
     var myAddress = sessionStorage.getItem("address");
+    if(myAddress == null)
+    {
+        alert("You must insert your address on the first page!");
+        window.location.href = "index.html";
+    }
     var ABI = JSON.parse(sessionStorage.getItem("ABI"));
     var contract = new web3.eth.Contract(ABI, sessionStorage.getItem("contractAddress"));
 
