@@ -5,12 +5,13 @@
 		<title>DBet</title>
 		<!-- fancy styling of the page -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 	</head>
-	<body style="background-color:#201e26">
+	<body style="background-color:#201e26; font-family: 'Poppins';">
         <nav>
-            <ul class="nav nav-tabs">
+            <ul class="navbar nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="color:white">Bet</a>
+                    <a class="nav-link active" href="#" style="color:white; background-color: #201e26;">Bet</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" style="color:white">Market</a>
@@ -40,22 +41,22 @@
                 </li>
             </ul>
         </nav>
-		<main class="container" style="color:white">
-			<div class="container" style="border:1px solid blueviolet;">
+		<main class="container">
+			<div class="container border rounded" style="padding: 10px">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h1 style="color:white">Mint some entryTokens</h1>
+                        <h3 style="color:white">Mint some entryTokens</h3>
                     </div>
                     <div class="col-sm-12">
-                        Entry tokens:
-                        <input type="number" id="quantity" name="quantity" min="1" value="1" onchange="updateEthPrice(); return false;"></input>
+                        <label style="display: inline-block; width: 140px; color:white">Entry tokens:</label>
+                        <input type="number" style="outline: #201e26;" id="quantity" name="quantity" min="1" placeholder="1" onchange="updateEthPrice(); return false;"></input>
                     </div>
                     <div class="col-sm-12">
-                        Price (in ether):
-                        <input type="text" id="entryEthPrice" name="entryEthPrice" min="1" value="1" readonly></input>
+                        <label style="display: inline-block; width: 140px; color: white;">Price (in ether):</label>
+                        <input type="text" style="outline:#201e26;" id="entryEthPrice" name="entryEthPrice" min="1" placeholder="1" readonly></input>
                     </div>
                     <div class="col-sm-12">
-                        <button type="button" class="btn btn-primary", onclick="mint()">Mint</button>
+                        <button type="button" class="btn btn-outline-light" onclick="mint()">Mint</button>
                     </div>
             </div>
 		</main>

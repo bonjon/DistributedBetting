@@ -5,18 +5,19 @@
 		<title>DBet</title>
 		<!-- fancy styling of the page -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 	</head>
-	<body style="background-color:#201e26">
-		<main class="container">
-			<header>
-				<h1 style="color:white">Welcome to our Distributed Betting Application</h1>
-			</header>
-			<form onSubmit="checkLegalAddress(); return false" id="address" action="page.html" method="POST">
-                <div class="form-group">
-                    <label for="bet" style="color:white">Can you please enter your wallet address:</label>
-                    <input type="text" class="form-control" id="bet" placeholder="0x...">
-            </form>
-		</main>
+	<body style="background-color:#201e26; font-family: 'Poppins'; width:auto; margin:260px">
+		<div class="container">
+				<header>
+					<h1 style="color:white">Welcome to our Distributed Betting Application</h1>
+				</header>
+				<form onSubmit="checkLegalAddress(); return false" id="address" action="page.html" method="POST">
+					<div class="form-group">
+						<label for="bet" style="color:white">Can you please enter your wallet address:</label>
+						<input type="text" class="form-control" id="bet" placeholder="0x...">
+				</form>
+		</div>
 	</body>
     
 <!-- Javascript libraries (to ease life) -->
