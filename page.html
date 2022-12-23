@@ -40,8 +40,24 @@
                 </li>
             </ul>
         </nav>
-		<main class="container">
-			
+		<main class="container" style="color:white">
+			<div class="container" style="border:1px solid blueviolet;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h1 style="color:white">Mint some entryTokens</h1>
+                    </div>
+                    <div class="col-sm-12">
+                        Entry tokens:
+                        <input type="number" id="quantity" name="quantity" min="1" value="1" onchange="updateEthPrice(); return false;"></input>
+                    </div>
+                    <div class="col-sm-12">
+                        Price (in ether):
+                        <input type="text" id="entryEthPrice" name="entryEthPrice" min="1" value="1" readonly></input>
+                    </div>
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-primary", onclick="mint()">Mint</button>
+                    </div>
+            </div>
 		</main>
 	</body>
 <!-- Javascript libraries (to ease life) -->
@@ -50,27 +66,68 @@
 <!--  Our connection to the blockchain -->
 <script src="js/web3.min.js"></script>
 <script>
-    var myAddress = localStorage.getItem("address");
-    document.getElementById("address").innerHTML = myAddress;
+    function updateEthPrice()
+    {
+        var quantity = parseInt(document.getElementById("quantity").value);
+        var ethPrice = quantity * entryTokensPrice;
+        document.getElementById("entryEthPrice").value = web3.utils.fromWei(ethPrice.toString(), "ether");
+    }
+    function updateEther()
+    {
+        web3.eth.getBalance(myAddress).then(function(result) {
+            document.getElementById("ether").innerHTML = web3.utils.fromWei(result, "ether");
+            });
+    }
+    function mint()
+    {
+        //TODO metamask (you're spending ether here!)
+        var quantity = parseInt(document.getElementById("quantity").value);
+        var ethPrice = quantity * entryTokensPrice;
+        updateEther();
+        if(ethPrice > web3.utils.toWei(document.getElementById("ether").innerHTML, "ether"))
+        {
+            alert("Not enough ether");
+            return;
+        }
+        else
+        {
+            contract.methods.mint().send({from: myAddress, value: ethPrice}).then(function(result) {
+            document.getElementById("entryTokens").innerHTML = parseInt(document.getElementById("entryTokens").innerHTML) + quantity;
+            updateEther();
+            alert("Congratulations! You have minted " + quantity + " entryTokens");
+            });
+        }
+       
+    }
+</script>
+<script>
     if (typeof web3 !== 'undefined') {
 	  web3 = new Web3(web3.currentProvider);
 	} else {
 	  // set the provider you want from Web3.providers
 	  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 	}
-    var ABI = JSON.parse(localStorage.getItem("ABI"));
-    var contract =
-	// OLD syntax is being used here
-	// web3.eth.contract(contractAbi).at(contractAddress);
-	// current syntax below
-	new web3.eth.Contract(ABI, localStorage.getItem("contractAddress"));
+    
+    var entryTokensPrice = 0;
+    var myAddress = sessionStorage.getItem("address");
+    var ABI = JSON.parse(sessionStorage.getItem("ABI"));
+    var contract = new web3.eth.Contract(ABI, sessionStorage.getItem("contractAddress"));
+
+    
+    document.getElementById("address").innerHTML = myAddress;
+    
+    contract.methods.PRICE().call().then(function(result) {
+        entryTokensPrice = result;
+        document.getElementById("entryEthPrice").value = web3.utils.fromWei(result, "ether");
+        document.getElementById("entryEthPrice").min = web3.utils.fromWei(result, "ether");
+        });
     contract.methods.entryTokens(myAddress).call().then(function(result) {
         document.getElementById("entryTokens").innerHTML = result;
-    });
+         });
     contract.methods.superTokens(myAddress).call().then(function(result) {
         document.getElementById("superTokens").innerHTML = result;
-    });
+         });
     web3.eth.getBalance(myAddress).then(function(result) {
         document.getElementById("ether").innerHTML = web3.utils.fromWei(result, "ether");
-    });
+        });
 </script>

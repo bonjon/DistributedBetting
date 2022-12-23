@@ -35,18 +35,15 @@
 function checkLegalAddress(){
     var address = document.getElementById("bet").value;
     if (web3.utils.isAddress(address)){
-        localStorage.setItem("address", address);
-        localStorage.setItem("ABI", JSON.stringify(contractAbi));
-        localStorage.setItem("contractAddress", contractAddress);
+        sessionStorage.setItem("address", address);
+        sessionStorage.setItem("ABI", JSON.stringify(contractAbi));
+        sessionStorage.setItem("contractAddress", contractAddress);
         document.getElementById("address").submit();
     } else {
         alert("Illegal address");
     }
 }
-//function callContract() {
-//    contract.methods.mint().send({from: senderAddress, value: web3.utils.toWei("0.1", "ether")});
-//}
-// Initialisation of Web3
+
 if (typeof web3 !== 'undefined') {
 	  web3 = new Web3(web3.currentProvider);
 	} else {
@@ -54,9 +51,8 @@ if (typeof web3 !== 'undefined') {
 	  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 	}
 
-  // ---------------------------------------------------------------------------
-	// Set the contract ABI. Copy-paste it from the Remix IDE
-	var contractAbi = [
+
+var contractAbi = [
 	{
 		"inputs": [
 			{
@@ -224,18 +220,6 @@ if (typeof web3 !== 'undefined') {
 		"type": "function"
 	}
 ];
-	// Insert your contract ABI there
+var contractAddress = '0x13DDeda5378EdB196C2776dB31E2fe89aaebaC55';
 
-  // ---------------------------------------------------------------------------
-	// Set contract address. Copy-paste it from the Remix IDE
-	var contractAddress = '0xA42655DC1bB4bdb4094CBbdd667C08bd090d5009';
-	// Insert your contract address there
-
-  // ---------------------------------------------------------------------------
-  // Set the contract
-	var contract =
-	// OLD syntax is being used here
-	// web3.eth.contract(contractAbi).at(contractAddress);
-	// current syntax below
-	new web3.eth.Contract(contractAbi, contractAddress);
 </script>
