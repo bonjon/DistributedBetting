@@ -1,226 +1,184 @@
 <!DOCTYPE html>
+<script>
+    //variables declaration
+    var ABI;
+    var web3;
+    var myAddress;
+    var contractAddress = "0x13DDeda5378EdB196C2776dB31E2fe89aaebaC55";
+    var contract;
+</script>
+<script>
+    //load the ABI from the json file
+    function LoadFile() 
+    {
+        var frame = document.getElementById("ABIframe");
+        var rawContents = frame.contentWindow.document.body.childNodes[0].innerHTML;
+        while (rawContents.indexOf("\r") >= 0)
+            rawContents = rawContents.replace("\r", "");
+        var lines = rawContents.split("\n");
+        var abi_str = "";
+        for (var i = 0; i < lines.length; i++)
+            abi_str = abi_str + lines[i];
+        ABI = JSON.parse(abi_str);
+    }
+    </script>
 <html style="min-height: 100%;" lang="en">
 	<meta charset="utf-8">
 	<head>
-		<title>DBet</title>
+		<title>Bet Page</title>
 		<!-- fancy styling of the page -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 	</head>
-	<body style="background-image:linear-gradient(#201e26, black); font-family: 'Poppins'; width:auto; margin:250px; background-size: cover;">
-		<div class="container bg-transparent text-white">
-			<header>
-				<h1>Welcome to our Distributed Betting Application</h1>
-			</header>
-			<form onSubmit="checkLegalAddress(); return false" id="address" action="page.html" method="POST">
-				<div class="form-group">
-					<label for="bet">Can you please enter your wallet address:</label>
-					<input type="text" class="form-control" id="bet" placeholder="0x...">
-			</form>
-		</div>
+	<body style="background-image:linear-gradient(#201e26, black); font-family: 'Poppins';">
+        <iframe id="ABIframe" src="ABI.json" style="display: none;"></iframe>
+        <nav style="background-color: #201e26;">
+            <ul class="navbar nav-tabs" style="border: none">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" style="color:white; background-color: #201e26;">Bet</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color:white">Market</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color:white">Recap Bets</a>
+                </li>
+                <li class="nav-item ml-auto">
+                    <a class="nav-link disabled" style="color:white">
+                        <img src="img/entrytoken.webp" width="30" height="30" class="d-inline-block align-top" alt="">
+                        <label id="entryTokens">0</label>
+                    </a>
+                </li>
+                <li class="nav-item">
+                        <a class="nav-link disabled" style="color:white">
+                            <img src="img/supertoken.webp" width="30" height="30" class="d-inline-block align-top" alt="">
+                            <label id="superTokens">0</label>
+                        </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" style="color:white">
+                        <img src="img/ethereum.webp" width="30" height="30" class="d-inline-block align-top" alt="">
+                        <label id="ether">0</label>
+                    </a>
+                <li class="nav-item">
+                    <a class="nav-link disabled" style="color:white" id="address">0x...</a>
+                </li>
+            </ul>
+        </nav>
+		<main class="container">
+			<div class="container border rounded" style="padding: 10px">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 style="color:white">Mint some entryTokens</h3>
+                    </div>
+                    <div class="col-sm-12">
+                        <label style="display: inline-block; width: 140px; color:white">Entry tokens:</label>
+                        <input type="number" style="outline: #201e26;" id="quantity" name="quantity" min="1" placeholder="1" onchange="updateEthPrice(); return false;"></input>
+                    </div>
+                    <div class="col-sm-12">
+                        <label style="display: inline-block; width: 140px; color: white;">Price (in ether):</label>
+                        <input type="text" style="outline:#201e26;" id="entryEthPrice" name="entryEthPrice" min="1" placeholder="1" readonly></input>
+                    </div>
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-outline-light" onclick="mint()">Mint</button>
+                    </div>
+            </div>
+		</main>
 	</body>
-    
 <!-- Javascript libraries (to ease life) -->
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <!--  Our connection to the blockchain -->
 <script src="js/web3.min.js"></script>
-<!--  Comment the line above and uncomment the lime below to switch to web3.js
-           v. 0.2.0 -->
-<!--	<script src="js/web3-020.min.js"></script>  -->
-<!--
-          Custom script
--->
+<script src="https://unpkg.com/@metamask/legacy-web3@latest/dist/metamask.web3.min.js"></script>
+
 
 <script>
-function checkLegalAddress(){
-    var address = document.getElementById("bet").value;
-    if (web3.utils.isAddress(address)){
-        sessionStorage.setItem("address", address);
-        sessionStorage.setItem("ABI", JSON.stringify(contractAbi));
-        sessionStorage.setItem("contractAddress", contractAddress);
-        document.getElementById("address").submit();
-    } else {
-        alert("Illegal address");
+    //utiility functions
+    function updateEthPrice()
+    {
+        var quantity = parseInt(document.getElementById("quantity").value);
+        var ethPrice = quantity * entryTokensPrice;
+        document.getElementById("entryEthPrice").value = web3.utils.fromWei(ethPrice.toString(), "ether");
     }
-}
+    function updateEther()
+    {
+        web3.eth.getBalance(myAddress).then(function(result) {
+            document.getElementById("ether").innerHTML = web3.utils.fromWei(result, "ether");
+            });
+    }
+    function mint()
+    {
+        //TODO metamask (you're spending ether here!)
+        var quantity = parseInt(document.getElementById("quantity").value);
+        var ethPrice = quantity * entryTokensPrice;
+        updateEther();
+        if(ethPrice > web3.utils.toWei(document.getElementById("ether").innerHTML, "ether"))
+        {
+            alert("Not enough ether");
+            return;
+        }
+        else
+        {
+            contract.methods.mint().send({from: myAddress, value: ethPrice}).then(function(result) {
+            document.getElementById("entryTokens").innerHTML = parseInt(document.getElementById("entryTokens").innerHTML) + quantity;
+            updateEther();
+            alert("Congratulations! You have minted " + quantity + " entryTokens");
+            });
+        }
+       
+    }
+    function updateAccountInfo(address)
+    {
+        myAddress = address;
+        document.getElementById("address").innerHTML = myAddress;
+        contract.methods.entryTokens(myAddress).call().then(function(result) 
+        {
+            document.getElementById("entryTokens").innerHTML = result;
+        });
+        contract.methods.superTokens(myAddress).call().then(function(result)
+        {
+        document.getElementById("superTokens").innerHTML = result;
+        });
+        web3.eth.getBalance(myAddress).then(function(result) 
+        {
+        document.getElementById("ether").innerHTML = web3.utils.fromWei(result, "ether");
+        });
+    }
+    async function getAddress()
+    {
+        await window.ethereum.request({ method: 'eth_requestAccounts' }).then(function(result) 
+        {
+            if (result.length == 0)
+            {
+                alert("You need to have metamask installed and connected to the blockchain");
+                return;
+            }
+            updateAccountInfo(result[0]);
+        });
+    }
 
-if (typeof web3 !== 'undefined') {
-	  web3 = new Web3(web3.currentProvider);
-	} else {
-	  // set the provider you want from Web3.providers
-	  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
-	}
+</script>
 
+<script>
+    getAddress();
+    ethereum.on('accountsChanged', (accounts) => 
+        {
+            console.log("Account changed to " + accounts[0]);
+            updateAccountInfo(accounts[0]);
+        });
+    
+    var entryTokensPrice = 0;
+   
+    //var ABI = JSON.parse(sessionStorage.getItem("ABI"));
+    LoadFile(); // this was in on load of the frame. I moved it here to make it work (i hope)
+    // TODO it should work...
+    var contract = new web3.eth.Contract(ABI, contractAddress);
 
-var contractAbi = [
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "stake",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "bet",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "NFT_hash",
-				"type": "bytes32"
-			}
-		],
-		"name": "buy_NFT",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "NFT_hash",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "uint256",
-				"name": "superTokenPrice",
-				"type": "uint256"
-			}
-		],
-		"name": "forge_NFT",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "NFT_hash",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "uint256",
-				"name": "ethPrice",
-				"type": "uint256"
-			}
-		],
-		"name": "get_NFT",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "mint",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "winner",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "pay4win",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "NFT_hash",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "uint256",
-				"name": "ethPrice",
-				"type": "uint256"
-			}
-		],
-		"name": "sell_NFT",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "entryTokens",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "PRICE",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "superTokens",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-];
-var contractAddress = '0x13DDeda5378EdB196C2776dB31E2fe89aaebaC55';
-
+    contract.methods.PRICE().call().then(function(result) {
+        entryTokensPrice = result;
+        document.getElementById("entryEthPrice").value = web3.utils.fromWei(result, "ether");
+        document.getElementById("entryEthPrice").min = web3.utils.fromWei(result, "ether");
+        });
+    
 </script>

@@ -1,0 +1,167 @@
+[{
+    "inputs": [
+        {
+            "internalType": "bytes32",
+            "name": "stake",
+            "type": "bytes32"
+        },
+        {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+        }
+    ],
+    "name": "bet",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+},
+{
+    "inputs": [
+        {
+            "internalType": "bytes32",
+            "name": "NFT_hash",
+            "type": "bytes32"
+        }
+    ],
+    "name": "buy_NFT",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+},
+{
+    "inputs": [
+        {
+            "internalType": "bytes32",
+            "name": "NFT_hash",
+            "type": "bytes32"
+        },
+        {
+            "internalType": "uint256",
+            "name": "superTokenPrice",
+            "type": "uint256"
+        }
+    ],
+    "name": "forge_NFT",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+},
+{
+    "inputs": [
+        {
+            "internalType": "bytes32",
+            "name": "NFT_hash",
+            "type": "bytes32"
+        },
+        {
+            "internalType": "uint256",
+            "name": "ethPrice",
+            "type": "uint256"
+        }
+    ],
+    "name": "get_NFT",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+},
+{
+    "inputs": [],
+    "name": "mint",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+},
+{
+    "inputs": [
+        {
+            "internalType": "address",
+            "name": "winner",
+            "type": "address"
+        },
+        {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+        }
+    ],
+    "name": "pay4win",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+},
+{
+    "inputs": [
+        {
+            "internalType": "bytes32",
+            "name": "NFT_hash",
+            "type": "bytes32"
+        },
+        {
+            "internalType": "uint256",
+            "name": "ethPrice",
+            "type": "uint256"
+        }
+    ],
+    "name": "sell_NFT",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+},
+{
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+},
+{
+    "inputs": [
+        {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+        }
+    ],
+    "name": "entryTokens",
+    "outputs": [
+        {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+        }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+},
+{
+    "inputs": [],
+    "name": "PRICE",
+    "outputs": [
+        {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+        }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+},
+{
+    "inputs": [
+        {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+        }
+    ],
+    "name": "superTokens",
+    "outputs": [
+        {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+        }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+}
+]
