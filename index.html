@@ -4,7 +4,7 @@
     var ABI;
     var web3;
     var myAddress;
-    var contractAddress = "0x13DDeda5378EdB196C2776dB31E2fe89aaebaC55";
+    var contractAddress = "0x2C07Eb380f6aB78C5ff2439777a62966516020F7";
     var contract;
 </script>
 <script>
@@ -82,7 +82,86 @@
                     <div class="col-sm-12">
                         <button type="button" class="btn btn-outline-light" onclick="mint()">Mint</button>
                     </div>
+                </div>
             </div>
+            <div class="list-group border rounded text-center" style="padding: 5px;">
+                <button type="button" class="list-group-item btn-outline-light list-group-item-action" style="background-color: #201e26;" data-toggle="modal" data-target="#matchModal" onclick="updateMatch(0)">
+                    <label id="matchEvent0" style="color:white; display: inline-block; width: 200px;">Latina - Frosinone</label>
+                </button>
+                <button type="button" class="list-group-item btn-outline-light list-group-item-action" style="background-color: #201e26;" data-toggle="modal" data-target="#matchModal" onclick="updateMatch(1)">
+                    <label id="matchEvent1" style="color:white; display: inline-block; width: 200px;">Palermo - Catania</label>
+                </button>
+                <button type="button" class="list-group-item btn-outline-light list-group-item-action" style="background-color: #201e26;" data-toggle="modal" data-target="#matchModal" onclick="updateMatch(2)">
+                    <label id="matchEvent2" style="color:white; display: inline-block; width: 200px;">Italia - Albania</label>
+                </button>
+                <button type="button" class="list-group-item btn-outline-light list-group-item-action" style="background-color: #201e26;" data-toggle="modal" data-target="#matchModal" onClick="updateMatch(3)">
+                    <label id="matchEvent3" style="color:white; display: inline-block; width: 200px;">Inter - Juventus</label>
+                </button>
+            </div>
+            <script>
+                function updateMatch(matchId) {
+                    var matchEvent;
+                    if (matchId == 0) {
+                        matchEvent = document.getElementById("matchEvent0").innerHTML;
+                    } else if (matchId == 1) {
+                        matchEvent = document.getElementById("matchEvent1").innerHTML;
+                    } else if (matchId == 2) {
+                        matchEvent = document.getElementById("matchEvent2").innerHTML;
+                    } else if (matchId == 3) {
+                        matchEvent = document.getElementById("matchEvent3").innerHTML;
+                    }
+                    document.getElementById("match").innerHTML = matchEvent;
+                }
+            </script>
+            <div class="modal fade" id="matchModal" tabindex="-1" role="dialog" aria-labelledby="matchModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content text-white" style="background-color: #201e26;">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Place your bet</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body text-center">
+                    <label id="match" style="color:white; display: inline-block; width: 200px;">...</label>
+                      <div class="btn-group-lg text-center">
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">1</button>
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">X</button>
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">2</button>
+                      </div>
+                      <div class="container text-center">
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                      </div>
+                      <div class="btn-group-lg text-center">
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">1X</button>
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">12</button>
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">X2</button>
+                     </div>
+                     <div class="container text-center">
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                      </div>
+                     <div class="btn-group-lg text-center">
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">GOAL</button>
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">NOGOAL</button>
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">O1.5</button>
+                    </div>
+                    <div class="container text-center">
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                      </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" style="background-color: blueviolet;">Save changes</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
 		</main>
 	</body>
 <!-- Javascript libraries (to ease life) -->
@@ -174,7 +253,6 @@
     LoadFile(); // this was in on load of the frame. I moved it here to make it work (i hope)
     // TODO it should work...
     var contract = new web3.eth.Contract(ABI, contractAddress);
-
     contract.methods.PRICE().call().then(function(result) {
         entryTokensPrice = result;
         document.getElementById("entryEthPrice").value = web3.utils.fromWei(result, "ether");
