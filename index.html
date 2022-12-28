@@ -4,7 +4,8 @@
     var ABI;
     var web3;
     var myAddress;
-    var contractAddress = "0x2C07Eb380f6aB78C5ff2439777a62966516020F7";
+    var entryTokensPrice = 0;
+    var contractAddress = "0x13DDeda5378EdB196C2776dB31E2fe89aaebaC55";
     var contract;
 </script>
 <script>
@@ -174,11 +175,13 @@
 
 <script>
     //utiility functions
+    function fromWei(wei) 
+    { return wei / 1000000000000000000; }
     function updateEthPrice()
     {
         var quantity = parseInt(document.getElementById("quantity").value);
         var ethPrice = quantity * entryTokensPrice;
-        document.getElementById("entryEthPrice").value = web3.utils.fromWei(ethPrice.toString(), "ether");
+        document.getElementById("entryEthPrice").value = fromWei(ethPrice);
     }
     function updateEther()
     {
@@ -240,6 +243,10 @@
 </script>
 
 <script>
+    if (!window.ethereum)
+    {
+        alert("You need to have metamask installed and connected to the blockchain");
+    }
     getAddress();
     ethereum.on('accountsChanged', (accounts) => 
         {
@@ -247,12 +254,10 @@
             updateAccountInfo(accounts[0]);
         });
     
-    var entryTokensPrice = 0;
    
     //var ABI = JSON.parse(sessionStorage.getItem("ABI"));
     LoadFile(); // this was in on load of the frame. I moved it here to make it work (i hope)
-    // TODO it should work...
-    var contract = new web3.eth.Contract(ABI, contractAddress);
+    contract = new web3.eth.Contract(ABI, contractAddress);
     contract.methods.PRICE().call().then(function(result) {
         entryTokensPrice = result;
         document.getElementById("entryEthPrice").value = web3.utils.fromWei(result, "ether");
