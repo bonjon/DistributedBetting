@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<script>
+    //variables declaration
+    var ABI;
+    var web3;
+    var myAddress;
+    var entryTokensPrice = 0;
+    var contractAddress = "0x2Db1f4031FA33088162804d22606e4A54B33a258";
+    var contract;
+</script>
+<script>
+    //load the ABI from the json file
+    function LoadFile() 
+    {
+        var frame = document.getElementById("ABIframe");
+        var rawContents = frame.contentWindow.document.body.childNodes[0].innerHTML;
+        while (rawContents.indexOf("\r") >= 0)
+            rawContents = rawContents.replace("\r", "");
+        var lines = rawContents.split("\n");
+        var abi_str = "";
+        for (var i = 0; i < lines.length; i++)
+            abi_str = abi_str + lines[i];
+        ABI = JSON.parse(abi_str);
+    }
+    </script>
+<html style="min-height: 100%;" lang="en">
+	<meta charset="utf-8">
+	<head>
+		<title>Bet Page</title>
+		<!-- fancy styling of the page -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+	</head>
+	<body style="background-image:linear-gradient(#201e26, black); font-family: 'Poppins';">
+        <iframe id="ABIframe" src="ABI.json" style="display: none;"></iframe>
+        <nav style="background-color: #201e26;">
+            <ul class="navbar nav-tabs" style="border: none">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" style="color:white; background-color: #201e26;">Bet</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color:white">Market</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color:white">Recap Bets</a>
+                </li>
+                <li class="nav-item ml-auto">
+                    <a class="nav-link disabled" style="color:white">
+                        <img src="img/entrytoken.webp" width="30" height="30" class="d-inline-block align-top" alt="">
+                        <label id="entryTokens">0</label>
+                    </a>
+                </li>
+                <li class="nav-item">
+                        <a class="nav-link disabled" style="color:white">
+                            <img src="img/supertoken.webp" width="30" height="30" class="d-inline-block align-top" alt="">
+                            <label id="superTokens">0</label>
+                        </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" style="color:white">
+                        <img src="img/ethereum.webp" width="30" height="30" class="d-inline-block align-top" alt="">
+                        <label id="ether">0</label>
+                    </a>
+                <li class="nav-item">
+                    <a class="nav-link disabled" style="color:white" id="address">0x...</a>
+                </li>
+            </ul>
+        </nav>
+		<main class="container">
+			<div class="container border rounded" style="padding: 10px">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 style="color:white">Mint some entryTokens</h3>
+                    </div>
+                    <div class="col-sm-12">
+                        <label style="display: inline-block; width: 140px; color:white">Entry tokens:</label>
+                        <input type="number" style="outline: #201e26;" id="quantity" name="quantity" min="1" placeholder="1" onchange="updateEthPrice(); return false;"></input>
+                    </div>
+                    <div class="col-sm-12">
+                        <label style="display: inline-block; width: 140px; color: white;">Price (in ether):</label>
+                        <input type="text" style="outline:#201e26;" id="entryEthPrice" name="entryEthPrice" min="1" placeholder="1" readonly></input>
+                    </div>
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-outline-light" onclick="mint()">Mint</button>
+                    </div>
+                </div>
+            </div>
+            <div class="list-group border rounded text-center" style="padding: 5px;">
+                <div class="btn-toolbar justify-content-center" style="background-color: #201e26;">
+                    <div class="btn-group">
+                        <button id="premierButton" type="button" class="btn btn-outline-light" onClick="showMatches(0)" style="width: 275px; border: none;">
+                            <img src="img/Premier_League-Logo.wine.png" width="150" height="100" class="d-inline-block align-top" alt="">
+                        </button>
+                        <button id="aButton" type="button" class="btn btn-outline-light" onClick="showMatches(1)" style="width: 275px; border: none;">
+                            <img src="img/Serie_A.png" width="100" height="100" class="d-inline-block align-top" alt="">
+                        </button>
+                        <button id="laButton" type="button" class="btn btn-outline-light" onClick="showMatches(2)" style="width: 275px; border: none;">
+                            <img src="img/laliga-v-1200x1200.png" width="100" height="100" class="d-inline-block align-top" alt="">
+                        </button>
+                        <button id="bunButton" type="button" class="btn btn-outline-light" onClick="showMatches(3)" style="width: 275px; border: none;">
+                            <img src="img/Logo_Bundesliga.svg.png" width="100" height="100" class="d-inline-block align-top" alt="">
+                        </button>
+                    </div>
+                </div>
+                <button type="button" class="list-group-item btn-outline-light list-group-item-action" style="background-color: #201e26;" data-toggle="modal" data-target="#matchModal" onclick="updateMatch(0)">
+                    <label id="matchEvent0" style="color:white; display: inline-block; width: 200px;">Latina - Frosinone</label>
+                </button>
+                <button type="button" class="list-group-item btn-outline-light list-group-item-action" style="background-color: #201e26;" data-toggle="modal" data-target="#matchModal" onclick="updateMatch(1)">
+                    <label id="matchEvent1" style="color:white; display: inline-block; width: 200px;">Palermo - Catania</label>
+                </button>
+                <button type="button" class="list-group-item btn-outline-light list-group-item-action" style="background-color: #201e26;" data-toggle="modal" data-target="#matchModal" onclick="updateMatch(2)">
+                    <label id="matchEvent2" style="color:white; display: inline-block; width: 200px;">Italia - Albania</label>
+                </button>
+                <button type="button" class="list-group-item btn-outline-light list-group-item-action" style="background-color: #201e26;" data-toggle="modal" data-target="#matchModal" onClick="updateMatch(3)">
+                    <label id="matchEvent3" style="color:white; display: inline-block; width: 200px;">Inter - Juventus</label>
+                </button>
+            </div>
+            <script>
+                function showMatches(leagueId) {
+                    if (leagueId == 0) {
+                        document.getElementById("premierButton").classList.add("active");
+                        document.getElementById("aButton").classList.remove("active");
+                        document.getElementById("laButton").classList.remove("active");
+                        document.getElementById("bunButton").classList.remove("active");
+                    } else if (leagueId == 1) {
+                        document.getElementById("aButton").classList.add("active");
+                        document.getElementById("premierButton").classList.remove("active");
+                        document.getElementById("laButton").classList.remove("active");
+                        document.getElementById("bunButton").classList.remove("active");
+                    } else if (leagueId == 2) {
+                        document.getElementById("laButton").classList.add("active");
+                        document.getElementById("premierButton").classList.remove("active");
+                        document.getElementById("aButton").classList.remove("active");
+                        document.getElementById("bunButton").classList.remove("active");
+                    } else if (leagueId == 3) {
+                        document.getElementById("bunButton").classList.add("active");
+                        document.getElementById("premierButton").classList.remove("active");
+                        document.getElementById("aButton").classList.remove("active");
+                        document.getElementById("laButton").classList.remove("active");
+                    }
+                }
+                function updateMatch(matchId) {
+                    var matchEvent;
+                    if (matchId == 0) {
+                        matchEvent = document.getElementById("matchEvent0").innerHTML;
+                    } else if (matchId == 1) {
+                        matchEvent = document.getElementById("matchEvent1").innerHTML;
+                    } else if (matchId == 2) {
+                        matchEvent = document.getElementById("matchEvent2").innerHTML;
+                    } else if (matchId == 3) {
+                        matchEvent = document.getElementById("matchEvent3").innerHTML;
+                    }
+                    document.getElementById("match").innerHTML = matchEvent;
+                }
+            </script>
+            <div class="modal fade" id="matchModal" tabindex="-1" role="dialog" aria-labelledby="matchModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content text-white" style="background-color: #201e26;">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Place your bet</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body text-center">
+                    <label id="match" style="color:white; display: inline-block; width: 200px;">...</label>
+                      <div class="btn-group-lg text-center">
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">1</button>
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">X</button>
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">2</button>
+                      </div>
+                      <div class="container text-center">
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                      </div>
+                      <div class="btn-group-lg text-center">
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">1X</button>
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">12</button>
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">X2</button>
+                     </div>
+                     <div class="container text-center">
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                      </div>
+                     <div class="btn-group-lg text-center">
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">GOAL</button>
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">NOGOAL</button>
+                        <button type="button" class="btn btn-outline-light" style="width: 120px;">O1.5</button>
+                    </div>
+                    <div class="container text-center">
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
+                      </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" style="background-color: blueviolet;">Save changes</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+		</main>
+	</body>
+<!-- Javascript libraries (to ease life) -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!--  Our connection to the blockchain -->
+<script src="js/web3.min.js"></script>
+<script src="https://unpkg.com/@metamask/legacy-web3@latest/dist/metamask.web3.min.js"></script>
+
+
+<script>
+    //utiility functions
+    function fromWei(wei) 
+    { return wei / 1000000000000000000; }
+    function updateEthPrice()
+    {
+        var quantity = parseInt(document.getElementById("quantity").value);
+        var ethPrice = quantity * entryTokensPrice;
+        document.getElementById("entryEthPrice").value = fromWei(ethPrice);
+    }
+    function updateEther()
+    {
+        web3.eth.getBalance(myAddress).then(function(result) {
+            document.getElementById("ether").innerHTML = web3.utils.fromWei(result, "ether");
+            });
+    }
+    function mint()
+    {
+        //TODO metamask (you're spending ether here!)
+        var quantity = parseInt(document.getElementById("quantity").value);
+        var ethPrice = quantity * entryTokensPrice;
+        updateEther();
+        if(ethPrice > web3.utils.toWei(document.getElementById("ether").innerHTML, "ether"))
+        {
+            alert("Not enough ether");
+            return;
+        }
+        else
+        {
+            contract.methods.mint().send({from: myAddress, value: ethPrice}).then(function(result) {
+            document.getElementById("entryTokens").innerHTML = parseInt(document.getElementById("entryTokens").innerHTML) + quantity;
+            updateEther();
+            alert("Congratulations! You have minted " + quantity + " entryTokens");
+            });
+        }
+       
+    }
+    function updateAccountInfo(address)
+    {
+        myAddress = address;
+        document.getElementById("address").innerHTML = myAddress;
+        contract.methods.entryTokens(myAddress).call().then(function(result) 
+        {
+            document.getElementById("entryTokens").innerHTML = result;
+        });
+        contract.methods.superTokens(myAddress).call().then(function(result)
+        {
+        document.getElementById("superTokens").innerHTML = result;
+        });
+        web3.eth.getBalance(myAddress).then(function(result) 
+        {
+        document.getElementById("ether").innerHTML = web3.utils.fromWei(result, "ether");
+        });
+    }
+    async function getAddress()
+    {
+        await window.ethereum.request({ method: 'eth_requestAccounts' }).then(function(result) 
+        {
+            if (result.length == 0)
+            {
+                alert("You need to have metamask installed and connected to the blockchain");
+                return;
+            }
+            updateAccountInfo(result[0]);
+        });
+    }
+
+</script>
+
+<script>
+    if (!window.ethereum)
+    {
+        alert("You need to have metamask installed and connected to the blockchain");
+    }
+    getAddress();
+    ethereum.on('accountsChanged', (accounts) => 
+        {
+            console.log("Account changed to " + accounts[0]);
+            updateAccountInfo(accounts[0]);
+        });
+    
+   
+    //var ABI = JSON.parse(sessionStorage.getItem("ABI"));
+    LoadFile(); // this was in on load of the frame. I moved it here to make it work (i hope)
+    contract = new web3.eth.Contract(ABI, contractAddress);
+    contract.methods.PRICE().call().then(function(result) {
+        entryTokensPrice = result;
+        document.getElementById("entryEthPrice").value = web3.utils.fromWei(result, "ether");
+        document.getElementById("entryEthPrice").min = web3.utils.fromWei(result, "ether");
+        });
+    
+</script>
