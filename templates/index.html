@@ -5,8 +5,8 @@
     var web3;
     var myAddress;
     var entryTokensPrice = 0;
-    var contractAddress = "0x2Db1f4031FA33088162804d22606e4A54B33a258";
-    var creatorAddress = "0x1DA5B6A0aF8F5f5950Dcde01277FD731D1c7774a".toLowerCase();
+    //var contractAddress = "0x2Db1f4031FA33088162804d22606e4A54B33a258";
+    //var creatorAddress = "0x1DA5B6A0aF8F5f5950Dcde01277FD731D1c7774a".toLowerCase();
     var contract;
     var seriea;
     var bundesliga;
@@ -21,34 +21,7 @@
     var eredivisieCreated = false;
     var laligaCreated = false;
 </script>
-<script>
-    //load the ABI from the json file
-    async function LoadFileToJSON(id) 
-    {
-        var frame = document.getElementById(id);
-        var rawContents = frame.contentWindow.document.body.childNodes[0].innerHTML;
-        while (rawContents.indexOf("\r") >= 0)
-            rawContents = rawContents.replace("\r", "");
-        var lines = rawContents.split("\n");
-        var abi_str = "";
-        for (var i = 0; i < lines.length; i++)
-            abi_str = abi_str + lines[i];
-        
-        json = await JSON.parse(abi_str);
-        return json;
-    }
-    </script>
-    <script>
-        async function getMatches()
-        {
-            seriea = await LoadFileToJSON("serieah");
-            bundesliga = await LoadFileToJSON("bundesligah");
-            ligue1 = await LoadFileToJSON("ligue1h");
-            premierleague = await LoadFileToJSON("premierleagueh");
-            laliga = await LoadFileToJSON("laligah");
-            eredivisie = await LoadFileToJSON("eredivisieh");
-        }
-    </script>
+       
 <html style="min-height: 100%;" lang="en">
 	<meta charset="utf-8">
 	<head>
@@ -141,169 +114,7 @@
                 <div id="seriea"></div>
                 <div id="laliga"></div>
                 <div id="bundesliga"></div>
-            </div>
-            <script>
-                function showMatches(leagueId) {
-                    ids = ["premierleague", "seriea", "laliga", "bundesliga"];
-                    if (leagueId == 0) {
-                        currentChampionship = premierleague;
-                        divId = "premierleague";
-                        document.getElementById("premierButton").classList.add("active");
-                        document.getElementById("aButton").classList.remove("active");
-                        document.getElementById("laButton").classList.remove("active");
-                        document.getElementById("bunButton").classList.remove("active");
-                    } else if (leagueId == 1) {
-                        currentChampionship = seriea;
-                        divId = "seriea";
-                        document.getElementById("aButton").classList.add("active");
-                        document.getElementById("premierButton").classList.remove("active");
-                        document.getElementById("laButton").classList.remove("active");
-                        document.getElementById("bunButton").classList.remove("active");
-                    } else if (leagueId == 2) {
-                        currentChampionship = laliga;
-                        divId = "laliga";
-                        document.getElementById("laButton").classList.add("active");
-                        document.getElementById("premierButton").classList.remove("active");
-                        document.getElementById("aButton").classList.remove("active");
-                        document.getElementById("bunButton").classList.remove("active");
-                    } else if (leagueId == 3) {
-                        currentChampionship = bundesliga;
-                        divId = "bundesliga";
-                        document.getElementById("bunButton").classList.add("active");
-                        document.getElementById("premierButton").classList.remove("active");
-                        document.getElementById("aButton").classList.remove("active");
-                        document.getElementById("laButton").classList.remove("active");
-                    }
-                    if((divId == "bundesliga" && !bundesligaCreated) || (divId == "laliga" && !laligaCreated) || (divId == "seriea" && !serieaCreated) || (divId == "premierleague" && !premierleagueCreated)) 
-                        {
-                            for(match in currentChampionship)
-                                {
-                                    var matchDiv = document.createElement("button");
-                                    matchDiv.className = "list-group-item btn-outline-light list-group-item-action";
-                                    matchDiv.style.backgroundColor = "#201e26";
-                                    //matchDiv.setAttribute("data-toggle", "modal");
-                                    //matchDiv.setAttribute("data-target", "#matchModal");
-
-                                    var timeLabel = document.createElement("label");
-                                    timeLabel.style.color = "white";
-                                    timeLabel.style.display = "inline-block";
-                                    timeLabel.style.width = "300px";
-                                    timeLabel.style.textAlign = "left";
-                                    timeLabel.innerHTML = currentChampionship[match].date + "-" + currentChampionship[match].time;
-                                    var matchLabel = document.createElement("label");
-                                    matchLabel.style.color = "white";
-                                    matchLabel.style.display = "inline-block";
-                                    matchLabel.style.width = "300px";
-                                    matchLabel.style.textAlign = "center";
-
-                                    var odds = document.createElement("div");
-                                    odds.className = "btn-group";
-                                    odds.style.display = "inline-block";
-                                    odds.style.float = "right";
-                                    odds.style.width = "300px";
-                                    odds.style.textAlign = "right";
-                                    var homeOdds = document.createElement("button");
-                                    homeOdds.className = "btn btn-outline-light";
-                                    homeOdds.style.width = "100px";
-                                    homeOdds.innerHTML = currentChampionship[match].homeodds;
-                                    var drawOdds = document.createElement("button");
-                                    drawOdds.className = "btn btn-outline-light";
-                                    drawOdds.style.width = "100px";
-                                    drawOdds.innerHTML = currentChampionship[match].X;
-                                    var awayOdds = document.createElement("button");
-                                    awayOdds.style.width = "100px";
-                                    awayOdds.className = "btn btn-outline-light";
-                                    awayOdds.innerHTML = currentChampionship[match].awayodds;
-                                    odds.appendChild(homeOdds);
-                                    odds.appendChild(drawOdds);
-                                    odds.appendChild(awayOdds);
-
-                                    matchLabel.innerHTML = currentChampionship[match].home_team + " - " + currentChampionship[match].away_team;
-                                    matchDiv.appendChild(timeLabel);
-                                    matchDiv.appendChild(matchLabel);
-                                    matchDiv.appendChild(odds);
-                                    document.getElementById(divId).appendChild(matchDiv);
-                                }
-                            if(divId == "bundesliga")
-                                bundesligaCreated = true;
-                            else if(divId == "laliga")
-                                laligaCreated = true;
-                            else if(divId == "seriea")
-                                serieaCreated = true;
-                            else if(divId == "premierleague")
-                                premierleagueCreated = true;
-                        }
-                    for(championship in ids)
-                        {
-                            if (ids[championship] != divId)
-                                document.getElementById(ids[championship]).style.display = "none";
-                            else
-                                document.getElementById(ids[championship]).style.display = "block";
-                        }
-                }
-                function updateMatch(matchId) {
-                    var matchEvent;
-                    if (matchId == 0) {
-                        matchEvent = document.getElementById("matchEvent0").innerHTML;
-                    } else if (matchId == 1) {
-                        matchEvent = document.getElementById("matchEvent1").innerHTML;
-                    } else if (matchId == 2) {
-                        matchEvent = document.getElementById("matchEvent2").innerHTML;
-                    } else if (matchId == 3) {
-                        matchEvent = document.getElementById("matchEvent3").innerHTML;
-                    }
-                    document.getElementById("match").innerHTML = matchEvent;
-                }
-            </script>
-            <div class="modal fade" id="matchModal" tabindex="-1" role="dialog" aria-labelledby="matchModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content text-white" style="background-color: #201e26;">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">Place your bet</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body text-center">
-                    <label id="match" style="color:white; display: inline-block; width: 200px;">...</label>
-                      <div class="btn-group-lg text-center">
-                        <button type="button" class="btn btn-outline-light" style="width: 120px;">1</button>
-                        <button type="button" class="btn btn-outline-light" style="width: 120px;">X</button>
-                        <button type="button" class="btn btn-outline-light" style="width: 120px;">2</button>
-                      </div>
-                      <div class="container text-center">
-                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
-                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
-                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
-                      </div>
-                      <div class="btn-group-lg text-center">
-                        <button type="button" class="btn btn-outline-light" style="width: 120px;">1X</button>
-                        <button type="button" class="btn btn-outline-light" style="width: 120px;">12</button>
-                        <button type="button" class="btn btn-outline-light" style="width: 120px;">X2</button>
-                     </div>
-                     <div class="container text-center">
-                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
-                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
-                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
-                      </div>
-                     <div class="btn-group-lg text-center">
-                        <button type="button" class="btn btn-outline-light" style="width: 120px;">GOAL</button>
-                        <button type="button" class="btn btn-outline-light" style="width: 120px;">NOGOAL</button>
-                        <button type="button" class="btn btn-outline-light" style="width: 120px;">O1.5</button>
-                    </div>
-                    <div class="container text-center">
-                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
-                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
-                        <label type="text" style="color:white; display: inline-block; width: 120px;">1.25</label>
-                      </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary" style="background-color: blueviolet;">Save changes</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
+            </div>            
 		</main>
 	</body>
 <!-- Javascript libraries (to ease life) -->
@@ -312,89 +123,9 @@
 <!--  Our connection to the blockchain -->
 <script src="js/web3.min.js"></script>
 <script src="https://unpkg.com/@metamask/legacy-web3@latest/dist/metamask.web3.min.js"></script>
-
-
-<script>
-    //utiility functions
-    function fromWei(wei) 
-    { return wei / 1000000000000000000; }
-    function updateEthPrice()
-    {
-        var quantity = parseInt(document.getElementById("quantity").value);
-        var ethPrice = quantity * entryTokensPrice;
-        document.getElementById("entryEthPrice").value = fromWei(ethPrice);
-    }
-    function updateEther()
-    {
-        web3.eth.getBalance(myAddress).then(function(result) {
-            document.getElementById("ether").innerHTML = web3.utils.fromWei(result, "ether");
-            });
-    }
-    function mint()
-    {
-        //TODO metamask (you're spending ether here!)
-        var quantity = parseInt(document.getElementById("quantity").value);
-        var ethPrice = quantity * entryTokensPrice;
-        updateEther();
-        if(ethPrice > web3.utils.toWei(document.getElementById("ether").innerHTML, "ether"))
-        {
-            alert("Not enough ether");
-            return;
-        }
-        else
-        {
-            contract.methods.mint().send({from: myAddress, value: ethPrice}).then(function(result) {
-            document.getElementById("entryTokens").innerHTML = parseInt(document.getElementById("entryTokens").innerHTML) + quantity;
-            updateEther();
-            alert("Congratulations! You have minted " + quantity + " entryTokens");
-            });
-        }
-       
-    }
-    function updateAccountInfo(address)
-    {
-        myAddress = address;
-        document.getElementById("address").innerHTML = myAddress;
-        contract.methods.entryTokens(myAddress).call().then(function(result) 
-        {
-            document.getElementById("entryTokens").innerHTML = result;
-        });
-        contract.methods.superTokens(myAddress).call().then(function(result)
-        {
-        document.getElementById("superTokens").innerHTML = result;
-        });
-        web3.eth.getBalance(myAddress).then(function(result) 
-        {
-        document.getElementById("ether").innerHTML = web3.utils.fromWei(result, "ether");
-        });
-        if(myAddress == creatorAddress)
-            document.getElementById("creatorSection").style.display = "block";
-        else
-            document.getElementById("creatorSection").style.display = "none";
-    }
-    async function getAddress()
-    {
-        await window.ethereum.request({ method: 'eth_requestAccounts' }).then(function(result) 
-        {
-            if (result.length == 0)
-            {
-                alert("You need to have metamask installed and connected to the blockchain");
-                return;
-            }
-            updateAccountInfo(result[0]);
-        });
-    }
-    async function getContract()
-    {
-        ABI = await LoadFileToJSON("ABIframe"); // this was in on load of the frame. I moved it here to make it work (i hope)
-        contract = new web3.eth.Contract(ABI, contractAddress);
-        contract.methods.PRICE().call().then(function(result) {
-        entryTokensPrice = result;
-        document.getElementById("entryEthPrice").value = web3.utils.fromWei(result, "ether");
-        document.getElementById("entryEthPrice").min = web3.utils.fromWei(result, "ether");
-        });
-    }
-</script>
+<!-- Our functions -->
+<script src="js/utils.js"></script>
+<script src="js/index.js"></script>
 
 <script>
     $(document).ready(function() {
@@ -403,16 +134,16 @@
         getAddress();
         getMatches();
         document.getElementById("premierButton").addEventListener("click", function() {
-            showMatches(0);
+            showMatches("premierleague");
         });
         document.getElementById("aButton").addEventListener("click", function() {
-            showMatches(1);
+            showMatches("seriea");
         });
         document.getElementById("laButton").addEventListener("click", function() {
-            showMatches(2);
+            showMatches("laliga");
         });
         document.getElementById("bunButton").addEventListener("click", function() {
-            showMatches(3);
+            showMatches("bundesliga");
         });
 
     });
@@ -424,8 +155,5 @@
         {
             console.log("Account changed to " + accounts[0]);
             updateAccountInfo(accounts[0]);
-        });
-    
-    //getContract();  
-    //getMatches();  
+        });  
 </script>

@@ -4,25 +4,11 @@
     var ABI;
     var web3;
     var myAddress;
-    var contractAddress = "0xAcF4d6ca222805F88C7606e7fE67fD9c51D9798A";
-    var creatorAddress = "0x38fDDa8BAdf340848c5EA333393a27E5D822a6E7".toLowerCase();
+    //var contractAddress = "0x2Db1f4031FA33088162804d22606e4A54B33a258";
+    //var creatorAddress = "0x1DA5B6A0aF8F5f5950Dcde01277FD731D1c7774a".toLowerCase();
     var contract;
+    var imageHash;
 </script>
-<script>
-    //load the ABI from the json file
-    function LoadFile() 
-    {
-        var frame = document.getElementById("ABIframe");
-        var rawContents = frame.contentWindow.document.body.childNodes[0].innerHTML;
-        while (rawContents.indexOf("\r") >= 0)
-            rawContents = rawContents.replace("\r", "");
-        var lines = rawContents.split("\n");
-        var abi_str = "";
-        for (var i = 0; i < lines.length; i++)
-            abi_str = abi_str + lines[i];
-        ABI = JSON.parse(abi_str);
-    }
-    </script>
 <html style="min-height: 100%;" lang="en">
 	<meta charset="utf-8">
 	<head>
@@ -97,102 +83,23 @@
 <!--  Our connection to the blockchain -->
 <script src="js/web3.min.js"></script>
 <script src="https://unpkg.com/@metamask/legacy-web3@latest/dist/metamask.web3.min.js"></script>
-
-
-<script>
-    var imageHash;
-    //utility functions
-    function displayImage()
-    {
-        var file = document.getElementById("file").files[0];
-        var render = new FileReader();
-        render.onload = function(e) {
-            var img = document.getElementById("image");
-            img.src = e.target.result;
-            img.width = 200;
-            img.height = 200;
-            img.style.display = "block";
-            imageHash = web3.utils.sha3(e.target.result);
-            //console.log(typeof(e.target.result))
-        };
-        render.readAsDataURL(file);
-    }
-    async function forgeNFT() {
-        var file = document.getElementById("file").files[0];
-        var zero = "0x0000000000000000000000000000000000000000000000000000000000000000";
-        console.log("Uploaded image whose hash is: "+imageHash);
-        var quantity = parseInt(document.getElementById("quantity").value);
-        contract.methods.NFTs(imageHash).call().then(function(res) {
-            console.log(res[0]);
-            if (res[0] !== zero)
-            {
-                alert("NFT already forged");
-                return;
-            }
-            else
-            {
-                console.log("Forging NFT")
-                console.log("Quantity: "+quantity)
-                console.log("My address: "+myAddress)
-                contract.methods.forge_NFT(imageHash, quantity).send({from: myAddress}).then(function() {
-                alert("NFT forged");
-                document.getElementById("hash").value = imageHash;
-                document.getElementById("form").submit();
-                });
-            }
-        });
-    }
-    function updateEther()
-    {
-        web3.eth.getBalance(myAddress).then(function(result) {
-            document.getElementById("ether").innerHTML = web3.utils.fromWei(result, "ether");
-            });
-    }
-    function updateAccountInfo(address)
-    {
-        myAddress = address;
-        document.getElementById("address").innerHTML = myAddress;
-        contract.methods.entryTokens(myAddress).call().then(function(result) 
-        {
-            document.getElementById("entryTokens").innerHTML = result;
-        });
-        contract.methods.superTokens(myAddress).call().then(function(result)
-        {
-        document.getElementById("superTokens").innerHTML = result;
-        });
-        web3.eth.getBalance(myAddress).then(function(result) 
-        {
-        document.getElementById("ether").innerHTML = web3.utils.fromWei(result, "ether");
-        });
-        if(myAddress == creatorAddress)
-            document.getElementById("creatorSection").style.display = "block";
-        else
-            document.getElementById("creatorSection").style.display = "none";
-    }
-    async function getAddress()
-    {
-        await window.ethereum.request({ method: 'eth_requestAccounts' }).then(function(result) 
-        {
-            if (result.length == 0)
-            {
-                alert("You need to have metamask installed and connected to the blockchain");
-                return;
-            }
-            updateAccountInfo(result[0]);
-        });
-    }
-
-</script>
+<!--  Our contract -->
+<script src="js/creator.js"></script>
+<script src="js/utils.js"></script>
 
 <script>
-    getAddress();
+    $(document).ready(function() {
+        console.log("document ready");
+        getContract();
+        getAddress();
+    });
+    if (!window.ethereum)
+    {
+        alert("You need to have metamask installed and connected to the blockchain");
+    }
     ethereum.on('accountsChanged', (accounts) => 
         {
             console.log("Account changed to " + accounts[0]);
             updateAccountInfo(accounts[0]);
-        });
-    //var ABI = JSON.parse(sessionStorage.getItem("ABI"));
-    LoadFile(); // this was in on load of the frame. I moved it here to make it work (i hope)
-    // TODO it should work...
-    var contract = new web3.eth.Contract(ABI, contractAddress);
+        });  
 </script>
