@@ -4,7 +4,8 @@
     var ABI;
     var web3;
     var myAddress;
-    var contractAddress = "0x2Db1f4031FA33088162804d22606e4A54B33a258";
+    var contractAddress = "0xAcF4d6ca222805F88C7606e7fE67fD9c51D9798A";
+    var creatorAddress = "0x38fDDa8BAdf340848c5EA333393a27E5D822a6E7".toLowerCase();
     var contract;
 </script>
 <script>
@@ -35,7 +36,28 @@
         <nav style="background-color: #201e26;">
             <ul class="navbar nav-tabs" style="border: none">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#" style="color:white; background-color: #201e26;">Forge NFT</a>
+                    <a class="nav-link" href="index.html" style="color:white;">Bet</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="market.html" style="color:white">Market</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color:white">Recap Bets</a>
+                </li>
+                <li class="nav-item" style="display: none;" id="creatorSection">
+                    <a class="nav-link active" href="#" style="color:white; background-color: #201e26;">Creator</a>
+                </li>
+                <li class="nav-item ml-auto">
+                    <a class="nav-link disabled" style="color:white">
+                        <img src="img/entrytoken.webp" width="30" height="30" class="d-inline-block align-top" alt="">
+                        <label id="entryTokens">0</label>
+                    </a>
+                </li>
+                <li class="nav-item">
+                        <a class="nav-link disabled" style="color:white">
+                            <img src="img/supertoken.webp" width="30" height="30" class="d-inline-block align-top" alt="">
+                            <label id="superTokens">0</label>
+                        </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link disabled" style="color:white">
@@ -48,7 +70,8 @@
             </ul>
         </nav>
 		<main class="container">
-      <form id="form" action="#" method="POST" enctype="multipart/form-data">
+            <h1 class="text-white">Forge NFT</h1>
+            <form id="form" action="#" method="POST" enctype="multipart/form-data">
             <div class="row">
             <div class="col-sm-12">
                 <label class="form-label text-white" for="file">Image file for the NFT</label>
@@ -65,6 +88,7 @@
             </div>
             </div>
         </form>
+        <h1 class="text-white">Pay4Win</h1>
 		</main>
 	</body>
 <!-- Javascript libraries (to ease life) -->
@@ -128,10 +152,22 @@
     {
         myAddress = address;
         document.getElementById("address").innerHTML = myAddress;
+        contract.methods.entryTokens(myAddress).call().then(function(result) 
+        {
+            document.getElementById("entryTokens").innerHTML = result;
+        });
+        contract.methods.superTokens(myAddress).call().then(function(result)
+        {
+        document.getElementById("superTokens").innerHTML = result;
+        });
         web3.eth.getBalance(myAddress).then(function(result) 
         {
         document.getElementById("ether").innerHTML = web3.utils.fromWei(result, "ether");
         });
+        if(myAddress == creatorAddress)
+            document.getElementById("creatorSection").style.display = "block";
+        else
+            document.getElementById("creatorSection").style.display = "none";
     }
     async function getAddress()
     {
