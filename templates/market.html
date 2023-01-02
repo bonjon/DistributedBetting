@@ -44,6 +44,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#" style="color:white">Recap Bets</a>
                 </li>
+                <li class="nav-item" style="display: none;" id="creatorSection">
+                    <a class="nav-link" href="creator.html" style="color:white">Creator</a>
+                </li>
                 <li class="nav-item ml-auto">
                     <a class="nav-link disabled" style="color:white">
                         <img src="img/entrytoken.webp" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -151,6 +154,10 @@
         {
         document.getElementById("ether").innerHTML = web3.utils.fromWei(result, "ether");
         });
+        if(myAddress == creatorAddress)
+            document.getElementById("creatorSection").style.display = "block";
+        else
+            document.getElementById("creatorSection").style.display = "none";
     }
     async function getAddress()
     {

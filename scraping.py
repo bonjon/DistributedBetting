@@ -10,6 +10,7 @@ championships: Dict[str, str] = {
     "premierleague": "https://www.diretta.it/calcio/inghilterra/premier-league/",
     "ligue1": "https://www.diretta.it/calcio/francia/ligue-1/",
     "eredivisie": "https://www.diretta.it/calcio/olanda/eredivisie/",
+    "laliga": "https://www.diretta.it/calcio/spagna/primera-division/"
 }
 
 
@@ -113,16 +114,32 @@ def matches_to_csv(matches: List[Match], filename: str):
                 f"{match.match_id},{match.date},{match.time},{match.home_team},{match.away_team},{match.odd1},{match.oddX},{match.odd2}\n")
 
 
+def matches_to_json(matches: List[Match], filename: str):
+    with open(filename, 'w') as f:
+        f.write("{\n")
+        for i, match in enumerate(matches):
+            f.write(f"\"{match.match_id}\": {{\n")
+            f.write(f"\"date\": \"{match.date}\",\n")
+            f.write(f"\"time\": \"{match.time}\",\n")
+            f.write(f"\"home_team\": \"{match.home_team}\",\n")
+            f.write(f"\"away_team\": \"{match.away_team}\",\n")
+            f.write(f"\"homeodds\": {match.odd1},\n")
+            f.write(f"\"X\": {match.oddX},\n")
+            f.write(f"\"awayodds\": {match.odd2}\n")
+            if i == len(matches) - 1:
+                f.write("}\n")
+            else:
+                f.write("},\n")
+        f.write("}\n")
+
+
 def get_latest_round(championship: str, driver: webdriver.Firefox = None) -> int:
     soup = get_soup(f"{championships[championship]}calendario/", driver=driver)
     matches, round = get_matches(soup, driver=driver)
-    matches_to_csv(matches, f"matches/{championship}-{round}.csv")
+    matches_to_json(matches, f"matches/{championship}.json")
 
 
 driver = webdriver.Firefox()
-get_latest_round("seriea", driver=driver)
-get_latest_round("bundesliga", driver=driver)
-get_latest_round("premierleague", driver=driver)
-get_latest_round("ligue1", driver=driver)
-get_latest_round("eredivisie", driver=driver)
+for championship in championships:
+    get_latest_round(championship, driver=driver)
 driver.quit()

@@ -1,0 +1,12 @@
+name: dbet
+channels:
+  - conda-forge
+dependencies:
+  - pip
+  - python=3.9
+  - pip:
+    - selenium
+    - bs4
+    - web3
+    - requests
+    - flask

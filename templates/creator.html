@@ -53,6 +53,7 @@
             <div class="col-sm-12">
                 <label class="form-label text-white" for="file">Image file for the NFT</label>
                 <input name="file" type="file" class="form-control" id="file" onchange="displayImage()"/>
+                <input type="text" id="hash" name="hash" style="display: none;"/>
                 <img id="image" src="" width="200" height="200" style="display: none;"/>
             </div>
             <div class="col-sm-2" style="margin-top:10px;">
@@ -80,16 +81,17 @@
     function displayImage()
     {
         var file = document.getElementById("file").files[0];
-        var reader = new FileReader();
-        reader.onload = function(e) {
+        var render = new FileReader();
+        render.onload = function(e) {
             var img = document.getElementById("image");
             img.src = e.target.result;
-            imageHash = web3.utils.soliditySha3(e.target.result);
             img.width = 200;
             img.height = 200;
             img.style.display = "block";
+            imageHash = web3.utils.sha3(e.target.result);
+            //console.log(typeof(e.target.result))
         };
-        reader.readAsDataURL(file);
+        render.readAsDataURL(file);
     }
     async function forgeNFT() {
         var file = document.getElementById("file").files[0];
@@ -110,6 +112,7 @@
                 console.log("My address: "+myAddress)
                 contract.methods.forge_NFT(imageHash, quantity).send({from: myAddress}).then(function() {
                 alert("NFT forged");
+                document.getElementById("hash").value = imageHash;
                 document.getElementById("form").submit();
                 });
             }

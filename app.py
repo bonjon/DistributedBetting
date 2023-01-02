@@ -17,13 +17,21 @@ def allowed_file(filename):
 
 
 @app.route('/')
+@app.route('/index.html')
 def index():
+    # TODO scrape on user POST request
+    #import scraping
     return render_template('index.html')
 
 
 @app.route('/ABI.json', methods=['GET'])
 def send_json():
     return send_from_directory('.', 'ABI.json')
+
+
+@app.route('/matches/<path:path>')
+def send_matches(path):
+    return send_from_directory('matches', path)
 
 
 @app.route('/js/<path:path>')
@@ -41,16 +49,11 @@ def send_css(path):
     return send_from_directory('css', path)
 
 
-@app.route('/creator.html', methods=['GET'])
-def prova():
-    return render_template('creator.html')
-
-
-@app.route('/creator.html', methods=['POST'])
-def prova_post():
+@app.route('/creator.html', methods=['POST', 'GET'])
+def creator():
     if request.method == 'POST':
         # check if the post request has the file part
-        print(request.files)
+        hash = request.form.get("hash")
         if 'file' not in request.files:
             flash('No file part')
             return redirect(request.url)
@@ -62,12 +65,21 @@ def prova_post():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            print("CIAOOOOOO\n", file, filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            extension = filename.rsplit('.', 1)[1].lower()
+            file.save(os.path.join(
+                app.config['UPLOAD_FOLDER'], hash+"."+extension))
 
             return render_template('creator.html')+"<script>alert('File uploaded successfully')</script>"
+    else:
+        return render_template('creator.html')
 
 
+@app.route('/market.html', methods=['GET', 'POST'])
+def market():
+    return render_template('market.html')
+
+
+'''
 @app.route('/prova.html', methods=['GET', 'POST'])
 def prova2_post():
     if request.method == 'POST':
@@ -93,3 +105,4 @@ def prova2_post():
 
 def __main__():
     app.run(debug=True)
+'''
