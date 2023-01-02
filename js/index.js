@@ -106,30 +106,35 @@ function showMatches(leagueId) {
         {
             for(match in currentChampionship)
                 {
+                    // create the div that contains the match
                     var matchDiv = document.createElement("button");
+                    // set some style to the div
                     matchDiv.className = "list-group-item btn-outline-light list-group-item-action";
                     matchDiv.style.backgroundColor = "#201e26";
-
+                    // create the labels that contain the match information such as date and time
                     var timeLabel = document.createElement("label");
                     timeLabel.style.color = "white";
                     timeLabel.style.display = "inline-block";
                     timeLabel.style.width = "300px";
                     timeLabel.style.textAlign = "left";
                     timeLabel.innerHTML = currentChampionship[match].date + "-" + currentChampionship[match].time;
+                    // create the labels that contain home team and away team
                     var matchLabel = document.createElement("label");
                     matchLabel.style.color = "white";
                     matchLabel.style.display = "inline-block";
                     matchLabel.style.width = "300px";
                     matchLabel.style.textAlign = "center";
-
+                    // create the div for the odds
                     var odds = document.createElement("div");
                     odds.className = "btn-group";
                     odds.style.display = "inline-block";
                     odds.style.float = "right";
                     odds.style.width = "300px";
                     odds.style.textAlign = "right";
-
+                    // create the button for the home odds
                     var homeOdds = document.createElement("button");
+                    homeOdds.name = "homeOdds";
+                    homeOdds.id = match;
                     homeOdds.className = "btn btn-outline-light";
                     homeOdds.style.width = "100px";
                     homeOdds.innerHTML = "1";
@@ -139,8 +144,10 @@ function showMatches(leagueId) {
                     homeOddsLabel.style.width = "100px";
                     homeOddsLabel.style.textAlign = "center";
                     homeOddsLabel.innerHTML = currentChampionship[match].homeodds;
-
+                    // create the button for the draw odds
                     var drawOdds = document.createElement("button");
+                    drawOdds.name = "drawOdds";
+                    drawOdds.id = match;
                     drawOdds.className = "btn btn-outline-light";
                     drawOdds.style.width = "100px";
                     drawOdds.innerHTML = "X";
@@ -150,8 +157,10 @@ function showMatches(leagueId) {
                     drawOddsLabel.style.width = "100px";
                     drawOddsLabel.style.textAlign = "center";
                     drawOddsLabel.innerHTML = currentChampionship[match].X;
-        
+                    // create the button for the away odds
                     var awayOdds = document.createElement("button");
+                    awayOdds.name = "awayOdds";
+                    awayOdds.id = match;
                     awayOdds.style.width = "100px";
                     awayOdds.className = "btn btn-outline-light";
                     awayOdds.innerHTML = "2";
@@ -161,13 +170,13 @@ function showMatches(leagueId) {
                     awayOddsLabel.style.width = "100px";
                     awayOddsLabel.style.textAlign = "center";
                     awayOddsLabel.innerHTML = currentChampionship[match].awayodds;
+                    // append the elements to the div
                     odds.appendChild(homeOdds);
                     odds.appendChild(drawOdds);
                     odds.appendChild(awayOdds);
                     odds.appendChild(homeOddsLabel);
                     odds.appendChild(drawOddsLabel);
                     odds.appendChild(awayOddsLabel);
-
                     matchLabel.innerHTML = currentChampionship[match].home_team + " - " + currentChampionship[match].away_team;
                     matchDiv.appendChild(timeLabel);
                     matchDiv.appendChild(matchLabel);
@@ -191,6 +200,102 @@ function showMatches(leagueId) {
             else
                 document.getElementById(ids[championship]).style.display = "block";
         }
+    // add the onclick event to the buttons
+    var homeOddsButtons = document.getElementsByName("homeOdds");
+    var drawOddsButtons = document.getElementsByName("drawOdds");
+    var awayOddsButtons = document.getElementsByName("awayOdds");
+    // add the onclick event to the buttons
+    for(var i = 0; i < homeOddsButtons.length; i++)
+    {
+        homeOddsButtons[i].onclick = function()
+        {
+            var match = currentChampionship[this.id];
+            betList("1", match.home_team, match.away_team, match.homeodds);
+        }
+    }
+    for(var i = 0; i < drawOddsButtons.length; i++)
+    {
+        drawOddsButtons[i].onclick = function()
+        {
+            var match = currentChampionship[this.id];
+            betList("X", match.home_team, match.away_team, match.X);
+        }
+    }
+    for(var i = 0; i < awayOddsButtons.length; i++)
+    {
+        awayOddsButtons[i].onclick = function()
+        {
+            var match = currentChampionship[this.id];
+            betList("2", match.home_team, match.away_team, match.awayodds);
+        }
+    }
+}
+
+/**
+ * This function creates and display the list of the bets
+ * @param {string} bet 
+ * @param {string} home_team 
+ * @param {string} away_team 
+ * @param {string} odds 
+ * @returns 
+ */
+function betList(bet, home_team, away_team, odds)
+{
+    // change the visibility of the input and the buttons
+    var betTokens = document.getElementById("betTokens");
+    var eraseButton = document.getElementById("btnErase");
+    var betBtn = document.getElementById("btnBet");
+    betTokens.className = "d-block";
+    betBtn.className = "btn btn-outline-light text-align-center d-block";
+    eraseButton.className = "btn btn-outline-light text-align-center d-block";
+    var betUl = document.getElementById("betslist");
+    // check if the bet is already in the list by checking the home team
+    if (betUl.childElementCount > 0)
+    {
+        for(var i = 0; i < betUl.childElementCount; i++)
+        {
+            var li = betUl.children[i];
+            var liHomeTeam = li.innerHTML.split(" - ")[0];
+            if (liHomeTeam == home_team)
+            {
+                alert("You have already bet on this match");
+                return;
+            }
+        }
+    }
+    // create the list item
+    var betLi = document.createElement("li");
+    betLi.className = "list-group-item";
+    betLi.style.color = "white";
+    betLi.style.backgroundColor = "transparent";
+    betLi.style.fontSize = "13px";
+    betLi.style.width = "100%";
+    betLi.style.marginBottom = "5px";
+    betLi.style.padding = "5px";
+    betLi.style.borderRadius = "5px";
+    betLi.innerHTML = home_team + " - " + away_team + " " + bet + " " + odds;
+    betUl.appendChild(betLi);
+}
+
+/**
+ * This function is used to erase the list of the bets
+ * 
+ */
+function removeList()
+{
+    var ul = document.getElementById("betslist");
+    // remove only <li> elements
+    while(ul.childElementCount > 1)
+    {
+        ul.removeChild(ul.lastChild);
+    }
+    // change the visibility of the input and the buttons
+    var betTokens = document.getElementById("betTokens");
+    var eraseButton = document.getElementById("btnErase");
+    var betBtn = document.getElementById("btnBet");
+    betBtn.className = "btn btn-outline-light text-align-center d-none";
+    betTokens.className = "d-none";
+    eraseButton.className = "btn btn-outline-light text-align-center d-none";
 }
 
 /**
