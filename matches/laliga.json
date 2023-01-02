@@ -22,8 +22,8 @@
 "time": "16:15",
 "home_team": "Villarreal",
 "away_team": "Real Madrid",
-"homeodds": 3.23,
-"X": 3.8,
+"homeodds": 3.26,
+"X": 3.79,
 "awayodds": 2.04
 },
 "MJncOujh": {
@@ -31,9 +31,9 @@
 "time": "18:30",
 "home_team": "Maiorca",
 "away_team": "Valladolid",
-"homeodds": 1.95,
+"homeodds": 1.94,
 "X": 3.28,
-"awayodds": 4.02
+"awayodds": 4.08
 },
 "0Ao1Na5b": {
 "date": "07.01.",
@@ -49,9 +49,9 @@
 "time": "14:00",
 "home_team": "Almeria",
 "away_team": "Real Sociedad",
-"homeodds": 4.11,
-"X": 3.21,
-"awayodds": 1.97
+"homeodds": 4.13,
+"X": 3.23,
+"awayodds": 1.96
 },
 "8zk9LwzB": {
 "date": "08.01.",
@@ -60,7 +60,7 @@
 "away_team": "Betis",
 "homeodds": 2.2,
 "X": 3.22,
-"awayodds": 3.38
+"awayodds": 3.37
 },
 "42rIJH4N": {
 "date": "08.01.",
@@ -68,7 +68,7 @@
 "home_team": "Siviglia",
 "away_team": "Getafe",
 "homeodds": 1.72,
-"X": 3.53,
+"X": 3.51,
 "awayodds": 5.05
 },
 "vechPLzn": {
@@ -86,7 +86,7 @@
 "home_team": "Ath. Bilbao",
 "away_team": "Osasuna",
 "homeodds": 1.68,
-"X": 3.53,
-"awayodds": 5.51
+"X": 3.56,
+"awayodds": 5.48
 }
 }

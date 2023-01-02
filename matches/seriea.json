@@ -32,15 +32,15 @@
 "home_team": "Torino",
 "away_team": "Verona",
 "homeodds": 1.82,
-"X": 3.58,
-"awayodds": 4.47
+"X": 3.59,
+"awayodds": 4.48
 },
 "KrCbMdWe": {
 "date": "04.01.",
 "time": "16:30",
 "home_team": "Lecce",
 "away_team": "Lazio",
-"homeodds": 3.72,
+"homeodds": 3.71,
 "X": 3.28,
 "awayodds": 2.1
 },
@@ -58,9 +58,9 @@
 "time": "18:30",
 "home_team": "Cremonese",
 "away_team": "Juventus",
-"homeodds": 5.28,
-"X": 3.8,
-"awayodds": 1.68
+"homeodds": 5.3,
+"X": 3.81,
+"awayodds": 1.67
 },
 "OGIkOI1q": {
 "date": "04.01.",
@@ -77,7 +77,7 @@
 "home_team": "Inter",
 "away_team": "Napoli",
 "homeodds": 2.33,
-"X": 3.32,
+"X": 3.31,
 "awayodds": 3.14
 },
 "E1e1tINR": {
@@ -86,7 +86,7 @@
 "home_team": "Udinese",
 "away_team": "Empoli",
 "homeodds": 1.62,
-"X": 3.96,
+"X": 3.95,
 "awayodds": 5.61
 }
 }

@@ -128,21 +128,45 @@ function showMatches(leagueId) {
                     odds.style.float = "right";
                     odds.style.width = "300px";
                     odds.style.textAlign = "right";
+
                     var homeOdds = document.createElement("button");
                     homeOdds.className = "btn btn-outline-light";
                     homeOdds.style.width = "100px";
-                    homeOdds.innerHTML = currentChampionship[match].homeodds;
+                    homeOdds.innerHTML = "1";
+                    var homeOddsLabel = document.createElement("label");
+                    homeOddsLabel.style.color = "white";
+                    homeOddsLabel.style.display = "inline-block";
+                    homeOddsLabel.style.width = "100px";
+                    homeOddsLabel.style.textAlign = "center";
+                    homeOddsLabel.innerHTML = currentChampionship[match].homeodds;
+
                     var drawOdds = document.createElement("button");
                     drawOdds.className = "btn btn-outline-light";
                     drawOdds.style.width = "100px";
-                    drawOdds.innerHTML = currentChampionship[match].X;
+                    drawOdds.innerHTML = "X";
+                    var drawOddsLabel = document.createElement("label");
+                    drawOddsLabel.style.color = "white";
+                    drawOddsLabel.style.display = "inline-block";
+                    drawOddsLabel.style.width = "100px";
+                    drawOddsLabel.style.textAlign = "center";
+                    drawOddsLabel.innerHTML = currentChampionship[match].X;
+        
                     var awayOdds = document.createElement("button");
                     awayOdds.style.width = "100px";
                     awayOdds.className = "btn btn-outline-light";
-                    awayOdds.innerHTML = currentChampionship[match].awayodds;
+                    awayOdds.innerHTML = "2";
+                    var awayOddsLabel = document.createElement("label");
+                    awayOddsLabel.style.color = "white";
+                    awayOddsLabel.style.display = "inline-block";
+                    awayOddsLabel.style.width = "100px";
+                    awayOddsLabel.style.textAlign = "center";
+                    awayOddsLabel.innerHTML = currentChampionship[match].awayodds;
                     odds.appendChild(homeOdds);
                     odds.appendChild(drawOdds);
                     odds.appendChild(awayOdds);
+                    odds.appendChild(homeOddsLabel);
+                    odds.appendChild(drawOddsLabel);
+                    odds.appendChild(awayOddsLabel);
 
                     matchLabel.innerHTML = currentChampionship[match].home_team + " - " + currentChampionship[match].away_team;
                     matchDiv.appendChild(timeLabel);
@@ -167,4 +191,30 @@ function showMatches(leagueId) {
             else
                 document.getElementById(ids[championship]).style.display = "block";
         }
+}
+
+/**
+ * This function is used to refresh the progress bar when the user wants to scrape the data
+ */
+function refreshProgress() 
+{
+    progbar = document.getElementById("progress-bar");
+    progbar.style.display = "block";
+    var value = 0;
+    function update() 
+    {
+        if (value >= 171)
+        {
+            clearInterval(id);
+            progbar.style.display = "none";
+            document.getElementById("scrapeForm").submit();
+        }
+        else 
+        {
+            progbar.style.width = value + "%";
+            progbar.setAttribute("aria-valuenow", value);
+            value += 1.71;
+        }
+    }
+    var id = setInterval(update, 2600);
 }

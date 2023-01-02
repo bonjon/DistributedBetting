@@ -139,7 +139,8 @@ def get_latest_round(championship: str, driver: webdriver.Firefox = None) -> int
     matches_to_json(matches, f"matches/{championship}.json")
 
 
-driver = webdriver.Firefox()
-for championship in championships:
-    get_latest_round(championship, driver=driver)
-driver.quit()
+def do_scraping():
+    driver = webdriver.Firefox()
+    for championship in championships:
+        get_latest_round(championship, driver=driver)
+    driver.quit()

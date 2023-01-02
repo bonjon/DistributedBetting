@@ -4,25 +4,25 @@
 "time": "18:30",
 "home_team": "Brentford",
 "away_team": "Liverpool",
-"homeodds": 5.3,
-"X": 4.38,
-"awayodds": 1.57
+"homeodds": 5.38,
+"X": 4.42,
+"awayodds": 1.56
 },
 "IHOKCxnE": {
 "date": "03.01.",
 "time": "20:45",
 "home_team": "Arsenal",
 "away_team": "Newcastle",
-"homeodds": 1.79,
-"X": 3.78,
-"awayodds": 4.26
+"homeodds": 1.78,
+"X": 3.81,
+"awayodds": 4.33
 },
 "Y3qe4Egf": {
 "date": "03.01.",
 "time": "20:45",
 "home_team": "Everton",
 "away_team": "Brighton",
-"homeodds": 3.49,
+"homeodds": 3.48,
 "X": 3.4,
 "awayodds": 2.1
 },
@@ -32,7 +32,7 @@
 "home_team": "Leicester",
 "away_team": "Fulham",
 "homeodds": 2.2,
-"X": 3.54,
+"X": 3.55,
 "awayodds": 3.11
 },
 "Ohx81CwD": {
@@ -40,9 +40,9 @@
 "time": "21:00",
 "home_team": "Manchester Utd",
 "away_team": "Bournemouth",
-"homeodds": 1.26,
-"X": 5.98,
-"awayodds": 10.83
+"homeodds": 1.25,
+"X": 6.02,
+"awayodds": 11.04
 },
 "2qyC0WhJ": {
 "date": "04.01.",
@@ -50,17 +50,17 @@
 "home_team": "Southampton",
 "away_team": "Nottingham",
 "homeodds": 2.0,
-"X": 3.45,
-"awayodds": 3.76
+"X": 3.43,
+"awayodds": 3.77
 },
 "GSYa3Y80": {
 "date": "04.01.",
 "time": "20:45",
 "home_team": "Leeds",
 "away_team": "West Ham",
-"homeodds": 2.54,
+"homeodds": 2.53,
 "X": 3.47,
-"awayodds": 2.66
+"awayodds": 2.68
 },
 "d8NOBd1K": {
 "date": "04.01.",
@@ -68,16 +68,16 @@
 "home_team": "Aston Villa",
 "away_team": "Wolves",
 "homeodds": 1.95,
-"X": 3.54,
-"awayodds": 3.86
+"X": 3.52,
+"awayodds": 3.89
 },
 "K0ui5fvl": {
 "date": "04.01.",
 "time": "21:00",
 "home_team": "Crystal Palace",
 "away_team": "Tottenham",
-"homeodds": 3.24,
-"X": 3.41,
+"homeodds": 3.25,
+"X": 3.4,
 "awayodds": 2.19
 },
 "Qwtm6zPs": {
@@ -85,8 +85,8 @@
 "time": "21:00",
 "home_team": "Chelsea",
 "away_team": "Manchester City",
-"homeodds": 5.02,
-"X": 3.97,
+"homeodds": 5.1,
+"X": 3.98,
 "awayodds": 1.64
 }
 }

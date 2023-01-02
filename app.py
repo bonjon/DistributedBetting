@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory
 import os
+import scraping
 from werkzeug.utils import secure_filename
 
 CONTRACT_ADDRESS = "0x2Db1f4031FA33088162804d22606e4A54B33a258"
@@ -19,11 +20,13 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/')
-@app.route('/index.html')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index.html', methods=['GET', 'POST'])
 def index():
-    # TODO scrape on user POST request
-    #import scraping
+    if request.method == 'POST':
+        # check if the post request has the file part
+        scraping.do_scraping()
+        return render_template('index.html')+variables_declarations+"<script>alert('You have now the latest matches');</script>"
     return render_template('index.html')+variables_declarations
 
 
