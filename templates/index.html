@@ -77,22 +77,40 @@
 		<main class="container-fluid">
             <div class="row justify-content-center">
                 <div class="col-sm-3 d-flex" style="margin-right:auto">
-                    <ul id="betslist" class="list-group text-align-center" style="width: 100%;">
-                        <div class="btn-group">
-                            <button type="button" class="d-none" id="btnErase" onclick="removeList()" style="width: 20%;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                                </svg>
-                            </button>
-                            <input class="d-none" type="number" style="outline: #201e26; width: 60%;" id="betTokens" name="betTokens" min="1"></input>
-                            <button class="btn btn-outline-light d-none" id="btnBet" onclick="bet()" style="width: 20%">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
-                                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </ul>
+                        <ul id="betslist" class="list-group text-align-center" style="width: 100%;">
+                            <li id="betHeader" class="list-group-item" style="background-color: transparent; color: white; border: none; display: none;">
+                                <div class="row">
+                                        <label id="resultLabel" style="text-align: center; width: 20%;">Result</label>
+                                        <label id="matchLabel" style="text-align: center;  width: 60%;">Match</label>
+                                        <label id="oddLabel" style="text-align: center;  width: 20%;">Odd</label>
+                                </div>
+                            </li>
+                            <div class="btn-group">
+                                <button type="button" class="d-none" id="btnErase" onclick="removeList()" style="width: 20%;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                    </svg>
+                                </button>
+                                <input class="d-none" type="number" style="outline: #201e26; width: 60%;" id="betTokens" name="betTokens" onchange="updateWinSum();" min="1"></input>
+                                <button class="btn btn-outline-light d-none" id="btnBet" onclick="bet()" style="width: 20%">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        <li id="oddsSummary" class="list-group-item" style="color: white; background-color: transparent; font-size: 13px; width: 100%; margin-bottom: 5px; padding: 5px; border-radius: 5px; display: none">
+                            <label class="float-left" style="text-align: left; font-size: 13px;  width: 20%;"></label>
+                            <label class="float-center" style="text-align: center; font-size: 13px;  width: 60%;">Total odd:</label>
+                            <label id="oddsSum" class="float-right" style="text-align: center; font-size: 13px;  width: 20%;">1</label>
+                        </li>
+                        <li id="winSummary" class="list-group-item" style="color: white; background-color: transparent; font-size: 13px; width: 100%; margin-bottom: 5px; padding: 5px; border-radius: 5px; display: none">
+                            <label class="float-left" style="text-align: left; font-size: 13px;  width: 20%;"></label>
+                            <label class="float-center" style="text-align: center; font-size: 13px;  width: 60%;">Your win:</label>
+                            <label id="winAmount" class="float-right" style="text-align: center; font-size: 13px;  width: 20%;">0</label>
+                        </li>
+                        </ul>
+                        
                 </div>
                 <div class="col-sm-8">
                     <div class="container border rounded" style="padding: 10px">

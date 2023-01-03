@@ -133,6 +133,10 @@ function showMatches(leagueId)
                     odds.style.width = "300px";
                     odds.style.textAlign = "right";
                     // create the button for the home odds
+                    var odd1 = currentChampionship[match].homeodds;
+                    var oddX = currentChampionship[match].X;
+                    var odd2 = currentChampionship[match].awayodds;
+                    var newodds = removeMargin(odd1, oddX, odd2);
                     var homeOdds = document.createElement("button");
                     homeOdds.name = "homeOdds";
                     homeOdds.id = match+"-1";
@@ -144,7 +148,7 @@ function showMatches(leagueId)
                     homeOddsLabel.style.display = "inline-block";
                     homeOddsLabel.style.width = "100px";
                     homeOddsLabel.style.textAlign = "center";
-                    homeOddsLabel.innerHTML = currentChampionship[match].homeodds;
+                    homeOddsLabel.innerHTML = newodds[0];
                     // create the button for the draw odds
                     var drawOdds = document.createElement("button");
                     drawOdds.name = "drawOdds";
@@ -157,7 +161,7 @@ function showMatches(leagueId)
                     drawOddsLabel.style.display = "inline-block";
                     drawOddsLabel.style.width = "100px";
                     drawOddsLabel.style.textAlign = "center";
-                    drawOddsLabel.innerHTML = currentChampionship[match].X;
+                    drawOddsLabel.innerHTML = newodds[1];
                     // create the button for the away odds
                     var awayOdds = document.createElement("button");
                     awayOdds.name = "awayOdds";
@@ -170,7 +174,7 @@ function showMatches(leagueId)
                     awayOddsLabel.style.display = "inline-block";
                     awayOddsLabel.style.width = "100px";
                     awayOddsLabel.style.textAlign = "center";
-                    awayOddsLabel.innerHTML = currentChampionship[match].awayodds;
+                    awayOddsLabel.innerHTML = newodds[2];
                     // append the elements to the div
                     odds.appendChild(homeOdds);
                     odds.appendChild(drawOdds);
@@ -201,50 +205,39 @@ function showMatches(leagueId)
             else
                 document.getElementById(ids[championship]).style.display = "block";
         }
-    // add the onclick event to the buttons
+    // take the list of buttons
     var homeOddsButtons = document.getElementsByName("homeOdds");
     var drawOddsButtons = document.getElementsByName("drawOdds");
     var awayOddsButtons = document.getElementsByName("awayOdds"); 
+    //define the onlick event for the buttons
+    var onlickfun = function(buttontype)
+    {
+        return function()
+        {
+            this.blur();
+            var match_id = this.id.split("-")[0];
+            var match = currentChampionship[match_id];
+            var newodds = removeMargin(match.homeodds, match.X, match.awayodds);
+            var success;
+            if(buttontype == 0)
+                success = betList("1", match.home_team, match.away_team, newodds[0],match_id);
+            else if(buttontype == 1)
+                success = betList("X", match.home_team, match.away_team, newodds[1],match_id);
+            else if(buttontype == 2)
+                success = betList("2", match.home_team, match.away_team, newodds[2],match_id);
+            if (success == 0)
+                if(this.className == "btn btn-outline-light")
+                    this.className = "btn btn-outline-success";
+                else
+                    this.className = "btn btn-outline-light";
+        }
+    }
     // add the onclick event to the buttons
     for(var i = 0; i < homeOddsButtons.length; i++)
     {
-        homeOddsButtons[i].onclick = function()
-        {
-            this.blur();
-            var match_id = this.id.split("-")[0];
-            var match = currentChampionship[match_id];
-            success = betList("1", match.home_team, match.away_team, match.homeodds,match_id);
-            if (success == 0)
-                if(this.className == "btn btn-outline-light")
-                    this.className = "btn btn-outline-success";
-                else
-                    this.className = "btn btn-outline-light";
-        }
-        drawOddsButtons[i].onclick = function()
-        {
-            this.blur();
-            var match_id = this.id.split("-")[0];
-            var match = currentChampionship[match_id];
-            success = betList("X", match.home_team, match.away_team, match.X,match_id);
-            if (success == 0)
-                if(this.className == "btn btn-outline-light")
-                    this.className = "btn btn-outline-success";
-                else
-                    this.className = "btn btn-outline-light";
-            
-        }
-        awayOddsButtons[i].onclick = function()
-        {
-            this.blur();
-            var match_id = this.id.split("-")[0];
-            var match = currentChampionship[match_id];
-            success = betList("2", match.home_team, match.away_team, match.awayodds,match_id);
-            if (success == 0)
-                if(this.className == "btn btn-outline-light")
-                    this.className = "btn btn-outline-success";
-                else
-                    this.className = "btn btn-outline-light";
-        }
+        homeOddsButtons[i].onclick = onlickfun(0);
+        drawOddsButtons[i].onclick = onlickfun(1);
+        awayOddsButtons[i].onclick = onlickfun(2);
     }
 }
 
@@ -263,9 +256,14 @@ function betList(bet, home_team, away_team, odds, match_id)
     var betTokens = document.getElementById("betTokens");
     var eraseButton = document.getElementById("btnErase");
     var betBtn = document.getElementById("btnBet");
+    var oddsSum = document.getElementById("oddsSum");
     betTokens.className = "d-block";
     betBtn.className = "btn btn-outline-light text-align-center d-block";
     eraseButton.className = "btn btn-outline-light text-align-center d-block";
+    document.getElementById("betHeader").style.display = "block";
+    document.getElementById("oddsSummary").style.display = "block";
+    document.getElementById("winSummary").style.display = "block";
+
     var betUl = document.getElementById("betslist");
     // check if the bet is already in the list by checking the home team
     if (betUl.childElementCount > 0)
@@ -276,7 +274,8 @@ function betList(bet, home_team, away_team, odds, match_id)
             var liId = li.id.split("-")[0];
             if (liId == match_id)
             {
-                var betValue = li.innerHTML.split(" ")[3];
+                var betValue = li.children[0].innerHTML;
+                console.log(betValue, bet);
                 if (betValue != bet)
                     {
                         alert("You have already bet on this match");
@@ -285,11 +284,20 @@ function betList(bet, home_team, away_team, odds, match_id)
                 else
                     {
                         betUl.removeChild(li);
-                        if (betUl.childElementCount == 1)
+                        //update the odds sum
+                        oddsSum.innerHTML = parseFloat(oddsSum.innerHTML) / parseFloat(odds);
+                        //update the win sum
+                        updateWinSum();
+
+
+                        if (betUl.childElementCount == 4)
                         {
                             betTokens.className = "d-none";
                             betBtn.className = "btn btn-outline-light text-align-center d-none";
                             eraseButton.className = "btn btn-outline-light text-align-center d-none";
+                            document.getElementById("betHeader").style.display = "none";
+                            document.getElementById("oddsSummary").style.display = "none";
+                            document.getElementById("winSummary").style.display = "none";
                         }
                         return 0;
                     }
@@ -334,9 +342,15 @@ function betList(bet, home_team, away_team, odds, match_id)
     betLi.appendChild(labelResult);
     betLi.appendChild(labelMatch);
     betLi.appendChild(labelodds);
-    //betLi.innerHTML =  home_team + " - " + away_team + " " + bet + " " + odds;
+
+    //update the odds sum
+    oddsSum.innerHTML = (parseFloat(oddsSum.innerHTML) * parseFloat(odds)).toFixed(2);
+    //update the win sum
+    updateWinSum();
+
+
     var childCount = betUl.childElementCount;
-    betUl.insertBefore(betLi, betUl.children[childCount - 1]);
+    betUl.insertBefore(betLi, betUl.children[childCount - 3]);
     
     return 0;
 }
@@ -349,11 +363,11 @@ function removeList()
 {
     var ul = document.getElementById("betslist");
     // remove only <li> elements
-    while(ul.childElementCount > 1)
+    while(ul.childElementCount > 4)
     {
         var li = ul.firstChild;
         // while the first child is not a <li> element, go to the next one
-        while(li.tagName != "LI")
+        while(li.tagName != "LI" || li.id.slice(-3) != "-li")
             li = li.nextSibling;
         // disable the buttons
         var match_id = li.id.split("-")[0];
@@ -373,6 +387,9 @@ function removeList()
     betBtn.className = "btn btn-outline-light text-align-center d-none";
     betTokens.className = "d-none";
     eraseButton.className = "btn btn-outline-light text-align-center d-none";
+    document.getElementById("betHeader").style.display = "none";
+    document.getElementById("oddsSummary").style.display = "none";
+    document.getElementById("winSummary").style.display = "none";
 }
 
 /**
@@ -399,4 +416,42 @@ function refreshProgress()
         }
     }
     var id = setInterval(update, 2600);
+}
+
+function updateWinSum()
+{
+    var amount = document.getElementById("betTokens").value;
+    var oddsSum = document.getElementById("oddsSum").innerHTML;
+    var winSum = document.getElementById("winAmount");
+    winSum.innerHTML = (parseFloat(oddsSum) * parseFloat(amount)).toFixed(2);
+}
+
+/**
+ * This function computes the margin of profit from the odds
+ * @param {float} odd1 
+ * @param {float} oddX 
+ * @param {float} odd2 
+ */
+function computeMargin(odd1, oddX, odd2)
+{
+    var prob1 = 1 / odd1;
+    var probX = 1 / oddX;
+    var prob2 = 1 / odd2;
+    return (prob1 + probX + prob2) - 1;
+}
+
+/**
+ * This function removes the margin of profit from the odds
+ * @param {float} odd1 
+ * @param {float} oddX 
+ * @param {float} odd2 
+ * @returns 
+ */
+function removeMargin(odd1,oddX,odd2)
+{
+    var margin = computeMargin(odd1,oddX,odd2);
+    var newOdd1 = (3*odd1 / (3-(odd1 * margin))).toFixed(2);
+    var newOddX = (3*oddX / (3-(oddX * margin))).toFixed(2);
+    var newOdd2 = (3*odd2 / (3-(odd2 * margin))).toFixed(2);
+    return [newOdd1, newOddX, newOdd2];
 }
