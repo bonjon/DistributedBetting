@@ -66,7 +66,8 @@ async function getMatches()
  * This function shows the matches of the league selected by the user
  * @param {string} leagueId 
  */
-function showMatches(leagueId) {
+function showMatches(leagueId) 
+{
     ids = ["premierleague", "seriea", "laliga", "bundesliga"];
     // make active the button selected by the user
     if (leagueId == "premierleague") 
@@ -203,7 +204,7 @@ function showMatches(leagueId) {
     // add the onclick event to the buttons
     var homeOddsButtons = document.getElementsByName("homeOdds");
     var drawOddsButtons = document.getElementsByName("drawOdds");
-    var awayOddsButtons = document.getElementsByName("awayOdds");
+    var awayOddsButtons = document.getElementsByName("awayOdds"); 
     // add the onclick event to the buttons
     for(var i = 0; i < homeOddsButtons.length; i++)
     {
@@ -212,17 +213,11 @@ function showMatches(leagueId) {
             var match = currentChampionship[this.id];
             betList("1", match.home_team, match.away_team, match.homeodds);
         }
-    }
-    for(var i = 0; i < drawOddsButtons.length; i++)
-    {
         drawOddsButtons[i].onclick = function()
         {
             var match = currentChampionship[this.id];
             betList("X", match.home_team, match.away_team, match.X);
         }
-    }
-    for(var i = 0; i < awayOddsButtons.length; i++)
-    {
         awayOddsButtons[i].onclick = function()
         {
             var match = currentChampionship[this.id];
@@ -256,8 +251,9 @@ function betList(bet, home_team, away_team, odds)
         {
             var li = betUl.children[i];
             var liHomeTeam = li.innerHTML.split(" - ")[0];
-            if (liHomeTeam == home_team)
+            if (liHomeTeam == home_team) //TODO use the id of the match instead of the home team
             {
+                console.log(liHomeTeam + "," + home_team)
                 alert("You have already bet on this match");
                 return;
             }
@@ -274,7 +270,11 @@ function betList(bet, home_team, away_team, odds)
     betLi.style.padding = "5px";
     betLi.style.borderRadius = "5px";
     betLi.innerHTML = home_team + " - " + away_team + " " + bet + " " + odds;
-    betUl.appendChild(betLi);
+    var childCount = betUl.childElementCount;
+    if (childCount == 1)
+        betUl.insertBefore(betLi, betUl.firstChild);
+    else
+        betUl.insertBefore(betLi, betUl.children[childCount - 1]);
 }
 
 /**
@@ -287,7 +287,7 @@ function removeList()
     // remove only <li> elements
     while(ul.childElementCount > 1)
     {
-        ul.removeChild(ul.lastChild);
+        ul.removeChild(ul.firstChild);
     }
     // change the visibility of the input and the buttons
     var betTokens = document.getElementById("betTokens");
