@@ -5,8 +5,10 @@ from web3 import Web3
 import scraping
 from werkzeug.utils import secure_filename
 
-CONTRACT_ADDRESS = "0x2Db1f4031FA33088162804d22606e4A54B33a258"
-CREATOR_ADDRESS = "0x1DA5B6A0aF8F5f5950Dcde01277FD731D1c7774a".lower()
+#CONTRACT_ADDRESS = "0x2Db1f4031FA33088162804d22606e4A54B33a258"
+#CREATOR_ADDRESS = "0x1DA5B6A0aF8F5f5950Dcde01277FD731D1c7774a".lower()
+CONTRACT_ADDRESS = "0xAcF4d6ca222805F88C7606e7fE67fD9c51D9798A"
+CREATOR_ADDRESS = "0x38fDDa8BAdf340848c5EA333393a27E5D822a6E7".lower()
 variables_declarations = f"<script>var contractAddress='{CONTRACT_ADDRESS}';\nvar creatorAddress='{CREATOR_ADDRESS}';</script>"
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(ROOT_DIR, 'img/NFTs/')
@@ -23,7 +25,7 @@ with open("ABI.json", "r") as a:
 # get the contract object
 contract = w3.eth.contract(address=CONTRACT_ADDRESS, abi=ABI)
 
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -109,5 +111,7 @@ def creator():
 @app.route('/market.html', methods=['GET', 'POST'])
 def market():
     nft_files = os.listdir(UPLOAD_FOLDER)
-
-    return render_template('market.html')+variables_declarations
+    if nft_files is None:
+        return render_template('market.html')+variables_declarations
+    else:
+        return render_template('market.html')+f"<script>nftFolder='{UPLOAD_FOLDER}';\nnfts={nft_files}</script>"+variables_declarations
