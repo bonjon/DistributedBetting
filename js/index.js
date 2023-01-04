@@ -418,6 +418,9 @@ function refreshProgress()
     var id = setInterval(update, 2600);
 }
 
+/**
+ * This function is used to update the win amount when the user changes the bet amount
+ */
 function updateWinSum()
 {
     var amount = document.getElementById("betTokens").value;
@@ -431,6 +434,7 @@ function updateWinSum()
  * @param {float} odd1 
  * @param {float} oddX 
  * @param {float} odd2 
+ * @returns the margin of profit
  */
 function computeMargin(odd1, oddX, odd2)
 {
@@ -445,7 +449,7 @@ function computeMargin(odd1, oddX, odd2)
  * @param {float} odd1 
  * @param {float} oddX 
  * @param {float} odd2 
- * @returns 
+ * @returns the new odds
  */
 function removeMargin(odd1,oddX,odd2)
 {
@@ -454,4 +458,60 @@ function removeMargin(odd1,oddX,odd2)
     var newOddX = (3*oddX / (3-(oddX * margin))).toFixed(2);
     var newOdd2 = (3*odd2 / (3-(odd2 * margin))).toFixed(2);
     return [newOdd1, newOddX, newOdd2];
+}
+
+/**
+ * This function is used to convert the user bet to json format
+ * @returns the json object
+ */
+function betToJson()
+{
+    var betJson = {};
+    var betList = document.getElementById("betslist");
+    var betTokens = document.getElementById("betTokens").value;
+    var potentialWin = document.getElementById("winAmount").innerHTML;
+    // add the bet tokens and the bet amount
+    betJson["betTokens"] = betTokens;
+    betJson["potentialWin"] = potentialWin;
+    // bets will be a list of matches
+    betJson["bets"] = [];
+    // iterate over the list of bets
+    for (var i = 0; i < betList.childElementCount; i++)
+    {
+        var betLi = betList.children[i];
+        if(betLi.tagName != "LI" || betLi.id.slice(-3) != "-li")
+            continue;
+        var match_id = betLi.id.split("-")[0];
+        var bet = betLi.children[0].innerHTML;
+        var match = betLi.children[1].innerHTML;
+        var home_team = match.split(" - ")[0];
+        var away_team = match.split(" - ")[1];
+        var odds = betLi.children[2].innerHTML;
+        match = {};
+        match["match_id"] = match_id;
+        match["home_team"] = home_team;
+        match["away_team"] = away_team;
+        match["bet"] = bet;
+        match["odds"] = odds;
+        //console.log(match);
+        //console.log(bet);
+        betJson["bets"].push(match);
+    }
+    return betJson;
+}
+
+/**
+ * This function is used to bet
+ */
+function bet()
+{
+    var jsonbet = betToJson();
+    //TODO check if the bet is valid
+    var strbet = JSON.stringify(jsonbet);
+    var strhash = web3.utils.sha3(strbet);
+    var betframe = document.getElementById("betJson");
+    document.getElementById("betHash").value = strhash;
+    document.getElementById("betAddress").value = myAddress;
+    betframe.value = strbet;
+    document.getElementById("betForm").submit();
 }

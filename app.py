@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory
 import os
+import json
+from web3 import Web3
 import scraping
 from werkzeug.utils import secure_filename
 
@@ -8,7 +10,18 @@ CREATOR_ADDRESS = "0x1DA5B6A0aF8F5f5950Dcde01277FD731D1c7774a".lower()
 variables_declarations = f"<script>var contractAddress='{CONTRACT_ADDRESS}';\nvar creatorAddress='{CREATOR_ADDRESS}';</script>"
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(ROOT_DIR, 'img/NFTs/')
+BET_FOLDER = os.path.join(ROOT_DIR, 'bets/')
 app = Flask(__name__)
+
+# connect to web3
+w3 = Web3(Web3.HTTPProvider('http://127.0.0.1:7545'))
+
+# load the abi of the contract
+with open("ABI.json", "r") as a:
+    ABI = json.load(a)
+
+# get the contract object
+contract = w3.eth.contract(address=CONTRACT_ADDRESS, abi=ABI)
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
@@ -24,9 +37,21 @@ def allowed_file(filename):
 @app.route('/index.html', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        # check if the post request has the file part
-        scraping.do_scraping()
-        return render_template('index.html')+variables_declarations+"<script>alert('You have now the latest matches');</script>"
+        s = request.form.get("betJson")
+        if s is not None:  # the user clicked on the button to place a bet
+            # get the hash of the bet
+            hash = request.form.get("betHash")
+            # get the json of the bet
+            js = json.loads(s)
+            # get the amount of the bet
+            amount = js["betTokens"]
+            # save the bet in a file
+            with open(BET_FOLDER+hash+".json", "w") as f:
+                f.write(s)
+            return render_template('index.html')+variables_declarations+f"<script>betHash='{hash}';\nbetAmount={amount}</script>"
+        else:  # the user clicked on the button to update the matches
+            scraping.do_scraping()
+            return render_template('index.html')+variables_declarations+"<script>alert('You have now the latest matches');</script>"
     return render_template('index.html')+variables_declarations
 
 
