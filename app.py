@@ -124,3 +124,15 @@ def market():
         return render_template('market.html')+variables_declarations
     else:
         return render_template('market.html')+f"<script>nfts_files={nft_files};\nnfts_blockchain={nfts_blockchain};</script>"+variables_declarations
+
+@app.route('/recap.html/<string:myAddress>', methods=['GET', 'POST'])
+def recap():
+    # request the latest block number
+    address = request.args.get('address')
+    print(address)
+    ending_blocknumber = w3.eth.blockNumber
+    starting_blocknumber = max(0, ending_blocknumber - 100)
+    bet_blockchain = getBlocks.getTxData(starting_blocknumber, ending_blocknumber, getBlocks.bet_selector, address)
+    if bet_blockchain is None:
+        return render_template('index.html')+"<script>alert('You have no bets')</script>"+variables_declarations
+    return render_template('recap.html')+variables_declarations

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<script>
+    //variables declaration
+    var ABI;
+    var web3;
+    var myAddress;
+    var entryTokensPrice = 0;
+    var contract;
+</script>
+<html style="min-height: 100%;" lang="en">
+	<meta charset="utf-8">
+	<head>
+		<title>Bet Page</title>
+		<!-- fancy styling of the page -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+	</head>
+	<body style="background-image:linear-gradient(#201e26, black); font-family: 'Poppins';">
+        <iframe id="ABIframe" src="ABI.json" style="display: none;"></iframe>
+        <nav style="background-color: #201e26;">
+            <ul class="navbar nav-tabs" style="border: none">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html" style="color:white;">Bet</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="market.html" style="color:white;">Market</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" style="color:white; background-color: #201e26;">Recap Bets</a>
+                </li>
+                <li class="nav-item ml-auto">
+                    <a class="nav-link disabled" style="color:white">
+                        <img src="img/entrytoken.webp" width="30" height="30" class="d-inline-block align-top" alt="">
+                        <label id="entryTokens">0</label>
+                    </a>
+                </li>
+                <li class="nav-item">
+                        <a class="nav-link disabled" style="color:white">
+                            <img src="img/supertoken.webp" width="30" height="30" class="d-inline-block align-top" alt="">
+                            <label id="superTokens">0</label>
+                        </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" style="color:white">
+                        <img src="img/ethereum.webp" width="30" height="30" class="d-inline-block align-top" alt="">
+                        <label id="ether">0</label>
+                    </a>
+                <li class="nav-item">
+                    <a class="nav-link disabled" style="color:white" id="address">0x...</a>
+                </li>
+            </ul>
+        </nav>
+		<main class="container">
+            <div id="accordion">
+                <div class="card">
+                    <div class="card-header text-white" id="headingOne" style="background-color:#201e26">
+                      <h5 class="mb-0" style="text-align: center;">
+                        BLOCCO X
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color: white;">
+                          HASH SCHEDINA
+                        </button>
+                        VINTO/PERSO
+                      </h5>
+                    </div>
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                      <div class="card-body">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                      </div>
+                    </div>
+                </div>
+            </div>
+		</main>
+	</body>
+<!-- Javascript libraries (to ease life) -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!--  Our connection to the blockchain -->
+<script src="js/web3.min.js"></script>
+<script src="https://unpkg.com/@metamask/legacy-web3@latest/dist/metamask.web3.min.js"></script>
+<!--  Our contract -->
+<script src="js/recap.js"></script>
+<script src="js/utils.js"></script>
+<script>
+    $(document).ready(function() {
+        console.log("document ready");
+        getContract().then(function() {
+            console.log("contract set");
+            getAddress().then(function() {
+            });
+        });
+    });
+    if (!window.ethereum)
+    {
+        alert("You need to have metamask installed and connected to the blockchain");
+    }
+    ethereum.on('accountsChanged', (accounts) => 
+        {
+            console.log("Account changed to " + accounts[0]);
+            if(accounts[0].toLowerCase() == creatorAddress)
+                  document.location.href = "creator.html";
+            updateAccountInfo(accounts[0]);
+        });  
+</script>

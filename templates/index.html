@@ -49,10 +49,7 @@
                     <a class="nav-link" href="market.html" style="color:white">Market</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="color:white">Recap Bets</a>
-                </li>
-                <li class="nav-item" style="display: none;" id="creatorSection">
-                    <a class="nav-link" href="creator.html" style="color:white">Creator</a>
+                    <a id="recapButton" class="nav-link" href="recap.html" style="color:white">Recap Bets</a>
                 </li>
                 <li class="nav-item ml-auto">
                     <a class="nav-link disabled" style="color:white">
@@ -184,7 +181,6 @@
 <!-- Our functions -->
 <script src="js/utils.js"></script>
 <script src="js/index.js"></script>
-
 <script>
     $(document).ready(function() {
         console.log("document ready");
@@ -246,6 +242,7 @@
     }
     ethereum.on('accountsChanged', (accounts) => 
         {
+            document.getElementById("recapButton").href = "recap.html?address=" + accounts[0];
             console.log("Account changed to " + accounts[0]);
             if(accounts[0].toLowerCase() == creatorAddress)
                   document.location.href = "creator.html";
