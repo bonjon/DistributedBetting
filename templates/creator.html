@@ -21,17 +21,11 @@
         <iframe id="ABIframe" src="ABI.json" style="display: none;"></iframe>
         <nav style="background-color: #201e26;">
             <ul class="navbar nav-tabs" style="border: none">
-                <li class="nav-item">
-                    <a class="nav-link" href="index.html" style="color:white;">Bet</a>
+                <li class="nav-item" style="display: none;" id="creatorSection">
+                    <a class="nav-link active" href="#" style="color:white; background-color: #201e26;">Creator</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="market.html" style="color:white">Market</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" style="color:white">Recap Bets</a>
-                </li>
-                <li class="nav-item" style="display: none;" id="creatorSection">
-                    <a class="nav-link active" href="#" style="color:white; background-color: #201e26;">Creator</a>
                 </li>
                 <li class="nav-item ml-auto">
                     <a class="nav-link disabled" style="color:white">
@@ -91,7 +85,10 @@
     $(document).ready(function() {
         console.log("document ready");
         getContract();
-        getAddress();
+        getAddress().then(function() {
+            if(myAddress != creatorAddress)
+                document.location.href = "index.html";
+        })
     });
     if (!window.ethereum)
     {
@@ -100,6 +97,8 @@
     ethereum.on('accountsChanged', (accounts) => 
         {
             console.log("Account changed to " + accounts[0]);
+            if(accounts[0] != creatorAddress)
+                document.location.href = "index.html";
             updateAccountInfo(accounts[0]);
         });  
 </script>

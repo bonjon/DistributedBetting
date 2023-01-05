@@ -5,10 +5,8 @@
     var web3;
     var myAddress;
     var entryTokensPrice = 0;
-    var nfts = [];
-    var nftFolder = "";
-    //var contractAddress = "0x2Db1f4031FA33088162804d22606e4A54B33a258";
-    //var creatorAddress = "0x1DA5B6A0aF8F5f5950Dcde01277FD731D1c7774a".toLowerCase();
+    var nfts_files = [];
+    var nfts_blockchain = [];
     var contract;
     var bool = ".jpg";
 </script>
@@ -59,37 +57,21 @@
             </ul>
         </nav>
 		<main class="container">
-            <h1 style="color:white; margin-top: 20px;">Get NFTs</h1>
+            <h1 id="getNFTlabel" style="color:white; margin-top: 20px;">Get NFTs</h1>
             <div class="container-fluid">
                 <div id="getNftContainer" class="row flex-nowrap" style="overflow: auto;">
                 </div>
             </div>
-            <h1 style="color:white; margin-top: 20px;">Buy NFTs</h1>
+            <h1 id="buyNFTlabel" style="color:white; margin-top: 20px;">Buy NFTs</h1>
             <div class="container-fluid">
-                <div class="row flex-nowrap" style="overflow: auto;">
-                    <div class="col-3">
-                        <div class="card">
-                            <img class="card-img-top" src="img/messi.jpg_large" alt="" width="100" height="200">
-                            <div class="card-body">
-                                <h5 class="card-title">Messi#01</h5>
-                                <p class="card-text">10 Super Tokens</p>
-                                <button class="btn btn-outline-dark">Buy</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <div class="card">
-                            <img class="card-img-top" src="img/cr7.jpeg" alt="" width="100" height="200">
-                            <div class="card-body">
-                                <h5 class="card-title">CR7#01</h5>
-                                <p class="card-text">10 Super Tokens</p>
-                                <button class="btn btn-outline-dark">Buy</button>
-                            </div>
-                        </div>
-                    </div>
+                <div id="buyNftContainer" class="row flex-nowrap" style="overflow: auto;">
                 </div>
             </div>
-            <h1 style="color:white; margin-top: 20px;">Sell NFTs</h1>
+            <h1 id="myNFTlabel" style="color:white; margin-top: 20px;">My NFTs</h1>
+            <div class="container-fluid">
+                <div id="myNftContainer" class="row flex-nowrap" style="overflow: auto;">
+                </div>
+            </div>
 		</main>
 	</body>
 <!-- Javascript libraries (to ease life) -->
@@ -109,13 +91,26 @@
             console.log("contract set");
             getAddress().then(function() {
                 console.log("address set");
-                if (nfts.length == 0)
+                if (nfts_blockchain.length == 0)
                 {
                     $("#getNftContainer").append("<h1 style='color:white;'>No NFTs to get</h1>");
                 }
                 else
                 {
-                    getIthNFT(0);
+                    getIthNFT(0,2);
+                    if(myAddress == creatorAddress)
+                    {
+                        document.getElementById("getNFTlabel").style.display = "none";
+                        document.getElementById("buyNFTlabel").style.display = "none";
+                        document.getElementById("myNFTabel").style.display = "none";
+                    }
+                    else
+                    {
+                        getIthNFT(0,0);
+                        getIthNFT(0,1);
+                    }
+                    
+
                 }
             });
         });
@@ -128,5 +123,7 @@
         {
             console.log("Account changed to " + accounts[0]);
             updateAccountInfo(accounts[0]);
+            //reload the page
+            location.reload();
         });  
 </script>

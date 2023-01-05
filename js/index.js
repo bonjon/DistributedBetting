@@ -505,6 +505,20 @@ function betToJson()
  */
 function bet()
 {
+    // check if the user has enough tokens to bet
+    var betTokens = document.getElementById("betTokens").value;
+    var entryTokens = parseInt(document.getElementById("entryTokens").innerHTML);
+    var superTokens = parseInt(document.getElementById("superTokens").innerHTML);
+    if(betTokens == "")
+    {
+        alert("You must bet at least 1 token");
+        return;
+    }
+    else if(parseInt(betTokens) > entryTokens + superTokens)
+    {
+        alert("You don't have enough tokens to bet");
+        return;
+    }
     var jsonbet = betToJson();
     //TODO check if the bet is valid
     var strbet = JSON.stringify(jsonbet);

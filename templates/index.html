@@ -188,12 +188,24 @@
             console.log("contract set");
             getAddress().then(function() {
                 console.log("address set");
+                if(myAddress == creatorAddress)
+                    {
+                        document.location.href = "creator.html";
+                    }
                 if(betHash != 0)
                 {
                     alert("Confirm your bet on metamask");
                     contract.methods.bet(betHash,betAmount).send({from: myAddress}).then(function(result){
                         alert("Bet confirmed");
-                        document.getElementById("entryTokens").innerHTML = parseInt(document.getElementById("entryTokens").innerHTML) - betAmount;
+                        var entrytokens = parseInt(document.getElementById("entryTokens").innerHTML);
+                        var supertokens = parseInt(document.getElementById("superTokens").innerHTML);
+                        if(betAmount > entrytokens)
+                        {
+                            document.getElementById("superTokens").innerHTML = supertokens - (betAmount - entrytokens);
+                            document.getElementById("entryTokens").innerHTML = 0;
+                        }
+                        else
+                            document.getElementById("entryTokens").innerHTML = entrytokens - betAmount;
                         updateEther();
                     })
                 }     
@@ -221,6 +233,8 @@
     ethereum.on('accountsChanged', (accounts) => 
         {
             console.log("Account changed to " + accounts[0]);
+            if(accounts[0].toLowerCase() == creatorAddress)
+                  document.location.href = "creator.html";
             updateAccountInfo(accounts[0]);
         });  
 </script>

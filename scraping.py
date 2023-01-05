@@ -144,3 +144,18 @@ def do_scraping():
     for championship in championships:
         get_latest_round(championship, driver=driver)
     driver.quit()
+
+
+def getMatchResult(match_id: str, driver: webdriver.Firefox = None) -> str:
+    '''
+    Returns the result of the match with the given id.
+    '''
+    if driver is None:
+        driver = webdriver.Firefox()
+    url = f"https://www.diretta.it/partita/{match_id}"
+    driver.get(url)
+    time.sleep(1)
+    html = driver.page_source
+    soup = BeautifulSoup(html, 'html.parser')
+    result = soup.find("div", class_="detailScore__wrapper").text
+    return result

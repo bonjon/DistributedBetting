@@ -7,6 +7,9 @@ contract DistributedBetting
     // the price of an entry token
     uint constant public PRICE = 1 * 1e15;
 
+    // the percentage of the creator's fee
+    uint constant public FEE = 10;
+
     // the creator of the contract 
     address payable internal creator;
 
@@ -93,25 +96,41 @@ contract DistributedBetting
         NFTs[NFT_hash].selling = true;
     }
 
+    function unsell_NFT(bytes32 NFT_hash) external
+    {
+        // you need to be the owner of the NFT
+        require(msg.sender == NFTs[NFT_hash].owner,"you need to be the owner of the NFT");
+        // stop selling the NFT
+        NFTs[NFT_hash].selling = false;
+    }
+
     function buy_NFT(bytes32 NFT_hash) payable external
     {
         // the NFT is not being sold
         require(NFTs[NFT_hash].selling,"the NFT is not being sold");
         // you need enough ether to buy the NFT
         require(msg.value >= NFTs[NFT_hash].ethPrice,"you need enough ether to buy the NFT");
-        // send the money to the old owner
-        payable(NFTs[NFT_hash].owner).transfer(msg.value);
+        // take the fee
+        uint fee = msg.value * FEE / 100;
+        creator.transfer(fee);
+        // send the rest of the money to the old owner
+        payable(NFTs[NFT_hash].owner).transfer(msg.value - fee);
         // the sender is now the new owner
         NFTs[NFT_hash].owner = msg.sender;
-        
+        // stop selling the NFT
+        NFTs[NFT_hash].selling = false;
     }
 
     function pay4win(address winner, uint amount) external
     {
-        //TODO require oracle
         superTokens[winner] += amount;
     }
 
-    //TODO function to destroy contract...
+    //selfdestruct the contract
+    function kill() external
+    {
+        require(msg.sender == creator, "You are not the contract owner");
+        selfdestruct(creator);
+    }
 
 }

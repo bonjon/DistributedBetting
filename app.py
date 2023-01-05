@@ -1,14 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_from_directory
 import os
 import json
+import getBlocks
 from web3 import Web3
 import scraping
 from werkzeug.utils import secure_filename
 
-#CONTRACT_ADDRESS = "0x2Db1f4031FA33088162804d22606e4A54B33a258"
-#CREATOR_ADDRESS = "0x1DA5B6A0aF8F5f5950Dcde01277FD731D1c7774a".lower()
-CONTRACT_ADDRESS = "0xAcF4d6ca222805F88C7606e7fE67fD9c51D9798A"
-CREATOR_ADDRESS = "0x38fDDa8BAdf340848c5EA333393a27E5D822a6E7".lower()
+CONTRACT_ADDRESS = "0x16Cb0fA18D39c902cCa4F420Cf0d8581DA836BA3"
+CREATOR_ADDRESS = "0x5D5C360E8f5162EF4D177fc6ab12B62297aAa3de".lower()
+#CONTRACT_ADDRESS = "0xAcF4d6ca222805F88C7606e7fE67fD9c51D9798A"
+#CREATOR_ADDRESS = "0x38fDDa8BAdf340848c5EA333393a27E5D822a6E7".lower()
 variables_declarations = f"<script>var contractAddress='{CONTRACT_ADDRESS}';\nvar creatorAddress='{CREATOR_ADDRESS}';</script>"
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(ROOT_DIR, 'img/NFTs/')
@@ -44,7 +45,10 @@ def index():
             # get the hash of the bet
             hash = request.form.get("betHash")
             # get the json of the bet
-            js = json.loads(s)
+            try:
+                js = json.loads(s)
+            except json.decoder.JSONDecodeError:
+                return render_template('index.html')+variables_declarations
             # get the amount of the bet
             amount = js["betTokens"]
             # save the bet in a file
@@ -110,8 +114,13 @@ def creator():
 
 @app.route('/market.html', methods=['GET', 'POST'])
 def market():
+    # request the latest block number
+    ending_blocknumber = w3.eth.blockNumber
+    starting_blocknumber = max(0, ending_blocknumber - 100)
+    nfts_blockchain = getBlocks.getTxData(
+        starting_blocknumber, ending_blocknumber, getBlocks.forge_NFT_selector, CREATOR_ADDRESS)
     nft_files = os.listdir(UPLOAD_FOLDER)
     if nft_files is None:
         return render_template('market.html')+variables_declarations
     else:
-        return render_template('market.html')+f"<script>nftFolder='{UPLOAD_FOLDER}';\nnfts={nft_files}</script>"+variables_declarations
+        return render_template('market.html')+f"<script>nfts_files={nft_files};\nnfts_blockchain={nfts_blockchain};</script>"+variables_declarations
