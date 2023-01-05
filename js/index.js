@@ -254,10 +254,12 @@ function betList(bet, home_team, away_team, odds, match_id)
 {
     // change the visibility of the input and the buttons
     var betTokens = document.getElementById("betTokens");
+    var betTokensValue = document.getElementById("betTokensValue");
     var eraseButton = document.getElementById("btnErase");
     var betBtn = document.getElementById("btnBet");
     var oddsSum = document.getElementById("oddsSum");
     betTokens.className = "d-block";
+    betTokensValue.className = "d-block";
     betBtn.className = "btn btn-outline-light text-align-center d-block";
     eraseButton.className = "btn btn-outline-light text-align-center d-block";
     document.getElementById("betHeader").style.display = "block";
@@ -293,6 +295,7 @@ function betList(bet, home_team, away_team, odds, match_id)
                         if (betUl.childElementCount == 4)
                         {
                             betTokens.className = "d-none";
+                            betTokensValue.className = "d-none";
                             betBtn.className = "btn btn-outline-light text-align-center d-none";
                             eraseButton.className = "btn btn-outline-light text-align-center d-none";
                             document.getElementById("betHeader").style.display = "none";
@@ -382,10 +385,12 @@ function removeList()
     }
     // change the visibility of the input and the buttons
     var betTokens = document.getElementById("betTokens");
+    var betTokensValue = document.getElementById("betTokensValue");
     var eraseButton = document.getElementById("btnErase");
     var betBtn = document.getElementById("btnBet");
     betBtn.className = "btn btn-outline-light text-align-center d-none";
     betTokens.className = "d-none";
+    betTokensValue.className = "d-none";
     eraseButton.className = "btn btn-outline-light text-align-center d-none";
     document.getElementById("betHeader").style.display = "none";
     document.getElementById("oddsSummary").style.display = "none";
@@ -424,6 +429,8 @@ function refreshProgress()
 function updateWinSum()
 {
     var amount = document.getElementById("betTokens").value;
+    var max = document.getElementById("betTokens").max;
+    document.getElementById("betTokensValue").innerHTML = amount + "/" + max;
     var oddsSum = document.getElementById("oddsSum").innerHTML;
     var winSum = document.getElementById("winAmount");
     winSum.innerHTML = (parseFloat(oddsSum) * parseFloat(amount)).toFixed(2);

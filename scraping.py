@@ -3,6 +3,7 @@ from selenium import webdriver
 from typing import *
 import requests
 import time
+import json
 
 championships: Dict[str, str] = {
     "seriea": "https://www.diretta.it/serie-a/",
@@ -159,3 +160,44 @@ def getMatchResult(match_id: str, driver: webdriver.Firefox = None) -> str:
     soup = BeautifulSoup(html, 'html.parser')
     result = soup.find("div", class_="detailScore__wrapper").text
     return result
+
+
+def checkBet(bet_filename: str, driver: webdriver.Firefox = None) -> int:
+    '''
+    Checks the bet with the given filename.
+    Returns -1 if the bet is not finished yet, 0 if the bet is lost, and 1 if the bet is a winning one.
+    '''
+    # read the bet
+    with open(bet_filename, 'r') as f:
+        bet = json.load(f)
+
+    # get the driver
+    if driver is None:
+        driver = webdriver.Firefox()
+
+    # get the matches
+    matches = {}
+    for match in bet["bets"]:
+        match_id = match["match_id"]
+        matches[match_id] = getMatchResult(match_id, driver=driver)
+        if matches[match_id] == "-":  # the match is not finished yet
+            driver.quit()
+            return -1
+        else:
+            home_score, away_score = matches[match_id].split("-")
+            home_score, away_score = int(home_score), int(away_score)
+            # this match is won
+            if home_score > away_score and match["bet"] == "1":
+                continue
+            # this match is won
+            elif home_score == away_score and match["bet"] == "X":
+                continue
+            # this match is won
+            elif home_score < away_score and match["bet"] == "2":
+                continue
+            else:  # this match is lost
+                driver.quit()
+                return 0
+    # all the matches are won
+    driver.quit()
+    return 1
