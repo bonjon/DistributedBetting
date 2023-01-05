@@ -10,6 +10,7 @@ For the server we're using python library Flask. The server logic is implemented
  - The libraries needed for the server are specified in the file environment.yml
 
 ## TODO list
+ - Add a check on the bet() function (you cannot bet on past events or events happening now)
  - Add time to JSON bet and check locally if the bet is over
  - Implement the recap bet page
  - Implement the pay4win
