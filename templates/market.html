@@ -29,7 +29,7 @@
                     <a class="nav-link active" href="#" style="color:white; background-color: #201e26;">Market</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="color:white">Recap Bets</a>
+                    <a class="nav-link" href="recap.html" style="color:white">Recap Bets</a>
                 </li>
                 <li class="nav-item" style="display: none;" id="creatorSection">
                     <a class="nav-link" href="creator.html" style="color:white">Creator</a>
@@ -57,7 +57,15 @@
             </ul>
         </nav>
 		<main class="container">
-            <h1 id="getNFTlabel" style="color:white; margin-top: 20px;">Get NFTs</h1>
+            <div id="getNFTlabel" class="container-fluid" style="color:white;">
+                <h1  style="margin-top: 20px width=10%; display: inline-block;">Get NFTs</h1>
+                <button type="button" class="btn btn-outline-light" disabled style="width: 4%; margin-bottom: 1%; display: inline-block; " data-container="body" data-toggle="tooltip" data-placement="top" title="In this section, you can become the first owner of new fancy NFTs by acquiring them with your SuperTokens!&#013;When you click on the 'Get' button, you can choose to put the NFT on the market for the amount of ETH you want (if you specify 0 it means that you don't want to sell it).">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                      </svg>
+                </button>
+            </div>
             <div class="container-fluid">
                 <div id="getNftContainer" class="row flex-nowrap" style="overflow: auto;">
                 </div>
