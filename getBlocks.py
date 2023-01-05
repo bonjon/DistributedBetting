@@ -20,7 +20,12 @@ def getTxData(start: int, end: int, function_selector: str, address: str) -> Lis
     for x in range(start, end+1):
         block = w3.eth.getBlock(x, True)
         for transaction in block.transactions:
-            if transaction['from'] is not None and transaction['from'].lower() == address:
+            if address == None:
+                if transaction['input'][:10] == function_selector:
+                    hash = "0x"+transaction['input'][10:74]
+                    list = [hash, transaction['from']]
+                    hashes.append(list)
+            elif transaction['from'] is not None and transaction['from'].lower() == address.lower():
                 # if the transaction is a call to the function
                 if transaction['input'][:10] == function_selector:
                     hash = "0x"+transaction['input'][10:74]
