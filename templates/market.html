@@ -22,17 +22,17 @@
         <iframe id="ABIframe" src="ABI.json" style="display: none;"></iframe>
         <nav style="background-color: #201e26;">
             <ul class="navbar nav-tabs" style="border: none">
-                <li class="nav-item">
+                <li class="nav-item" id="betNavItem">
                     <a class="nav-link" href="index.html" style="color:white;">Bet</a>
+                </li>
+                <li class="nav-item" style="display: none;" id="creatorSection">
+                    <a class="nav-link" href="creator.html" style="color:white">Creator</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="#" style="color:white; background-color: #201e26;">Market</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" id="recapBetsNavItem">
                     <a class="nav-link" href="recap.html" style="color:white">Recap Bets</a>
-                </li>
-                <li class="nav-item" style="display: none;" id="creatorSection">
-                    <a class="nav-link" href="creator.html" style="color:white">Creator</a>
                 </li>
                 <li class="nav-item ml-auto">
                     <a class="nav-link disabled" style="color:white">
@@ -110,7 +110,9 @@
                     {
                         document.getElementById("getNFTlabel").style.display = "none";
                         document.getElementById("buyNFTlabel").style.display = "none";
-                        document.getElementById("myNFTabel").style.display = "none";
+                        //document.getElementById("myNFTabel").style.display = "none";
+                        document.getElementById("betNavItem").style.display = "none";
+                        document.getElementById("recapBetsNavItem").style.display = "none";
                     }
                     else
                     {

@@ -12,8 +12,7 @@ For the server we're using python library Flask. The server logic is implemented
 ## TODO list
  - Add a check on the bet() function (you cannot bet on past events or events happening now)
  - Add time to JSON bet and check locally if the bet is over
- - Implement the recap bet page
  - Implement the pay4win
- - Change the market.html visibility according to the user type (creator or user)
  - Add a description to the NFTs (the hash of the description could be saved in the blockchain)
+ - NFT rarity
 

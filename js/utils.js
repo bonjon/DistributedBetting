@@ -26,7 +26,8 @@ function updateAccountInfo(address)
         // If i'm the creator, show the creator section
         if(myAddress == creatorAddress)
             document.getElementById("creatorSection").style.display = "block";
-        else
+        // if the creator section exists, hide it
+        else if(document.getElementById("creatorSection") != null)
             document.getElementById("creatorSection").style.display = "none";
     }
 

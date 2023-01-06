@@ -52,22 +52,7 @@
         </nav>
 		<main class="container">
             <div id="accordion">
-                <div class="card">
-                    <div class="card-header text-white" id="headingOne" style="background-color:#201e26">
-                      <h5 class="mb-0" style="text-align: center;">
-                        BLOCCO X
-                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color: white;">
-                          HASH SCHEDINA
-                        </button>
-                        VINTO/PERSO
-                      </h5>
-                    </div>
-                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                      <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                      </div>
-                    </div>
-                </div>
+                
             </div>
 		</main>
 	</body>
@@ -78,14 +63,24 @@
 <script src="js/web3.min.js"></script>
 <script src="https://unpkg.com/@metamask/legacy-web3@latest/dist/metamask.web3.min.js"></script>
 <!--  Our contract -->
-<script src="js/recap.js"></script>
 <script src="js/utils.js"></script>
+<script src="js/recap.js"></script>
+
 <script>
     $(document).ready(function() {
         console.log("document ready");
         getContract().then(function() {
             console.log("contract set");
             getAddress().then(function() {
+                if(myAddress.toLowerCase() == creatorAddress)
+                    document.location.href = "creator.html";
+                var cardsList = document.getElementById("accordion");
+                var html = "<div class='card'><div class='card-header text-white' style='background-color:#1f0961'>"
+                html += "<div class='row'><div class='col-2' ><h6 class='mb-0' style='text-align: left;'> Block</h5></div>";
+                html += "<div class='col-8' ><h6 class='mb-0' style='text-align: center;'> Hash </h5></div>";
+                html += "<div class='col-2' ><h6 class='mb-0' style='text-align: right;'> Result </h5></div></div>";
+                cardsList.innerHTML = html;
+                getBets(bets.length-1);
             });
         });
     });
@@ -99,5 +94,14 @@
             if(accounts[0].toLowerCase() == creatorAddress)
                   document.location.href = "creator.html";
             updateAccountInfo(accounts[0]);
+            var cardsList = document.getElementById("accordion");
+            cardsList.innerHTML = "";
+            var html = "<div class='card'><div class='card-header text-white' style='background-color:#1f0961'>"
+            html += "<div class='row'><div class='col-2' ><h6 class='mb-0' style='text-align: left;'> Block</h5></div>";
+            html += "<div class='col-8' ><h6 class='mb-0' style='text-align: center;'> Hash </h5></div>";
+            html += "<div class='col-2' ><h6 class='mb-0' style='text-align: right;'> Result </h5></div></div>";
+            cardsList.innerHTML = html;
+            getBets(bets.length-1);
+
         });  
 </script>

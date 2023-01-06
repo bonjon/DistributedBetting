@@ -3,6 +3,7 @@ import os
 import json
 import getBlocks
 from web3 import Web3
+from selenium import webdriver
 import scraping
 from werkzeug.utils import secure_filename
 
@@ -125,12 +126,48 @@ def market():
     else:
         return render_template('market.html')+f"<script>nfts_files={nft_files};\nnfts_blockchain={nfts_blockchain};</script>"+variables_declarations
 
+
+@app.route('/bets/<path:path>')
+def send_bets(path):
+    return send_from_directory('bets', path)
+
+
 @app.route('/recap.html', methods=['GET', 'POST'])
 def recap():
     # request the latest block number
     ending_blocknumber = w3.eth.blockNumber
+    # check only the last 100 blocks
     starting_blocknumber = max(0, ending_blocknumber - 100)
-    bet_blockchain = getBlocks.getTxData(starting_blocknumber, ending_blocknumber, getBlocks.bet_selector, None)
+    bet_blockchain = getBlocks.getTxData(
+        starting_blocknumber, ending_blocknumber, getBlocks.bet_selector)
+    # no bets
     if bet_blockchain is None:
         return render_template('index.html')+"<script>alert('There are no bets')</script>"+variables_declarations
-    return render_template('recap.html')+f"<script>bets={bet_blockchain}</script>"+variables_declarations
+    # create an iframe for each bet that has a json file
+    bet_files = os.listdir(BET_FOLDER)
+    betsIframes = ""
+    driver = None
+    for hash, _, _ in bet_blockchain:
+        # if the bet is on the server, scrape the result (if not already done)
+        if hash+".json" in bet_files:
+            # get the json of the bet
+            with open(BET_FOLDER+hash+".json", "r") as f:
+                bet_json = json.load(f)
+            # get the result of the bet (if exists)
+            result = bet_json.get("result")
+            # if the result is not already scraped, scrape it
+            if result is None:
+                if driver is None:
+                    driver = webdriver.Firefox()
+                result = scraping.checkBet(
+                    BET_FOLDER+hash+".json", driver=driver)
+                # save the result in the json file
+                bet_json["result"] = result
+                with open(BET_FOLDER+hash+".json", "w") as f:
+                    json.dump(bet_json, f)
+    if driver is not None:
+        driver.close()
+    # load the json files of match results
+    with open('matches/results.json', 'r') as f:
+        matches = json.load(f)
+    return render_template('recap.html')+f"<script>bets={bet_blockchain};\nresults={matches};</script>"+variables_declarations+betsIframes

@@ -151,6 +151,18 @@ def getMatchResult(match_id: str, driver: webdriver.Firefox = None) -> str:
     '''
     Returns the result of the match with the given id.
     '''
+
+    # open the results.json file to check if the match results was already scraped
+    with open('matches/results.json', 'r') as f:
+        results = json.load(f)
+
+    # check if the match result was already scraped
+    if match_id in results:
+        return results[match_id]
+
+    # else, scrape the result and save it in the results.json file
+
+    # get the driver
     if driver is None:
         driver = webdriver.Firefox()
     url = f"https://www.diretta.it/partita/{match_id}"
@@ -159,6 +171,11 @@ def getMatchResult(match_id: str, driver: webdriver.Firefox = None) -> str:
     html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
     result = soup.find("div", class_="detailScore__wrapper").text
+    # save the result in the results.json file, but only if the match is finished
+    if result != "-":
+        results[match_id] = result
+        with open('matches/results.json', 'w') as f:
+            json.dump(results, f)
     return result
 
 
@@ -181,7 +198,6 @@ def checkBet(bet_filename: str, driver: webdriver.Firefox = None) -> int:
         match_id = match["match_id"]
         matches[match_id] = getMatchResult(match_id, driver=driver)
         if matches[match_id] == "-":  # the match is not finished yet
-            driver.quit()
             return -1
         else:
             home_score, away_score = matches[match_id].split("-")
@@ -196,8 +212,6 @@ def checkBet(bet_filename: str, driver: webdriver.Firefox = None) -> int:
             elif home_score < away_score and match["bet"] == "2":
                 continue
             else:  # this match is lost
-                driver.quit()
                 return 0
     # all the matches are won
-    driver.quit()
     return 1
