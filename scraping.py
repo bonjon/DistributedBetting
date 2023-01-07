@@ -141,7 +141,8 @@ def get_latest_round(championship: str, driver: webdriver.Firefox = None) -> int
 
 
 def do_scraping():
-    driver = webdriver.Firefox()
+    #driver = webdriver.Firefox()
+    driver = webdriver.Chrome()
     for championship in championships:
         get_latest_round(championship, driver=driver)
     driver.quit()

@@ -3,6 +3,9 @@
  */
 function displayImage()
     {
+        document.getElementById("description").style.display = "block";
+        document.getElementById("description").style.width = "200px";
+        document.getElementById("radioContainer").style.display = "block";
         var file = document.getElementById("file").files[0];
         var render = new FileReader();
         render.onload = function(e) {
@@ -21,9 +24,26 @@ function displayImage()
  */
 async function forgeNFT() 
 {
+    // Take the rarity of the NFT
+    var rarity = "0x0";
+    if (document.getElementById("bronze").checked)
+        rarity = "0x0";
+    else if (document.getElementById("silver").checked)
+        rarity = "0x1";
+    else if (document.getElementById("gold").checked)
+        rarity = "0x2";
     var zero = "0x0000000000000000000000000000000000000000000000000000000000000000";
     console.log("Uploaded image whose hash is: "+imageHash);
     var quantity = parseInt(document.getElementById("quantity").value);
+    // Take the NFT name
+    var descriptionNFT = document.getElementById("description").value;
+    if (descriptionNFT == "")
+    {   
+        alert("Please insert a description for the NFT");
+        return;
+    }
+    // Take the hash of the NFT name
+    var desc_hash = web3.utils.sha3(descriptionNFT);
     // Check if the NFT already exists
     contract.methods.NFTs(imageHash).call().then(function(res) {
         console.log(res[0]);
@@ -38,7 +58,9 @@ async function forgeNFT()
             console.log("Forging NFT")
             console.log("Quantity: "+quantity)
             console.log("My address: "+myAddress)
-            contract.methods.forge_NFT(imageHash, quantity).send({from: myAddress}).then(function() {
+            console.log("Description Hash: "+desc_hash)
+            console.log("Rarity: "+typeof(rarity))
+            contract.methods.forge_NFT(imageHash, quantity, desc_hash, rarity).send({from: myAddress}).then(function() {
             alert("NFT forged");
             // the image is uploaded on the server with the hash as name
             document.getElementById("hash").value = imageHash;
@@ -53,6 +75,9 @@ async function forgeNFT()
  */
 function getBets(b)
 {
+    // url of the server
+    var url = "http://127.0.0.1:5000/bets/";
+    //var url = "http://localhost:5000/bets/";
     accordion = document.getElementById("accordion");
     // get the bet
     betHash = bets[b][0];
@@ -65,7 +90,7 @@ function getBets(b)
     //get the json of the bet via get request
     $.ajax({
         type: "GET",
-        url: "http://localhost:5000/bets/" + betHash + ".json",
+        url: url + betHash + ".json",
         success: function (result) {
                 //create the html for the bet
                 var html = "<div class='card'><div class='card-header text-white' id='"+betHash+address+block+"' style='background-color:#201e26'>"

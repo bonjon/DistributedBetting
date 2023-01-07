@@ -100,6 +100,7 @@ def creator():
     if request.method == 'POST':
         # check if the post request has the file part
         hash = request.form.get("hash")
+        NFT_name = request.form.get("description")
         if 'file' not in request.files:
             flash('No file part')
             return redirect(request.url)
@@ -113,7 +114,7 @@ def creator():
             filename = secure_filename(file.filename)
             extension = filename.rsplit('.', 1)[1].lower()
             file.save(os.path.join(
-                app.config['UPLOAD_FOLDER'], hash+"."+extension))
+                app.config['UPLOAD_FOLDER'], hash+ "_" + NFT_name + "."+extension))
 
             return render_template('creator.html')+"<script>alert('File uploaded successfully')</script>"+variables_declarations+script
 

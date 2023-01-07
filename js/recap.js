@@ -3,6 +3,9 @@
  */
 function getBets(b)
 {
+    // url of the server
+    var url = "http://127.0.0.1:5000/bets/";
+    //var url = "http://localhost:5000/bets/";
     accordion = document.getElementById("accordion");
     // get the bet
     betHash = bets[b][0];
@@ -15,7 +18,7 @@ function getBets(b)
     //get the json of the bet via get request
     $.ajax({
         type: "GET",
-        url: "http://localhost:5000/bets/" + betHash + ".json",
+        url: url + betHash + ".json",
         success: function (result) {
             if(address == myAddress)
             {

@@ -28,11 +28,11 @@ contract DistributedBetting
         uint superTokenPrice; // the price in super tokens
         uint ethPrice; // the price in ether
         address owner; // the owner of the NFT
+        bytes32 name; // the name of the NFT
+        bytes1 rarity; // the rarity of the NFT
     }
 
     mapping(bytes32 => NFT) public NFTs;
-    //TODO events
-    //TODO contact oracle
 
     constructor()
     {
@@ -64,11 +64,11 @@ contract DistributedBetting
         }
     }
 
-    function forge_NFT(bytes32 NFT_hash, uint superTokenPrice) external
+    function forge_NFT(bytes32 NFT_hash, uint superTokenPrice, bytes32 NFT_desc_hash, bytes1 NFT_rarity) external
     {
         require(msg.sender == creator, "You are not the contract owner");
         require(NFTs[NFT_hash].imageHash == 0, "The NFT already exists");
-        NFTs[NFT_hash] = NFT(NFT_hash, false, superTokenPrice,0,creator);
+        NFTs[NFT_hash] = NFT(NFT_hash, false, superTokenPrice,0,creator,NFT_desc_hash,NFT_rarity);
     }
 
     function get_NFT(bytes32 NFT_hash, uint ethPrice) external

@@ -101,22 +101,21 @@
                 console.log("address set");
                 if (nfts_blockchain.length == 0)
                 {
-                    $("#getNftContainer").append("<h1 style='color:white;'>No NFTs to get</h1>");
+                    if (myAddress != creatorAddress)
+                        $("#getNftContainer").append("<h1 style='color:white;'>No NFTs to get</h1>");
                 }
                 else
                     getIthNFT(0,2);
-
-                console.log(myAddress == creatorAddress, myAddress, creatorAddress)
                 if(myAddress == creatorAddress)
                 {
                     document.getElementById("getNFTlabel").style.display = "none";
                     document.getElementById("buyNFTlabel").style.display = "none";
-                    //document.getElementById("myNFTabel").style.display = "none";
                     document.getElementById("betNavItem").style.display = "none";
                     document.getElementById("recapBetsNavItem").style.display = "none";
                 }
                 else if(nfts_blockchain.length != 0)
                 {
+                    console.log("getting nfts");
                     getIthNFT(0,0);
                     getIthNFT(0,1);
                 }

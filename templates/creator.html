@@ -4,10 +4,9 @@
     var ABI;
     var web3;
     var myAddress;
-    //var contractAddress = "0x2Db1f4031FA33088162804d22606e4A54B33a258";
-    //var creatorAddress = "0x1DA5B6A0aF8F5f5950Dcde01277FD731D1c7774a".toLowerCase();
     var contract;
     var imageHash;
+    var nftDescription;
 </script>
 <html style="min-height: 100%;" lang="en">
 	<meta charset="utf-8">
@@ -56,7 +55,17 @@
             <div class="col-sm-12">
                 <label class="form-label text-white" for="file">Image file for the NFT</label>
                 <input name="file" type="file" class="form-control" id="file" onchange="displayImage()"/>
+                <input type="text" id="description" name="description" placeholder="Name of the NFT" style="display: none; margin-top: 10px;"/>
                 <input type="text" id="hash" name="hash" style="display: none;"/>
+                <div id="radioContainer" class="btn-group" style="display: none; margin-top: 10px;">
+                    <label style="display: inline-block; width: 200px; color:white">Choose the rarity (Bronze, Silver, Gold):</label>
+                    <input id="bronze" type="radio" class="btn-check" name="options" autocomplete="off" checked>
+                    <img src="img/bronze.png" width="50" height="50" style="display: inline-block;"/>
+                    <input id="silver" type="radio" class="btn-check" name="options" autocomplete="off">
+                    <img src="img/silver.png" width="50" height="50" style="display: inline-block;"/>
+                    <input id="gold" type="radio" class="btn-check" name="options" autocomplete="off">
+                    <img src="img/gold.png" width="50" height="50" style="display: inline-block;"/>
+                </div>
                 <img id="image" src="" width="200" height="200" style="display: none;"/>
             </div>
             <div class="col-sm-2" style="margin-top:10px;">

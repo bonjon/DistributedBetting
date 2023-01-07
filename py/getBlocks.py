@@ -11,7 +11,7 @@ w3 = Web3(Web3.HTTPProvider('http://127.0.0.1:7545'))
 blockchain_address = "0x438b828ee31b102f0ae7eaff78ebf07834830789"
 
 # forge_NFT function selector
-forge_NFT_selector = "0x26a88685"
+forge_NFT_selector = "0x3537f89e"
 
 # bet function selector
 bet_selector = "0x640238b4"
