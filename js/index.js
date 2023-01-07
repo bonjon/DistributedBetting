@@ -217,6 +217,27 @@ function showMatches(leagueId)
             this.blur();
             var match_id = this.id.split("-")[0];
             var match = currentChampionship[match_id];
+            // get the date and time of the match
+            var date = match.date;
+            var day = parseInt(date.split(".")[0]);
+            var month = parseInt(date.split(".")[1]);
+            var time = match.time;
+            var hours = parseInt(time.split(":")[0]);
+            var minutes = parseInt(time.split(":")[1]);
+            // get the current date and time
+            var now = new Date();
+            var nowDay = parseInt(now.getDay().toString()) + 1;
+            var nowMonth = parseInt(now.getMonth().toString()) + 1;
+            var nowHours = parseInt(now.getHours().toString());
+            var nowMinutes = parseInt(now.getMinutes().toString());
+            // check if the match has already started or is older than the current date
+            if(nowMonth > month || (nowMonth == month && nowDay > day) || (nowMonth == month && nowDay == day && nowHours > hours) || (nowMonth == month && nowDay == day && nowHours == hours && nowMinutes > minutes)
+            || (nowMonth == month && nowDay == day && nowHours == hours && nowMinutes == minutes))
+            {
+                alert("You cannot bet on: " + match.home_team + " - " + match.away_team);
+                return;
+            }
+            // remove the margin from the odds
             var newodds = removeMargin(match.homeodds, match.X, match.awayodds);
             var success;
             if(buttontype == 0)
