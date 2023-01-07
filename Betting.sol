@@ -121,8 +121,11 @@ contract DistributedBetting
         NFTs[NFT_hash].selling = false;
     }
 
-    function pay4win(address winner, uint amount) external
+    function pay4win(bytes32 stake, address winner, uint amount) external
     {
+        // you need to be the contract owner
+        require(msg.sender == creator, "You are not the contract owner");
+        // pay the winner of the bet whose hash is stake
         superTokens[winner] += amount;
     }
 

@@ -20,19 +20,26 @@ function getBets(b)
             if(address == myAddress)
             {
                 //create the html for the bet
-                var html = "<div class='card'><div class='card-header text-white' id='"+betHash+"' style='background-color:#201e26'>"
+                var html = "<div class='card'><div class='card-header text-white' id='"+betHash+block+"' style='background-color:#201e26'>"
                 html += "<div class='row'><div class='col-2' ><h6 class='mb-0' style='text-align: left;'> " + block + "</h5></div>";
-                html += "<div class='col-8'><button class='btn btn-link' data-toggle='collapse' data-target='#"+betHash+"collapse' aria-expanded='true' aria-controls='"+betHash+"collapse' style='color: white;'>"
-                html += betHash + "</button></div>";
+                html += "<div class='col-8'><button class='btn btn-link' data-toggle='collapse' data-target='#"+betHash+block+"collapse' aria-expanded='true' aria-controls='"+betHash+block+"collapse' style='color: white;'>"
+                html += betHash + block+ "</button></div>";
                 bet_result = result.result;
                 if(bet_result == "1")
-                    bet_result = "VINTO";
+                    {
+                        bet_result = "WIN";
+                        // check if it also payed
+                        if(result.payed == true)
+                            bet_result += " (payed)";
+                        else
+                            bet_result += " (not payed)";
+                    }
                 else if(bet_result == "0")
-                    bet_result = "PERSO";
+                    bet_result = "LOST";
                 else
-                    bet_result = "IN CORSO";
+                    bet_result = "PENDING";
                 html += "<div class='col-2'><h6 class='mb-0' style='text-align: right;'>"+bet_result+"</h5></div></div>";
-                html += "<div id='"+betHash+"collapse' class='collapse' aria-labelledby='"+betHash+"' data-parent='#accordion'>";
+                html += "<div id='"+betHash+block+"collapse' class='collapse' aria-labelledby='"+betHash+block+"' data-parent='#accordion'>";
                 html += "<div class='card-body'>";
                 html += "<div class='row'><div class='col-3'>Match</div><div class='col-2'>Bet</div><div class='col-2'>Odds</div><div class='col-1'>Result</div><div class='col-1'>Status</div></div>";
                 oddsSum = 1;
@@ -67,27 +74,26 @@ function getBets(b)
                 html += "<br>"
                 html += "<div class='row'><div class='col-3'>Total Odds:</div><div class='col-2'></div><div class='col-2'>" + oddsSum + "</div><div class='col-1'></div><div class='col-1'></div></div>";
                 html += "<div class='row'><div class='col-3'>Bet Tokens:</div><div class='col-2'></div><div class='col-2'>" + betTokens + "</div><div class='col-1'></div><div class='col-1'></div></div>";
-                html += "<div class='row'><div class='col-3'>Potential Win:</div><div class='col-2'></div><div class='col-2'>" + (betTokens * oddsSum).toFixed(2) + "</div><div class='col-1'></div><div class='col-1'></div></div>";
+                html += "<div class='row'><div class='col-3'>Potential Win:</div><div class='col-2'></div><div class='col-2'>" + Math.round((betTokens * oddsSum)) + "</div><div class='col-1'></div><div class='col-1'></div></div>";
                 html += "</div></div></div>"
                 //add the bet to the page
                 accordion.innerHTML += html;
                 if(b > 0)
                     getBets(b-1);
-    
             }
         },
         error: function (result) {
             if(address == myAddress)
             {
                 //create the html for the bet
-                var html = "<div class='card'><div class='card-header text-white' id='"+betHash+"' style='background-color:#720a10'>"
+                var html = "<div class='card'><div class='card-header text-white' id='"+betHash+block+"' style='background-color:#720a10'>"
                 html += "<div class='row'><div class='col-2' ><h6 class='mb-0' style='text-align: left;'> " + block + "</h5></div>";
-                html += "<div class='col-8'><button class='btn btn-link' data-toggle='collapse' data-target='#"+betHash+"collapse' aria-expanded='true' aria-controls='"+betHash+"collapse' style='color: white;'>"
+                html += "<div class='col-8'><button class='btn btn-link' data-toggle='collapse' data-target='#"+betHash+block+"collapse' aria-expanded='true' aria-controls='"+betHash+"collapse' style='color: white;'>"
                 html += betHash + "</button></div>";
                 html += "<div class='col-2'><h6 class='mb-0' style='text-align: right;'> - </h5></div></div>";
-                html += "<div id='"+betHash+"collapse' class='collapse' aria-labelledby='"+betHash+"' data-parent='#accordion'>";
+                html += "<div id='"+betHash+block+"collapse' class='collapse' aria-labelledby='"+betHash+block+"' data-parent='#accordion'>";
                 html += "<div class='card-body'>";
-                html += "<div class='row'><div class='col-6'>Errore</div><div class='col-6'>Sorry, the bet is not in our server, please contact us to get it again.</div></div>";
+                html += "<div class='row'><div class='col-6'>Error</div><div class='col-6'>Sorry, the bet is not in our server, please contact us to get it again.</div></div>";
                 html += "</div></div></div>"
                 //add the bet to the page
                 accordion.innerHTML += html;

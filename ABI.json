@@ -83,6 +83,11 @@
 	{
 		"inputs": [
 			{
+				"internalType": "bytes32",
+				"name": "stake",
+				"type": "bytes32"
+			},
+			{
 				"internalType": "address",
 				"name": "winner",
 				"type": "address"

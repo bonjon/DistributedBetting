@@ -433,7 +433,7 @@ function updateWinSum()
     document.getElementById("betTokensValue").innerHTML = amount + "/" + max;
     var oddsSum = document.getElementById("oddsSum").innerHTML;
     var winSum = document.getElementById("winAmount");
-    winSum.innerHTML = (parseFloat(oddsSum) * parseFloat(amount)).toFixed(2);
+    winSum.innerHTML = Math.round((parseFloat(oddsSum) * parseFloat(amount)));
 }
 
 /**
@@ -530,8 +530,13 @@ function bet()
     //TODO check if the bet is valid
     var strbet = JSON.stringify(jsonbet);
     var strhash = web3.utils.sha3(strbet);
+    var addressHash = web3.utils.sha3(myAddress);
+    // current timestamp
+    var timestamp = Math.floor(Date.now() / 1000);
+    var timestampHash = web3.utils.sha3(timestamp.toString());
+    var betHash = web3.utils.sha3(strhash + addressHash + timestampHash);
     var betframe = document.getElementById("betJson");
-    document.getElementById("betHash").value = strhash;
+    document.getElementById("betHash").value = betHash;
     document.getElementById("betAddress").value = myAddress;
     betframe.value = strbet;
     document.getElementById("betForm").submit();

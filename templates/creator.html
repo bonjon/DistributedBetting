@@ -69,6 +69,8 @@
             </div>
         </form>
         <h1 class="text-white">Pay4Win</h1>
+        <div id="accordion">
+        </div>
 		</main>
 	</body>
 <!-- Javascript libraries (to ease life) -->
@@ -88,6 +90,13 @@
         getAddress().then(function() {
             if(myAddress != creatorAddress)
                 document.location.href = "index.html";
+            var cardsList = document.getElementById("accordion");
+            var html = "<div class='card'><div class='card-header text-white' style='background-color:#1f0961'>"
+            html += "<div class='row'><div class='col-2' ><h6 class='mb-0' style='text-align: left;'> Block</h5></div>";
+            html += "<div class='col-8' ><h6 class='mb-0' style='text-align: center;'> Hash </h5></div>";
+            html += "<div class='col-2' ><h6 class='mb-0' style='text-align: right;'>  </h5></div></div>";
+            cardsList.innerHTML = html;
+            getBets(bets.length-1);
         })
     });
     if (!window.ethereum)
@@ -100,5 +109,12 @@
             if(accounts[0] != creatorAddress)
                 document.location.href = "index.html";
             updateAccountInfo(accounts[0]);
+            var cardsList = document.getElementById("accordion");
+            var html = "<div class='card'><div class='card-header text-white' style='background-color:#1f0961'>"
+            html += "<div class='row'><div class='col-2' ><h6 class='mb-0' style='text-align: left;'> Block</h5></div>";
+            html += "<div class='col-8' ><h6 class='mb-0' style='text-align: center;'> Hash </h5></div>";
+            html += "<div class='col-2' ><h6 class='mb-0' style='text-align: right;'>  </h5></div></div>";
+            cardsList.innerHTML = html;
+            getBets(bets.length-1);
         });  
 </script>

@@ -1,0 +1,75 @@
+# import dependencies
+from web3 import Web3
+import config
+from typing import *
+import json
+
+# instantiate a web3 remote provider
+w3 = Web3(Web3.HTTPProvider('http://127.0.0.1:7545'))
+
+# filter through blocks and look for transactions involving this address
+blockchain_address = "0x438b828ee31b102f0ae7eaff78ebf07834830789"
+
+# forge_NFT function selector
+forge_NFT_selector = "0x26a88685"
+
+# bet function selector
+bet_selector = "0x640238b4"
+
+# pay4win function selector
+pay4win_selector = "0x03262fcd"
+
+
+def getTxData(start: int, end: int, function_selector: str, address: str = None) -> List[str]:
+    hashes = []
+    for x in range(start, end+1):
+        block = w3.eth.getBlock(x, True)
+        for transaction in block.transactions:
+            if address == None:
+                if transaction['input'][:10] == function_selector and transaction['to'].lower() == config.CONTRACT_ADDRESS.lower():
+                    hash = "0x"+transaction['input'][10:74]
+                    hashes.append([hash, transaction['from'].lower(), x])
+            elif transaction['from'] is not None and transaction['from'].lower() == address.lower():
+                # if the transaction is a call to the function
+                if transaction['input'][:10] == function_selector and transaction['to'].lower() == config.CONTRACT_ADDRESS.lower():
+                    hash = "0x"+transaction['input'][10:74]
+                    hashes.append(hash)
+    return hashes
+
+
+def filterAlreadyPayedBets(end: int, bet_blockchain: List[Tuple[str, str, str]]) -> List[Tuple[str, str, str]]:
+    '''
+    Given a list of bets, it returns a list of bets that are not payed yet (and are winning bets)
+    '''
+    hashes = []
+    for bet_hash, bet_address, bet_block in bet_blockchain:
+        # try to load the json of the bet
+        try:
+            with open("bets/"+bet_hash+".json", "r") as f:
+                bet_json = json.load(f)
+            # if the bet is already payed, skip it
+            if bet_json.get("payed") is not None or bet_json.get("result") != 1:
+                continue
+            else:  # check if it is payed on the blockchain
+                # get the list of the transactions of the bet
+                bet_transactions = getTxData(
+                    bet_block, end, pay4win_selector, config.CREATOR_ADDRESS)
+
+                payed = False
+                for hash in bet_transactions:
+                    # if the bet is payed, skip it
+                    if hash == bet_hash:
+                        payed = True
+                        break
+                # if the bet is payed, skip it
+                if payed:
+                    # save the payed info in the json file
+                    bet_json["payed"] = True
+                    with open("bets/"+bet_hash+".json", "w") as f:
+                        json.dump(bet_json, f)
+                else:
+                    hashes.append([bet_hash, bet_address, bet_block])
+        except:
+            continue
+
+    return hashes
