@@ -40,8 +40,7 @@ class Match:
 def get_soup(url, driver: webdriver.Firefox = None):
     # get the html
     if driver is None:
-        #browser = webdriver.Firefox()
-        browser = webdriver.Chrome()
+        browser = get_driver(config.browser)
     else:
         browser = driver
     browser.get(url)
@@ -83,8 +82,7 @@ def get_odds(match_id: str, driver: webdriver.Firefox = None) -> Tuple[float, fl
     total1, totalX, total2 = 0, 0, 0
     count1, countX, count2 = 0, 0, 0
     if driver is None:
-        #browser = webdriver.Firefox()
-        browser = webdriver.Chrome()
+        browser = get_driver(config.browser)
     else:
         browser = driver
     browser.get(url)
@@ -148,7 +146,7 @@ def get_latest_round(championship: str, driver: webdriver.Firefox = None) -> int
 
 def do_scraping():
     #driver = webdriver.Firefox()
-    driver = webdriver.Chrome()
+    driver = get_driver(config.browser)
     for championship in championships:
         get_latest_round(championship, driver=driver)
     driver.quit()
@@ -172,7 +170,7 @@ def getMatchResult(match_id: str, driver: webdriver.Firefox = None) -> str:
     # get the driver
     if driver is None:
         #driver = webdriver.Firefox()
-        driver = webdriver.Chrome()
+        driver = get_driver(config.browser)
     url = f"https://www.diretta.it/partita/{match_id}"
     driver.get(url)
     time.sleep(1)
@@ -199,7 +197,7 @@ def checkBet(bet_filename: str, driver: webdriver.Firefox = None) -> int:
     # get the driver
     if driver is None:
         #driver = webdriver.Firefox()
-        driver = webdriver.Chrome()
+        driver = get_driver(config.browser)
 
     # get the matches
     matches = {}
@@ -246,8 +244,7 @@ def getBetsResult(bet_blockchain: List[Tuple[str, str, str]]) -> None:
             # if the result is not already scraped, scrape it
             if result is None:
                 if driver is None:
-                    #driver = webdriver.Firefox()
-                    driver = webdriver.Chrome()
+                    driver = get_driver(config.browser)
                 result = checkBet(
                     config.BET_FOLDER.joinpath(hash+".json"), driver=driver)
                 # save the result in the json file
@@ -256,3 +253,10 @@ def getBetsResult(bet_blockchain: List[Tuple[str, str, str]]) -> None:
                     json.dump(bet_json, f)
     if driver is not None:
         driver.close()
+
+
+def get_driver(browser: str):
+    if browser == "firefox":
+        return webdriver.Firefox()
+    elif browser == "chrome":
+        return webdriver.Chrome()

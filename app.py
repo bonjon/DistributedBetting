@@ -114,7 +114,7 @@ def creator():
             filename = secure_filename(file.filename)
             extension = filename.rsplit('.', 1)[1].lower()
             file.save(os.path.join(
-                app.config['UPLOAD_FOLDER'], hash+ "_" + NFT_name + "."+extension))
+                app.config['UPLOAD_FOLDER'], hash + "_" + NFT_name + "."+extension))
 
             return render_template('creator.html')+"<script>alert('File uploaded successfully')</script>"+variables_declarations+script
 

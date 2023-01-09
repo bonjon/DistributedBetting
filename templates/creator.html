@@ -68,16 +68,16 @@
                 </div>
                 <img id="image" src="" width="200" height="200" style="display: none;"/>
             </div>
-            <div class="col-sm-2" style="margin-top:10px;">
+            <div class="col-sm-2" style="margin-top:10px; display: none" id="superTokensContainer">
                 <label style="display: inline-block; width: 200px; color:white">How much superTokens:</label>
                 <input type="number" style="outline: #201e26;" id="quantity" name="quantity" min="1" placeholder="1"></input>
             </div>
-            <div class="col-sm-12" style="margin-top: 10px;">
+            <div class="col-sm-12" id="loadNFTContainer" style="margin-top: 10px; display: none;">
                 <button type="button" class="btn btn-outline-light" onclick="forgeNFT();">Load NFT</button>
             </div>
             </div>
         </form>
-        <h1 class="text-white">Pay4Win</h1>
+        <h1 id="pay4winLabel" class="text-white" style="display: none;">Pay winning bets</h1>
         <div id="accordion">
         </div>
 		</main>
@@ -99,13 +99,24 @@
         getAddress().then(function() {
             if(myAddress != creatorAddress)
                 document.location.href = "index.html";
-            var cardsList = document.getElementById("accordion");
-            var html = "<div class='card'><div class='card-header text-white' style='background-color:#1f0961'>"
-            html += "<div class='row'><div class='col-2' ><h6 class='mb-0' style='text-align: left;'> Block</h5></div>";
-            html += "<div class='col-8' ><h6 class='mb-0' style='text-align: center;'> Hash </h5></div>";
-            html += "<div class='col-2' ><h6 class='mb-0' style='text-align: right;'>  </h5></div></div>";
-            cardsList.innerHTML = html;
-            getBets(bets.length-1);
+            
+            var file = document.getElementById("file").files[0];
+            // if an image is loaded, display it
+            if(file != undefined)
+                displayImage();
+
+            if(bets.length > 0)
+            {
+                document.getElementById("pay4winLabel").style.display = "block";
+                var cardsList = document.getElementById("accordion");
+                var html = "<div class='card'><div class='card-header text-white' style='background-color:#1f0961'>"
+                html += "<div class='row'><div class='col-2' ><h6 class='mb-0' style='text-align: left;'> Block</h5></div>";
+                html += "<div class='col-8' ><h6 class='mb-0' style='text-align: center;'> Hash </h5></div>";
+                html += "<div class='col-2' ><h6 class='mb-0' style='text-align: right;'>  </h5></div></div>";
+                cardsList.innerHTML = html;
+                getBets(bets.length-1);
+            }
+
         })
     });
     if (!window.ethereum)

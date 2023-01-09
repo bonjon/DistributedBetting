@@ -226,7 +226,8 @@ function showMatches(leagueId)
             var minutes = parseInt(time.split(":")[1]);
             // get the current date and time
             var now = new Date();
-            var nowDay = parseInt(now.getDay().toString()) + 1;
+            // get the day of the month
+            var nowDay = parseInt(now.getDate().toString());
             var nowMonth = parseInt(now.getMonth().toString()) + 1;
             var nowHours = parseInt(now.getHours().toString());
             var nowMinutes = parseInt(now.getMinutes().toString());

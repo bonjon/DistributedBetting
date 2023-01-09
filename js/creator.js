@@ -6,6 +6,8 @@ function displayImage()
         document.getElementById("description").style.display = "block";
         document.getElementById("description").style.width = "200px";
         document.getElementById("radioContainer").style.display = "block";
+        document.getElementById("superTokensContainer").style.display = "block";
+        document.getElementById("loadNFTContainer").style.display = "block";
         var file = document.getElementById("file").files[0];
         var render = new FileReader();
         render.onload = function(e) {
@@ -29,17 +31,17 @@ async function forgeNFT()
     if (document.getElementById("bronze").checked)
         rarity = "0x0";
     else if (document.getElementById("silver").checked)
-        rarity = "0x1";
+        rarity = "0x01";
     else if (document.getElementById("gold").checked)
-        rarity = "0x2";
+        rarity = "0x02";
     var zero = "0x0000000000000000000000000000000000000000000000000000000000000000";
     console.log("Uploaded image whose hash is: "+imageHash);
     var quantity = parseInt(document.getElementById("quantity").value);
     // Take the NFT name
     var descriptionNFT = document.getElementById("description").value;
-    if (descriptionNFT == "")
+    if (descriptionNFT == "" || !isValid(descriptionNFT))
     {   
-        alert("Please insert a description for the NFT");
+        alert("Please insert a valid name for the NFT");
         return;
     }
     // Take the hash of the NFT name
@@ -70,14 +72,18 @@ async function forgeNFT()
     });
 }
 
+function isValid(str) {
+    return !/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/g.test(str);
+}
+
 /**
  * Function that gets all the bets to be payed and displays them to the creator
  */
 function getBets(b)
 {
     // url of the server
-    var url = "http://127.0.0.1:5000/bets/";
-    //var url = "http://localhost:5000/bets/";
+    //var url = "http://127.0.0.1:5000/bets/";
+    var url = "http://localhost:5000/bets/";
     accordion = document.getElementById("accordion");
     // get the bet
     betHash = bets[b][0];
