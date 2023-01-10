@@ -10,12 +10,12 @@ import py.getBlocks as getBlocks
 
 from werkzeug.utils import secure_filename
 
-variables_declarations = f"<script>var contractAddress='{config.CONTRACT_ADDRESS}';\nvar creatorAddress='{config.CREATOR_ADDRESS}';</script>"
+variables_declarations = f"<script>var host='{config.host}';\nvar contractAddress='{config.CONTRACT_ADDRESS}';\nvar creatorAddress='{config.CREATOR_ADDRESS}';</script>"
 app = Flask(__name__, template_folder=config.ROOT_DIR.joinpath(
     'templates'), static_folder=config.ROOT_DIR.joinpath('static'))
 
 # connect to web3
-w3 = Web3(Web3.HTTPProvider('http://127.0.0.1:7545'))
+w3 = Web3(Web3.HTTPProvider(f'http://{config.host}:7545'))
 
 # load the abi of the contract
 with open("ABI.json", "r") as a:

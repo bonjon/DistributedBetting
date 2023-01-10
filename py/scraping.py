@@ -5,6 +5,7 @@ import requests
 import time
 import os
 import json
+import datetime
 
 import config
 
@@ -194,17 +195,25 @@ def checkBet(bet_filename: str, driver: webdriver.Firefox = None) -> int:
     with open(bet_filename, 'r') as f:
         bet = json.load(f)
 
-    # get the driver
-    if driver is None:
-        #driver = webdriver.Firefox()
-        driver = get_driver(config.browser)
-
     # get the matches
     matches = {}
     result = 1
     for match in bet["bets"]:
         match_id = match["match_id"]
-        matches[match_id] = getMatchResult(match_id, driver=driver)
+        day = match["day"]
+        month = match["month"]
+        hour = match["time"]
+        hour, minute = hour.split(":")
+        hour, day, month = int(hour), int(day), int(month)
+        # get today's date
+        today = datetime.datetime.today()
+        if today.month < month or (today.month == month and today.day < day) or (today.month == month and today.day == day and today.hour + 2 < hour):
+            matches[match_id] = "-"
+        else:
+            # get the match result (only if it has been played)
+            if driver is None:
+                driver = get_driver(config.browser)
+            matches[match_id] = getMatchResult(match_id, driver=driver)
         if matches[match_id] == "-" and result != 0:  # the match is not finished yet
             result = -1
         elif matches[match_id] != "-":
@@ -242,11 +251,8 @@ def getBetsResult(bet_blockchain: List[Tuple[str, str, str]]) -> None:
             # get the result of the bet (if exists)
             result = bet_json.get("result")
             # if the result is not already scraped, scrape it
-            if result is None:
-                if driver is None:
-                    driver = get_driver(config.browser)
-                result = checkBet(
-                    config.BET_FOLDER.joinpath(hash+".json"), driver=driver)
+            if result is None or result == -1:
+                result = checkBet(config.BET_FOLDER.joinpath(hash+".json"))
                 # save the result in the json file
                 bet_json["result"] = result
                 with open(config.BET_FOLDER.joinpath(hash+".json"), "w") as f:

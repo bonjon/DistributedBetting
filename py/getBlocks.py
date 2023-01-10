@@ -5,7 +5,7 @@ from typing import *
 import json
 
 # instantiate a web3 remote provider
-w3 = Web3(Web3.HTTPProvider('http://127.0.0.1:7545'))
+w3 = Web3(Web3.HTTPProvider(f'http://{config.host}:7545'))
 
 # filter through blocks and look for transactions involving this address
 blockchain_address = "0x438b828ee31b102f0ae7eaff78ebf07834830789"

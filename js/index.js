@@ -136,6 +136,11 @@ function showMatches(leagueId)
                     var odd1 = currentChampionship[match].homeodds;
                     var oddX = currentChampionship[match].X;
                     var odd2 = currentChampionship[match].awayodds;
+                    // if the odds are not present on diretta.it, don't show the match to the user
+                    if(odd1 == 0 || oddX == 0 || odd2 == 0)
+                        {
+                            continue;
+                        }
                     var newodds = removeMargin(odd1, oddX, odd2);
                     var homeOdds = document.createElement("button");
                     homeOdds.name = "homeOdds";
@@ -232,21 +237,21 @@ function showMatches(leagueId)
             var nowHours = parseInt(now.getHours().toString());
             var nowMinutes = parseInt(now.getMinutes().toString());
             // check if the match has already started or is older than the current date
-            if(nowMonth > month || (nowMonth == month && nowDay > day) || (nowMonth == month && nowDay == day && nowHours > hours) || (nowMonth == month && nowDay == day && nowHours == hours && nowMinutes > minutes)
-            || (nowMonth == month && nowDay == day && nowHours == hours && nowMinutes == minutes))
-            {
-                alert("You cannot bet on: " + match.home_team + " - " + match.away_team);
-                return;
-            }
+            //if(nowMonth > month || (nowMonth == month && nowDay > day) || (nowMonth == month && nowDay == day && nowHours > hours) || (nowMonth == month && nowDay == day && nowHours == hours && nowMinutes > minutes)
+            //|| (nowMonth == month && nowDay == day && nowHours == hours && nowMinutes == minutes))
+            //{
+            //    alert("You cannot bet on: " + match.home_team + " - " + match.away_team);
+            //    return;
+            //}
             // remove the margin from the odds
             var newodds = removeMargin(match.homeodds, match.X, match.awayodds);
             var success;
             if(buttontype == 0)
-                success = betList("1", match.home_team, match.away_team, newodds[0],match_id);
+                success = betList("1", match.home_team, match.away_team, newodds[0],match_id,day,month,time);
             else if(buttontype == 1)
-                success = betList("X", match.home_team, match.away_team, newodds[1],match_id);
+                success = betList("X", match.home_team, match.away_team, newodds[1],match_id,day,month,time);
             else if(buttontype == 2)
-                success = betList("2", match.home_team, match.away_team, newodds[2],match_id);
+                success = betList("2", match.home_team, match.away_team, newodds[2],match_id,day,month,time);
             if (success == 0)
                 if(this.className == "btn btn-outline-light")
                     this.className = "btn btn-outline-success";
@@ -270,9 +275,12 @@ function showMatches(leagueId)
  * @param {string} away_team 
  * @param {string} odds 
  * @param {string} match_id
+ * @param {string} day
+ * @param {string} month
+ * @param {string} time
  * @returns 0 on success, -1 on error
  */
-function betList(bet, home_team, away_team, odds, match_id)
+function betList(bet, home_team, away_team, odds, match_id, day, month, time)
 {
     // change the visibility of the input and the buttons
     var betTokens = document.getElementById("betTokens");
@@ -364,9 +372,27 @@ function betList(bet, home_team, away_team, odds, match_id)
     labelMatch.innerHTML = home_team + " - " + away_team;
     labelResult.innerHTML = bet;
 
+    labelDay = document.createElement("label");
+    labelDay.style.display = "none";
+    labelDay.id = match_id + "-day";
+    labelDay.innerHTML = day;
+
+    labelTime = document.createElement("label");
+    labelTime.style.display = "none";
+    labelTime.id = match_id + "-time";
+    labelTime.innerHTML = time;
+
+    labelMonth = document.createElement("label");
+    labelMonth.style.display = "none";
+    labelMonth.id = match_id + "-month";
+    labelMonth.innerHTML = month;
+
     betLi.appendChild(labelResult);
     betLi.appendChild(labelMatch);
     betLi.appendChild(labelodds);
+    betLi.appendChild(labelDay);
+    betLi.appendChild(labelMonth);
+    betLi.appendChild(labelTime);
 
     //update the odds sum
     oddsSum.innerHTML = (parseFloat(oddsSum.innerHTML) * parseFloat(odds)).toFixed(2);
@@ -515,11 +541,17 @@ function betToJson()
         var match = betLi.children[1].innerHTML;
         var home_team = match.split(" - ")[0];
         var away_team = match.split(" - ")[1];
+        var day = document.getElementById(match_id+"-day").innerHTML;
+        var month = document.getElementById(match_id+"-month").innerHTML;
+        var time = document.getElementById(match_id+"-time").innerHTML;
         var odds = betLi.children[2].innerHTML;
         match = {};
         match["match_id"] = match_id;
         match["home_team"] = home_team;
         match["away_team"] = away_team;
+        match["day"] = day;
+        match["month"] = month;
+        match["time"] = time;
         match["bet"] = bet;
         match["odds"] = odds;
         //console.log(match);

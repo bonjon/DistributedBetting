@@ -28,29 +28,40 @@ function getIthNFT(i, type)
         var owner = res[4];
         var nftName = res[5];
         var rarity = res[6];
+        var cardTitle;
         if(extension == null) // If the NFT is not in the folder img/NFTs
-            fileName = "default.jpg";
+            { 
+                fileName = "default.jpg";
+                cardTitle = "UNKNOWN";
+            }
         else
-            fileName = hash + "_" + description + "." + extension;
-        console.log(fileName)
-        console.log(rarity)
+            {
+                
+                fileName = hash + "_" + description + "." + extension;
+                if(nftName == web3.utils.sha3(description))
+                    cardTitle = description;
+                else
+                    cardTitle = "UNKNOWN";
+            }
+        //console.log(fileName)
+        //console.log(rarity)
         if (type == 0 && creatorAddress == owner.toLowerCase() && myAddress != creatorAddress)
         {
             if (rarity == "0x00")
-                $("#getNftContainer").append("<div class='col-3'><div class='card' style='background-color:#cd7f32'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + owner + "</h5><p class='card-text'>" + description + "</p><p class='card-text'>" + superprice + " Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='getNFT(\"" + hash + "\")'>Get</button></div></div></div></div>");
-            else if (rarity == "0x10")
-                $("#getNftContainer").append("<div class='col-3'><div class='card' style='background-color:#c0c0c0'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + owner + "</h5><p class='card-text'>" + description + "</p><p class='card-text'>" + superprice + " Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='getNFT(\"" + hash + "\")'>Get</button></div></div></div></div>");
-            else if (rarity == "0x20")
-                $("#getNftContainer").append("<div class='col-3'><div class='card' style='background-color:#ffd700'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + owner + "</h5><p class='card-text'>" + description + "</p><p class='card-text'>" + superprice + " Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='getNFT(\"" + hash + "\")'>Get</button></div></div></div></div>");
+                $("#getNftContainer").append("<div class='col-3'><div class='card' style='background-color:#cd7f32; border: 10px #cd7f32 solid'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + cardTitle + "</h5><p class='card-text'>Owner: Creator</p><p class='card-text'>" + superprice + " Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='getNFT(\"" + hash + "\")'>Get</button></div></div></div></div>");
+            else if (rarity == "0x01")
+                $("#getNftContainer").append("<div class='col-3'><div class='card' style='background-color:#c0c0c0; border: 10px #c0c0c0 solid'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + cardTitle + "</h5><p class='card-text'>Owner: Creator</p><p class='card-text'>" + superprice + " Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='getNFT(\"" + hash + "\")'>Get</button></div></div></div></div>");
+            else if (rarity == "0x02")
+                $("#getNftContainer").append("<div class='col-3'><div class='card' style='background-color:#ffd700; border: 10px #ffd700 solid'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + cardTitle + "</h5><p class='card-text'>Owner: Creator</p><p class='card-text'>" + superprice + " Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='getNFT(\"" + hash + "\")'>Get</button></div></div></div></div>");
         }
         else if (selling && type == 1 && creatorAddress != owner.toLowerCase() && myAddress != owner.toLowerCase() && myAddress != creatorAddress)
         {
             if (rarity == "0x00")
-                $("#buyNftContainer").append("<div class='col-3' id=\""+ hash + "\"'container'><div class='card' style='background-color:#cd7f32'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + owner + "</h5><p class='card-text'>" + description + "</p><p class='card-text'>" + ethprice + " ETH</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='buyNFT(\""+hash+"\"," + ethprice+")'>Buy</button></div></div></div></div>");                
-            else if (rarity == "0x10")
-                $("#buyNftContainer").append("<div class='col-3' id=\""+ hash + "\"'container'><div class='card' style='background-color:#c0c0c0'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + owner + "</h5><p class='card-text'>" + description + "</p><p class='card-text'>" + ethprice + " ETH</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='buyNFT(\""+hash+"\"," + ethprice+")'>Buy</button></div></div></div></div>");
-            else if (rarity == "0x20")
-                $("#buyNftContainer").append("<div class='col-3' id=\""+ hash + "\"'container'><div class='card' style='background-color:#ffd700'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + owner + "</h5><p class='card-text'>" + description + "</p><p class='card-text'>" + ethprice + " ETH</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='buyNFT(\""+hash+"\"," + ethprice+")'>Buy</button></div></div></div></div>");
+                $("#buyNftContainer").append("<div class='col-3' id=\""+ hash + "\"'container'><div class='card' style='background-color:#cd7f32; border: 10px #cd7f32 solid'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + cardTitle + "</h5><p class='card-text'>Owner: " + owner + "</p><p class='card-text'>" + ethprice + " ETH</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='buyNFT(\""+hash+"\"," + ethprice+")'>Buy</button></div></div></div></div>");                
+            else if (rarity == "0x01")
+                $("#buyNftContainer").append("<div class='col-3' id=\""+ hash + "\"'container'><div class='card' style='background-color:#c0c0c0; border: 10px #c0c0c0 solid'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + cardTitle + "</h5><p class='card-text'>Owner: " + owner + "</p><p class='card-text'>" + ethprice + " ETH</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='buyNFT(\""+hash+"\"," + ethprice+")'>Buy</button></div></div></div></div>");
+            else if (rarity == "0x02")
+                $("#buyNftContainer").append("<div class='col-3' id=\""+ hash + "\"'container'><div class='card' style='background-color:#ffd700; border: 10px #ffd700 solid'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + cardTitle + "</h5><p class='card-text'>Owner: " + owner + "</p><p class='card-text'>" + ethprice + " ETH</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='buyNFT(\""+hash+"\"," + ethprice+")'>Buy</button></div></div></div></div>");
         }    
         else if (type == 2 && myAddress == owner.toLowerCase())
             {
@@ -58,29 +69,29 @@ function getIthNFT(i, type)
                 if(myAddress == creatorAddress)
                 {
                     if (rarity == "0x00")
-                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#cd7f32'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + owner + "</h5><p class='card-text'>" + superprice + " Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'></div></div></div></div>");
-                    else if (rarity == "0x10")
-                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#c0c0c0'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + owner + "</h5><p class='card-text'>" + superprice + " Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'></div></div></div></div>");
-                    else if (rarity == "0x20")
-                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#ffd700'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + owner + "</h5><p class='card-text'>" + superprice + " Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'></div></div></div></div>");
+                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#cd7f32; border: 10px #cd7f32 solid'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + cardTitle + "</h5><p class='card-text'>Owner: You</p><p class='card-text'>" + superprice + " Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'></div></div></div></div>");
+                    else if (rarity == "0x01")
+                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#c0c0c0; border: 10px #c0c0c0 solid'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + cardTitle + "</h5><p class='card-text'>Owner: You</p><p class='card-text'>" + superprice + " Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'></div></div></div></div>");
+                    else if (rarity == "0x02")
+                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#ffd700; border: 10px #ffd700 solid'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + cardTitle + "</h5><p class='card-text'>Owner: You</p><p class='card-text'>" + superprice + " Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'></div></div></div></div>");
                 }
                 else if(!selling)
                 {
                     if (rarity == "0x00")
-                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#cd7f32'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + owner + "</h5><p class='card-text'> - Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='sellNFT(\"" + hash + "\")'>Sell</button></div></div></div></div>");
-                    else if (rarity == "0x10")
-                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#c0c0c0'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + owner + "</h5><p class='card-text'> - Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='sellNFT(\"" + hash + "\")'>Sell</button></div></div></div></div>");
-                    else if (rarity == "0x20")
-                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#ffd700'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + owner + "</h5><p class='card-text'> - Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='sellNFT(\"" + hash + "\")'>Sell</button></div></div></div></div>");
+                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#cd7f32; border: 10px #cd7f32 solid'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + cardTitle + "</h5><p class='card-text'>Owner: You</p><p class='card-text'> - ETH</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='sellNFT(\"" + hash + "\")'>Sell</button></div></div></div></div>");
+                    else if (rarity == "0x01")
+                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#c0c0c0; border: 10px #c0c0c0 solid'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + cardTitle + "</h5><p class='card-text'>Owner: You</p><p class='card-text'> - ETH</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='sellNFT(\"" + hash + "\")'>Sell</button></div></div></div></div>");
+                    else if (rarity == "0x02")
+                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#ffd700; border: 10px #ffd700 solid'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + cardTitle + "</h5><p class='card-text'>Owner: You</p><p class='card-text'> - ETH</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='sellNFT(\"" + hash + "\")'>Sell</button></div></div></div></div>");
                 }
                 else
                 {
                     if (rarity == "0x00")
-                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#cd7f32'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + owner + "</h5><p class='card-text'>" + superprice + " Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='unsellNFT(\"" + hash + "\")'>Unsell</button></div></div></div></div>");
-                    else if (rarity == "0x10")
-                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#c0c0c0'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + owner + "</h5><p class='card-text'>" + superprice + " Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='unsellNFT(\"" + hash + "\")'>Unsell</button></div></div></div></div>");
-                    else if (rarity == "0x20")
-                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#ffd700'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + owner + "</h5><p class='card-text'>" + superprice + " Super Tokens</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='unsellNFT(\"" + hash + "\")'>Unsell</button></div></div></div></div>");
+                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#cd7f32; border: 10px #cd7f32 solid'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + cardTitle + "</h5><p class='card-text'>Owner: You</p><p class='card-text'>" + ethprice + " ETH</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='unsellNFT(\"" + hash + "\")'>Unsell</button></div></div></div></div>");
+                    else if (rarity == "0x01")
+                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#c0c0c0; border: 10px #c0c0c0 solid'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + cardTitle + "</h5><p class='card-text'>Owner: You</p><p class='card-text'>" + ethprice + " ETH</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='unsellNFT(\"" + hash + "\")'>Unsell</button></div></div></div></div>");
+                    else if (rarity == "0x02")
+                        $("#myNftContainer").append("<div class='col-3'><div class='card' style='background-color:#ffd700; border: 10px #ffd700 solid'><img class='card-img-top' src='img/NFTs/" + fileName + "' alt='' width='200' height='200'><div class='card-body'><h5 class='card-title'>" + cardTitle + "</h5><p class='card-text'>Owner: You</p><p class='card-text'>" + ethprice + " ETH</p><div id=\""+ hash + "\"  class='btn-group'><button class='btn btn-outline-dark' onclick='unsellNFT(\"" + hash + "\")'>Unsell</button></div></div></div></div>");
                 }
             }
         if (i < nfts_blockchain.length-1)

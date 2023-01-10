@@ -79,6 +79,16 @@
                 html += "<div class='col-8' ><h6 class='mb-0' style='text-align: center;'> Hash </h5></div>";
                 html += "<div class='col-2' ><h6 class='mb-0' style='text-align: right;'> Result </h5></div></div>";
                 cardsList.innerHTML = html;
+                contract.events.BetPayed(function(error, event) {
+                    if (!error)
+                     {
+                        if(event.returnValues.winner.toLowerCase() == myAddress.toLowerCase())
+                           {
+                            alert("The bet " + event.returnValues.bet + " has been payed, you won "+event.returnValues.amount+" super tokens");
+                            location.reload();
+                           } 
+                     }
+                });
                 getBets(bets.length-1);
             });
         });
@@ -102,5 +112,5 @@
             cardsList.innerHTML = html;
             getBets(bets.length-1);
 
-        });  
+        });
 </script>

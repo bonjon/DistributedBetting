@@ -1,83 +1,28 @@
 [
 	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [],
-		"name": "FEE",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
+		"anonymous": false,
 		"inputs": [
 			{
-				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"name": "NFTs",
-		"outputs": [
-			{
-				"internalType": "bytes32",
-				"name": "imageHash",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "bool",
-				"name": "selling",
-				"type": "bool"
-			},
-			{
-				"internalType": "uint256",
-				"name": "superTokenPrice",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "ethPrice",
-				"type": "uint256"
-			},
-			{
+				"indexed": false,
 				"internalType": "address",
-				"name": "owner",
+				"name": "winner",
 				"type": "address"
 			},
 			{
+				"indexed": false,
 				"internalType": "bytes32",
-				"name": "name",
+				"name": "bet",
 				"type": "bytes32"
 			},
 			{
-				"internalType": "bytes1",
-				"name": "rarity",
-				"type": "bytes1"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "PRICE",
-		"outputs": [
-			{
+				"indexed": false,
 				"internalType": "uint256",
-				"name": "",
+				"name": "amount",
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
+		"name": "BetPayed",
+		"type": "event"
 	},
 	{
 		"inputs": [
@@ -108,25 +53,6 @@
 		"name": "buy_NFT",
 		"outputs": [],
 		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "entryTokens",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -233,12 +159,43 @@
 	{
 		"inputs": [
 			{
+				"internalType": "bytes32",
+				"name": "NFT_hash",
+				"type": "bytes32"
+			}
+		],
+		"name": "unsell_NFT",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
 				"name": "",
 				"type": "address"
 			}
 		],
-		"name": "superTokens",
+		"name": "entryTokens",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "FEE",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -253,13 +210,81 @@
 		"inputs": [
 			{
 				"internalType": "bytes32",
-				"name": "NFT_hash",
+				"name": "",
 				"type": "bytes32"
 			}
 		],
-		"name": "unsell_NFT",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"name": "NFTs",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "imageHash",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "bool",
+				"name": "selling",
+				"type": "bool"
+			},
+			{
+				"internalType": "uint256",
+				"name": "superTokenPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "ethPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "name",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "bytes1",
+				"name": "rarity",
+				"type": "bytes1"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "PRICE",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "superTokens",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	}
 ]

@@ -20,6 +20,9 @@ contract DistributedBetting
     // (they can only be obtained winning bettings)
     mapping(address => uint) public superTokens;
 
+    // Pay4win event
+    event BetPayed(address winner, bytes32 bet, uint amount);
+
     // The fields of the NFT
     struct NFT
     {
@@ -127,6 +130,8 @@ contract DistributedBetting
         require(msg.sender == creator, "You are not the contract owner");
         // pay the winner of the bet whose hash is stake
         superTokens[winner] += amount;
+        // notify that the bet has been payed
+        emit BetPayed(winner, stake, amount);
     }
 
     //selfdestruct the contract

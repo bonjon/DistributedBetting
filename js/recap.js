@@ -4,8 +4,7 @@
 function getBets(b)
 {
     // url of the server
-    //var url = "http://127.0.0.1:5000/bets/";
-    var url = "http://localhost:5000/bets/";
+    var url = "http://"+host+":5000/bets/";
     accordion = document.getElementById("accordion");
     // get the bet
     betHash = bets[b][0];
@@ -41,7 +40,7 @@ function getBets(b)
                     bet_result = "LOST";
                 else
                     bet_result = "PENDING";
-                html += "<div class='col-2'><h6 class='mb-0' style='text-align: right;'>"+bet_result+"</h5></div></div>";
+                html += "<div class='col-2'><h6 class='mb-0' id='"+betHash+myAddress+"-result' style='text-align: right;'>"+bet_result+"</h5></div></div>";
                 html += "<div id='"+betHash+block+"collapse' class='collapse' aria-labelledby='"+betHash+block+"' data-parent='#accordion'>";
                 html += "<div class='card-body'>";
                 html += "<div class='row'><div class='col-3'>Match</div><div class='col-2'>Bet</div><div class='col-2'>Odds</div><div class='col-1'>Result</div><div class='col-1'>Status</div></div>";

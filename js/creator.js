@@ -82,8 +82,8 @@ function isValid(str) {
 function getBets(b)
 {
     // url of the server
-    //var url = "http://127.0.0.1:5000/bets/";
-    var url = "http://localhost:5000/bets/";
+    var url = "http://"+host+"/bets/";
+
     accordion = document.getElementById("accordion");
     // get the bet
     betHash = bets[b][0];
