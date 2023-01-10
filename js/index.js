@@ -237,12 +237,12 @@ function showMatches(leagueId)
             var nowHours = parseInt(now.getHours().toString());
             var nowMinutes = parseInt(now.getMinutes().toString());
             // check if the match has already started or is older than the current date
-            //if(nowMonth > month || (nowMonth == month && nowDay > day) || (nowMonth == month && nowDay == day && nowHours > hours) || (nowMonth == month && nowDay == day && nowHours == hours && nowMinutes > minutes)
-            //|| (nowMonth == month && nowDay == day && nowHours == hours && nowMinutes == minutes))
-            //{
-            //    alert("You cannot bet on: " + match.home_team + " - " + match.away_team);
-            //    return;
-            //}
+            if(nowMonth > month || (nowMonth == month && nowDay > day) || (nowMonth == month && nowDay == day && nowHours > hours) || (nowMonth == month && nowDay == day && nowHours == hours && nowMinutes > minutes)
+            || (nowMonth == month && nowDay == day && nowHours == hours && nowMinutes == minutes))
+            {
+                alert("You cannot bet on: " + match.home_team + " - " + match.away_team);
+                return;
+            }
             // remove the margin from the odds
             var newodds = removeMargin(match.homeodds, match.X, match.awayodds);
             var success;
