@@ -80,9 +80,9 @@ function getBets(b)
                 html += "</div></div></div>"
                 //add the bet to the page
                 accordion.innerHTML += html;
-                if(b > 0)
-                    getBets(b-1);
             }
+            if(b > 0)
+                getBets(b-1);
         },
         error: function (result) {
             if(address == myAddress)
@@ -99,10 +99,9 @@ function getBets(b)
                 html += "</div></div></div>"
                 //add the bet to the page
                 accordion.innerHTML += html;
-                if(b > 0)
-                    getBets(b-1);
-
             }
+            if(b > 0)
+                getBets(b-1);
         }
       });
    
