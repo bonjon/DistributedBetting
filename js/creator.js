@@ -82,7 +82,7 @@ function isValid(str) {
 function getBets(b)
 {
     // url of the server
-    var url = "http://"+host+"/bets/";
+    var url = "http://"+host+":5000/bets/";
 
     accordion = document.getElementById("accordion");
     // get the bet

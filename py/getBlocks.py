@@ -21,17 +21,26 @@ pay4win_selector = "0x03262fcd"
 
 
 def getTxData(start: int, end: int, function_selector: str, address: str = None) -> List[str]:
+    '''
+    Given a start and an end block, it returns a list of hashes of the transactions that are calls to the function with the given selector.
+    If the address is not None, it returns only the hashes of the transactions that are calls to the function with the given selector and are sent by the given address.
+    '''
     hashes = []
+    # iterate through the blocks
     for x in range(start, end+1):
+        # get xth block
         block = w3.eth.getBlock(x, True)
+        # iterate through the transactions of the block
         for transaction in block.transactions:
-            if address == None:
-                if transaction['input'][:10] == function_selector and transaction['to'].lower() == config.CONTRACT_ADDRESS.lower():
+            # if the transaction is a call to the function of the contract
+            if transaction['input'][:10] == function_selector and transaction['to'].lower() == config.CONTRACT_ADDRESS.lower():
+                # if the address is None, add the hash to the list regardless of the sender
+                if address == None:
                     hash = "0x"+transaction['input'][10:74]
                     hashes.append([hash, transaction['from'].lower(), x])
-            elif transaction['from'] is not None and transaction['from'].lower() == address.lower():
-                # if the transaction is a call to the function
-                if transaction['input'][:10] == function_selector and transaction['to'].lower() == config.CONTRACT_ADDRESS.lower():
+                # otherwise, check if the sender is the given address
+                elif transaction['from'] is not None and transaction['from'].lower() == address.lower():
+                    # if the transaction is a call to the function
                     hash = "0x"+transaction['input'][10:74]
                     hashes.append(hash)
     return hashes

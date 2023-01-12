@@ -91,10 +91,14 @@ def creator():
     ending_blocknumber = w3.eth.blockNumber
     # check only the last 100 blocks
     starting_blocknumber = max(0, ending_blocknumber - 100)
+    # get the bets from the blockchain
     bet_blockchain = getBlocks.getTxData(
         starting_blocknumber, ending_blocknumber, getBlocks.bet_selector)
+    # filter the bets that are already payed
     filtered_bets = getBlocks.filterAlreadyPayedBets(
         ending_blocknumber, bet_blockchain)
+    # update the json files of the bets
+    scraping.getBetsResult(bet_blockchain)
     with open('matches/results.json', 'r') as f:
         matches = json.load(f)
     script = f"<script>bets={filtered_bets};\nresults={matches};</script>"

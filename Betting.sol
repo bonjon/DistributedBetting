@@ -35,6 +35,7 @@ contract DistributedBetting
         bytes1 rarity; // the rarity of the NFT
     }
 
+    // stores all the NFTs using the hash of the image as a key
     mapping(bytes32 => NFT) public NFTs;
 
     constructor()
@@ -42,6 +43,7 @@ contract DistributedBetting
         creator = payable(msg.sender);
     }
 
+    // this function is used to mint entryTokens
     function mint() external payable
     {
         // you need to send at least PRICE eth to buy entryTokens
@@ -54,12 +56,15 @@ contract DistributedBetting
         creator.transfer(msg.value);
     }
 
+    // this function is used to bet on the blockchain
     function bet(bytes32 stake, uint amount) external
     {
+        // you need to have enough tokens to bet
         require(entryTokens[msg.sender] + superTokens[msg.sender] >= amount,"You're a jerk, again!");
+        // remove the entryTokens from the user account
         if (entryTokens[msg.sender] >= amount)
             entryTokens[msg.sender] -= amount;
-        else
+        else // if the entryTokens are not enough, for the rest remove the superTokens
         {
             uint remaining = amount - entryTokens[msg.sender];
             entryTokens[msg.sender] = 0;
@@ -67,6 +72,7 @@ contract DistributedBetting
         }
     }
 
+    // this function creates a new NFT
     function forge_NFT(bytes32 NFT_hash, uint superTokenPrice, bytes32 NFT_desc_hash, bytes1 NFT_rarity) external
     {
         require(msg.sender == creator, "You are not the contract owner");
@@ -74,6 +80,7 @@ contract DistributedBetting
         NFTs[NFT_hash] = NFT(NFT_hash, false, superTokenPrice,0,creator,NFT_desc_hash,NFT_rarity);
     }
 
+    // this function is used to get an NFT from the creator (paying in superTokens)
     function get_NFT(bytes32 NFT_hash, uint ethPrice) external
     {   
         // the NFT has never been got by anyone (with superTokens)
@@ -90,6 +97,7 @@ contract DistributedBetting
             NFTs[NFT_hash].ethPrice = ethPrice;
     }
 
+    // this function is used to put your NFT on the market (selling it for ethPrice ether)
     function sell_NFT(bytes32 NFT_hash, uint ethPrice) external
     {
         // you need to be the owner of the NFT
@@ -99,6 +107,7 @@ contract DistributedBetting
         NFTs[NFT_hash].selling = true;
     }
 
+    // this function is used to stop selling your NFT
     function unsell_NFT(bytes32 NFT_hash) external
     {
         // you need to be the owner of the NFT
@@ -107,6 +116,7 @@ contract DistributedBetting
         NFTs[NFT_hash].selling = false;
     }
 
+    // this function is used to buy an NFT from another user (in ether)
     function buy_NFT(bytes32 NFT_hash) payable external
     {
         // the NFT is not being sold
@@ -124,6 +134,7 @@ contract DistributedBetting
         NFTs[NFT_hash].selling = false;
     }
 
+    // this function (called only by the creator) pays a user who won a bet
     function pay4win(bytes32 stake, address winner, uint amount) external
     {
         // you need to be the contract owner
