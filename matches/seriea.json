@@ -1,92 +1,92 @@
 {
-"nk4pp0O2": {
-"date": "04.01.",
-"time": "12:30",
-"home_team": "Salernitana",
-"away_team": "Milan",
-"homeodds": 6.56,
-"X": 4.38,
-"awayodds": 1.49
-},
-"Qu3lqKw9": {
-"date": "04.01.",
-"time": "12:30",
-"home_team": "Sassuolo",
-"away_team": "Sampdoria",
-"homeodds": 1.75,
-"X": 3.77,
-"awayodds": 4.73
-},
-"84hgrvgF": {
-"date": "04.01.",
-"time": "14:30",
-"home_team": "Spezia",
-"away_team": "Atalanta",
-"homeodds": 4.78,
-"X": 4.0,
-"awayodds": 1.7
-},
-"Kvdcsb8L": {
-"date": "04.01.",
-"time": "14:30",
-"home_team": "Torino",
-"away_team": "Verona",
-"homeodds": 1.82,
-"X": 3.59,
-"awayodds": 4.48
-},
-"KrCbMdWe": {
-"date": "04.01.",
-"time": "16:30",
-"home_team": "Lecce",
-"away_team": "Lazio",
-"homeodds": 3.71,
-"X": 3.28,
-"awayodds": 2.1
-},
-"bZA2LGo2": {
-"date": "04.01.",
-"time": "16:30",
-"home_team": "Roma",
-"away_team": "Bologna",
-"homeodds": 1.64,
-"X": 3.83,
-"awayodds": 5.62
-},
-"6yWNSbgS": {
-"date": "04.01.",
-"time": "18:30",
-"home_team": "Cremonese",
+"p2JxhlMt": {
+"date": "13.01.",
+"time": "20:45",
+"home_team": "Napoli",
 "away_team": "Juventus",
-"homeodds": 5.3,
-"X": 3.81,
-"awayodds": 1.67
+"homeodds": 1.95,
+"X": 3.47,
+"awayodds": 3.99
 },
-"OGIkOI1q": {
-"date": "04.01.",
-"time": "18:30",
-"home_team": "Fiorentina",
+"ETVKZ66C": {
+"date": "14.01.",
+"time": "15:00",
+"home_team": "Cremonese",
 "away_team": "Monza",
-"homeodds": 1.71,
-"X": 3.94,
-"awayodds": 4.82
+"homeodds": 2.82,
+"X": 3.28,
+"awayodds": 2.52
 },
-"xKMgNxHk": {
-"date": "04.01.",
+"ObDBdUDP": {
+"date": "14.01.",
+"time": "18:00",
+"home_team": "Lecce",
+"away_team": "Milan",
+"homeodds": 6.09,
+"X": 3.95,
+"awayodds": 1.57
+},
+"AePTXpyP": {
+"date": "14.01.",
 "time": "20:45",
 "home_team": "Inter",
-"away_team": "Napoli",
-"homeodds": 2.33,
-"X": 3.31,
-"awayodds": 3.14
+"away_team": "Verona",
+"homeodds": 1.28,
+"X": 5.92,
+"awayodds": 9.76
 },
-"E1e1tINR": {
-"date": "04.01.",
-"time": "20:45",
+"6H7ojSjg": {
+"date": "15.01.",
+"time": "12:30",
+"home_team": "Sassuolo",
+"away_team": "Lazio",
+"homeodds": 3.12,
+"X": 3.58,
+"awayodds": 2.2
+},
+"ziCkkn6a": {
+"date": "15.01.",
+"time": "15:00",
+"home_team": "Torino",
+"away_team": "Spezia",
+"homeodds": 1.64,
+"X": 3.8,
+"awayodds": 5.53
+},
+"EsBgl6L5": {
+"date": "15.01.",
+"time": "15:00",
 "home_team": "Udinese",
-"away_team": "Empoli",
-"homeodds": 1.62,
-"X": 3.95,
-"awayodds": 5.61
+"away_team": "Bologna",
+"homeodds": 1.94,
+"X": 3.37,
+"awayodds": 4.12
+},
+"zwXGzmi6": {
+"date": "15.01.",
+"time": "18:00",
+"home_team": "Atalanta",
+"away_team": "Salernitana",
+"homeodds": 1.4,
+"X": 4.92,
+"awayodds": 7.38
+},
+"SQ8si8ym": {
+"date": "15.01.",
+"time": "20:45",
+"home_team": "Roma",
+"away_team": "Fiorentina",
+"homeodds": 2.0,
+"X": 3.49,
+"awayodds": 3.74
+},
+"W4QPYQLI": {
+"date": "16.01.",
+"time": "20:45",
+"home_team": "Empoli",
+"away_team": "Sampdoria",
+"homeodds": 2.25,
+"X": 3.06,
+"awayodds": 3.56
 }
 }

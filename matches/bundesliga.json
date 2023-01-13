@@ -4,8 +4,8 @@
 "time": "20:30",
 "home_team": "RB Lipsia",
 "away_team": "Bayern",
-"homeodds": 3.76,
-"X": 4.02,
+"homeodds": 3.77,
+"X": 3.98,
 "awayodds": 1.83
 },
 "feZsRVOR": {
@@ -13,18 +13,18 @@
 "time": "15:30",
 "home_team": "Bochum",
 "away_team": "Hertha",
-"homeodds": 2.66,
-"X": 3.45,
-"awayodds": 2.53
+"homeodds": 2.63,
+"X": 3.44,
+"awayodds": 2.54
 },
 "nVVZSifF": {
 "date": "21.01.",
 "time": "15:30",
 "home_team": "Francoforte",
 "away_team": "Schalke",
-"homeodds": 1.44,
-"X": 4.77,
-"awayodds": 6.23
+"homeodds": 1.43,
+"X": 4.75,
+"awayodds": 6.38
 },
 "d4L9MkXr": {
 "date": "21.01.",
@@ -33,51 +33,51 @@
 "away_team": "Magonza",
 "homeodds": 2.36,
 "X": 3.5,
-"awayodds": 2.83
+"awayodds": 2.84
 },
 "x0lq6Un2": {
 "date": "21.01.",
 "time": "15:30",
 "home_team": "Union Berlino",
 "away_team": "Hoffenheim",
-"homeodds": 2.12,
-"X": 3.42,
-"awayodds": 3.32
+"homeodds": 2.13,
+"X": 3.41,
+"awayodds": 3.33
 },
 "QLUwSB9L": {
 "date": "21.01.",
 "time": "15:30",
 "home_team": "Wolfsburg",
 "away_team": "Friburgo",
-"homeodds": 2.54,
+"homeodds": 2.51,
 "X": 3.38,
-"awayodds": 2.67
+"awayodds": 2.71
 },
 "j3xRUDP2": {
 "date": "21.01.",
 "time": "18:30",
 "home_team": "Colonia",
 "away_team": "Brema",
-"homeodds": 2.24,
-"X": 3.76,
-"awayodds": 2.87
+"homeodds": 2.21,
+"X": 3.81,
+"awayodds": 2.92
 },
 "IcYs8jIk": {
 "date": "22.01.",
 "time": "15:30",
 "home_team": "Dortmund",
 "away_team": "Augusta",
-"homeodds": 1.36,
-"X": 5.33,
-"awayodds": 7.07
+"homeodds": 1.34,
+"X": 5.47,
+"awayodds": 7.38
 },
 "46tVTXv9": {
 "date": "22.01.",
 "time": "17:30",
 "home_team": "Monchengladbach",
 "away_team": "Leverkusen",
-"homeodds": 2.64,
-"X": 3.92,
+"homeodds": 2.66,
+"X": 3.93,
 "awayodds": 2.31
 }
 }

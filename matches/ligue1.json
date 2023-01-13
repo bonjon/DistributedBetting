@@ -1,29 +1,47 @@
 {
-"pMgeJn1d": {
-"date": "02.01.",
-"time": "17:00",
-"home_team": "Lilla",
-"away_team": "Reims",
-"homeodds": 1.61,
-"X": 3.97,
-"awayodds": 5.43
-},
-"MwwvrWwc": {
-"date": "02.01.",
-"time": "19:00",
-"home_team": "Montpellier",
-"away_team": "Marsiglia",
-"homeodds": 4.88,
-"X": 3.97,
-"awayodds": 1.67
-},
-"ljUfvlwM": {
-"date": "02.01.",
+"fiDwWPp2": {
+"date": "11.01.",
 "time": "21:00",
-"home_team": "Rennes",
-"away_team": "Nizza",
-"homeodds": 1.94,
-"X": 3.51,
-"awayodds": 3.92
+"home_team": "Lorient",
+"away_team": "Monaco",
+"homeodds": 4.17,
+"X": 3.83,
+"awayodds": 1.8
+},
+"no0PgTx9": {
+"date": "11.01.",
+"time": "21:00",
+"home_team": "Nizza",
+"away_team": "Montpellier",
+"homeodds": 1.85,
+"X": 3.56,
+"awayodds": 4.21
+},
+"E7WLhmhF": {
+"date": "11.01.",
+"time": "21:00",
+"home_team": "Paris SG",
+"away_team": "Angers",
+"homeodds": 1.16,
+"X": 7.73,
+"awayodds": 14.7
+},
+"jXgkyLMs": {
+"date": "11.01.",
+"time": "21:00",
+"home_team": "Strasburgo",
+"away_team": "Lens",
+"homeodds": 3.79,
+"X": 3.29,
+"awayodds": 2.03
+},
+"bcccZbif": {
+"date": "11.01.",
+"time": "21:00",
+"home_team": "Troyes",
+"away_team": "Marsiglia",
+"homeodds": 5.06,
+"X": 3.96,
+"awayodds": 1.64
 }
 }

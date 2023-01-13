@@ -164,7 +164,7 @@ def getMatchResult(match_id: str, driver: webdriver.Firefox = None) -> str:
 
     # check if the match result was already scraped
     if match_id in results:
-        return results[match_id]
+        return results[match_id], driver
 
     # else, scrape the result and save it in the results.json file
 
@@ -183,7 +183,7 @@ def getMatchResult(match_id: str, driver: webdriver.Firefox = None) -> str:
         results[match_id] = result
         with open('matches/results.json', 'w') as f:
             json.dump(results, f)
-    return result
+    return result, driver
 
 
 def checkBet(bet_filename: str, driver: webdriver.Firefox = None) -> int:
@@ -207,13 +207,11 @@ def checkBet(bet_filename: str, driver: webdriver.Firefox = None) -> int:
         hour, day, month = int(hour), int(day), int(month)
         # get today's date
         today = datetime.datetime.today()
-        if today.month < month or (today.month == month and today.day < day) or (today.month == month and today.day == day and today.hour + 2 < hour):
+        if today.month < month or (today.month == month and today.day < day) or (today.month == month and today.day == day and today.hour < hour + 2):
             matches[match_id] = "-"
         else:
             # get the match result (only if it has been played)
-            if driver is None:
-                driver = get_driver(config.browser)
-            matches[match_id] = getMatchResult(match_id, driver=driver)
+            matches[match_id], driver = getMatchResult(match_id, driver=driver)
         if matches[match_id] == "-" and result != 0:  # the match is not finished yet
             result = -1
         elif matches[match_id] != "-":
@@ -231,7 +229,7 @@ def checkBet(bet_filename: str, driver: webdriver.Firefox = None) -> int:
             else:  # this match is lost
                 result = 0
     # all the matches are won
-    return result
+    return result, driver
 
 
 def getBetsResult(bet_blockchain: List[Tuple[str, str, str]]) -> None:
@@ -251,8 +249,9 @@ def getBetsResult(bet_blockchain: List[Tuple[str, str, str]]) -> None:
             # get the result of the bet (if exists)
             result = bet_json.get("result")
             # if the result is not already scraped, scrape it
-            if result is None or result == -1:
-                result = checkBet(config.BET_FOLDER.joinpath(hash+".json"))
+            result_scraped, driver = checkBet(
+                config.BET_FOLDER.joinpath(hash+".json"), driver=driver)
+            if result is None or (result != result_scraped and result == -1):
                 # save the result in the json file
                 bet_json["result"] = result
                 with open(config.BET_FOLDER.joinpath(hash+".json"), "w") as f:

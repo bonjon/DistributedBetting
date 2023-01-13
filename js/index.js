@@ -42,6 +42,11 @@ function mint()
         contract.methods.mint().send({from: myAddress, value: ethPrice}).then(function(result) {
         // update the entry tokens
         document.getElementById("entryTokens").innerHTML = parseInt(document.getElementById("entryTokens").innerHTML) + quantity;
+        // update betTokens max value
+        document.getElementById("betTokens").max = parseInt(document.getElementById("betTokens").max) + quantity;
+        // update betTokensValue label
+        split = document.getElementById("betTokensValue").innerHTML.split("/");
+        document.getElementById("betTokensValue").innerHTML = split[0] + "/" + (parseInt(split[1]) + quantity);
         updateEther();
         alert("Congratulations! You have minted " + quantity + " entryTokens");
         });

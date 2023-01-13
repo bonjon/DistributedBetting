@@ -246,6 +246,20 @@
             console.log("Account changed to " + accounts[0]);
             if(accounts[0].toLowerCase() == creatorAddress)
                   document.location.href = "creator.html";
-            updateAccountInfo(accounts[0]);
+            updateAccountInfo(accounts[0]).then(function() {
+                var entryTokens, superTokens;
+                contract.methods.entryTokens(myAddress).call().then(function(result) 
+                    {
+                        entryTokens = parseInt(result);
+                        contract.methods.superTokens(myAddress).call().then(function(result) 
+                            {
+                                superTokens = parseInt(result);
+                                document.getElementById("betTokens").max = entryTokens + superTokens;
+                                document.getElementById("betTokens").value = 1;
+                                document.getElementById("betTokensValue").innerHTML = "1/"+(entryTokens + superTokens);
+                            });
+                    });
+                
+            });
         });  
 </script>

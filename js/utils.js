@@ -2,7 +2,7 @@
  * This function updates the account information on the page
  * @param {string} address 
  */
-function updateAccountInfo(address)
+async function updateAccountInfo(address)
     {
         // Set the global variable
         myAddress = address;

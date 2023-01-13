@@ -1,83 +1,83 @@
 {
-"bBfKGGeg": {
-"date": "06.01.",
-"time": "20:00",
-"home_team": "Twente",
-"away_team": "FC Emmen",
-"homeodds": 1.48,
-"X": 4.3,
-"awayodds": 6.12
-},
-"x2gOFzBa": {
-"date": "07.01.",
-"time": "16:30",
-"home_team": "Waalwijk",
-"away_team": "Heerenveen",
-"homeodds": 2.42,
-"X": 3.47,
-"awayodds": 2.68
-},
-"6ybSEfQ5": {
-"date": "07.01.",
+"plY6QiPH": {
+"date": "14.01.",
 "time": "18:45",
-"home_team": "Alkmaar",
-"away_team": "Vitesse",
-"homeodds": 1.53,
-"X": 4.27,
-"awayodds": 5.42
-},
-"pSdWDEuC": {
-"date": "07.01.",
-"time": "20:00",
-"home_team": "Sittard",
-"away_team": "G.A. Eagles",
-"homeodds": 2.54,
-"X": 3.34,
-"awayodds": 2.64
-},
-"SjnyDYfI": {
-"date": "07.01.",
-"time": "21:00",
-"home_team": "PSV",
-"away_team": "Sparta Rotterdam",
-"homeodds": 1.21,
-"X": 6.28,
-"awayodds": 11.2
-},
-"tfjuChAO": {
-"date": "08.01.",
-"time": "12:15",
-"home_team": "Utrecht",
-"away_team": "Feyenoord",
-"homeodds": 3.77,
-"X": 3.8,
-"awayodds": 1.83
-},
-"d6QlWeet": {
-"date": "08.01.",
-"time": "14:30",
-"home_team": "Cambuur",
-"away_team": "FC Volendam",
-"homeodds": 2.03,
-"X": 3.48,
-"awayodds": 3.4
-},
-"fcvNzxmP": {
-"date": "08.01.",
-"time": "14:30",
-"home_team": "Nijmegen",
-"away_team": "Ajax",
-"homeodds": 7.0,
-"X": 5.28,
-"awayodds": 1.35
-},
-"xIsnVFAn": {
-"date": "08.01.",
-"time": "16:45",
-"home_team": "Excelsior",
-"away_team": "Groningen",
-"homeodds": 2.63,
-"X": 3.48,
+"home_team": "FC Volendam",
+"away_team": "Waalwijk",
+"homeodds": 2.55,
+"X": 3.54,
 "awayodds": 2.48
+},
+"G8tjUZPh": {
+"date": "14.01.",
+"time": "18:45",
+"home_team": "Heerenveen",
+"away_team": "Alkmaar",
+"homeodds": 3.14,
+"X": 3.48,
+"awayodds": 2.14
+},
+"6cZ2RX9B": {
+"date": "14.01.",
+"time": "21:00",
+"home_team": "Ajax",
+"away_team": "Twente",
+"homeodds": 1.29,
+"X": 5.61,
+"awayodds": 8.18
+},
+"OYqbSDf5": {
+"date": "14.01.",
+"time": "21:00",
+"home_team": "Sparta Rotterdam",
+"away_team": "Excelsior",
+"homeodds": 1.51,
+"X": 4.17,
+"awayodds": 5.65
+},
+"ENxBPBvO": {
+"date": "15.01.",
+"time": "12:15",
+"home_team": "Vitesse",
+"away_team": "Nijmegen",
+"homeodds": 2.11,
+"X": 3.48,
+"awayodds": 3.16
+},
+"Iy3LqFPu": {
+"date": "15.01.",
+"time": "14:30",
+"home_team": "G.A. Eagles",
+"away_team": "Utrecht",
+"homeodds": 2.78,
+"X": 3.51,
+"awayodds": 2.31
+},
+"hEyFOVgU": {
+"date": "15.01.",
+"time": "14:30",
+"home_team": "Sittard",
+"away_team": "PSV",
+"homeodds": 8.33,
+"X": 4.93,
+"awayodds": 1.33
+},
+"GMLOrZvn": {
+"date": "15.01.",
+"time": "16:45",
+"home_team": "FC Emmen",
+"away_team": "Cambuur",
+"homeodds": 2.1,
+"X": 3.48,
+"awayodds": 3.2
+},
+"AVufTgua": {
+"date": "15.01.",
+"time": "16:45",
+"home_team": "Groningen",
+"away_team": "Feyenoord",
+"homeodds": 5.85,
+"X": 4.44,
+"awayodds": 1.45
 }
 }
