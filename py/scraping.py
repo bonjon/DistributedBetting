@@ -253,7 +253,7 @@ def getBetsResult(bet_blockchain: List[Tuple[str, str, str]]) -> None:
                 config.BET_FOLDER.joinpath(hash+".json"), driver=driver)
             if result is None or (result != result_scraped and result == -1):
                 # save the result in the json file
-                bet_json["result"] = result
+                bet_json["result"] = result_scraped
                 with open(config.BET_FOLDER.joinpath(hash+".json"), "w") as f:
                     json.dump(bet_json, f)
     if driver is not None:
