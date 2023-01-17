@@ -4,46 +4,57 @@ pragma solidity >=0.8.0 <0.9.0;
 contract DistributedBetting
 {
 
-    // the price of an entry token
+    /// @notice the price of an entry token
     uint constant public PRICE = 1 * 1e15;
 
-    // the percentage of the creator's fee
+    /// @notice the percentage of ETh given to the creator as a fee (when you buy NFTs)
     uint constant public FEE = 10;
 
-    // the creator of the contract 
+    /// @notice the creator of the contract 
     address payable internal creator;
 
-    // these tokens can be bought with ether and can be used to bet
+    /// @notice these tokens can be bought with ether and can be used to bet
     mapping(address => uint) public entryTokens;  
 
-    // these tokens can be used to buy NFT and to bet
-    // (they can only be obtained winning bettings)
+    /// @notice these tokens can be used to buy NFT and to bet (they can only be obtained winning bettings)
     mapping(address => uint) public superTokens;
 
-    // Pay4win event
+    /// @notice Event emitted when a user wins a bet
     event BetPayed(address winner, bytes32 bet, uint amount);
 
-    // The fields of the NFT
+    /// @notice An NFT is a card that can be obtained with superTokens and then sold for ether
     struct NFT
     {
-        bytes32 imageHash; // the hash of the image of the card
-        bool selling; // whether the owner is selling the card
-        uint superTokenPrice; // the price in super tokens
-        uint ethPrice; // the price in ether
-        address owner; // the owner of the NFT
-        bytes32 name; // the name of the NFT
-        bytes1 rarity; // the rarity of the NFT
+        /// @notice the hash of the image of the card
+        bytes32 imageHash;
+        /// @notice whether the owner is selling the card
+        bool selling;
+        /// @notice the price in super tokens
+        uint superTokenPrice;
+        /// @notice the price in ether
+        uint ethPrice;
+        /// @notice the owner of the card
+        address owner;
+        /// @notice the hash of the description of the card
+        bytes32 name;
+        /// @notice the rarity of the card
+        bytes1 rarity;
     }
 
-    // stores all the NFTs using the hash of the image as a key
+    /// @notice stores all the NFTs using the hash of the image as a key
     mapping(bytes32 => NFT) public NFTs;
 
+    /**
+     * @notice Constructor of the contract, it sets the creator of the contract
+     */
     constructor()
     {
         creator = payable(msg.sender);
     }
 
-    // this function is used to mint entryTokens
+    /**
+     * @notice this function is used to mint fresh entryTokens
+     */
     function mint() external payable
     {
         // you need to send at least PRICE eth to buy entryTokens
@@ -56,7 +67,11 @@ contract DistributedBetting
         creator.transfer(msg.value);
     }
 
-    // this function is used to bet on the blockchain
+    /**
+     * @notice this function is used to bet on the blockchain.
+     * @param stake the hash of the bet
+     * @param amount the amount of tokens you want to bet
+     */
     function bet(bytes32 stake, uint amount) external
     {
         // you need to have enough tokens to bet
@@ -72,7 +87,13 @@ contract DistributedBetting
         }
     }
 
-    // this function creates a new NFT
+    /**
+     * @notice this function is create a new NFT
+     * @param NFT_hash the hash of the image of the NFT
+     * @param superTokenPrice the price of the NFT in superTokens
+     * @param NFT_desc_hash the hash of the description of the NFT
+     * @param NFT_rarity the rarity of the NFT
+     */
     function forge_NFT(bytes32 NFT_hash, uint superTokenPrice, bytes32 NFT_desc_hash, bytes1 NFT_rarity) external
     {
         require(msg.sender == creator, "You are not the contract owner");
@@ -80,7 +101,11 @@ contract DistributedBetting
         NFTs[NFT_hash] = NFT(NFT_hash, false, superTokenPrice,0,creator,NFT_desc_hash,NFT_rarity);
     }
 
-    // this function is used to get an NFT from the creator (paying in superTokens)
+    /**
+     * @notice this function is used to get an NFT. It can be called only if the NFT is not already owned by someone
+     * @param NFT_hash the hash of the image of the NFT
+     * @param ethPrice the price of the NFT in ether if you want to sell it, 0 otherwise
+     */
     function get_NFT(bytes32 NFT_hash, uint ethPrice) external
     {   
         // the NFT has never been got by anyone (with superTokens)
@@ -97,7 +122,11 @@ contract DistributedBetting
             NFTs[NFT_hash].ethPrice = ethPrice;
     }
 
-    // this function is used to put your NFT on the market (selling it for ethPrice ether)
+    /**
+     * @notice this function is used to put a NFT on sale. It can be called only if the NFT is owned by the sender
+     * @param NFT_hash the hash of the image of the NFT
+     * @param ethPrice the price of the NFT in ether
+     */
     function sell_NFT(bytes32 NFT_hash, uint ethPrice) external
     {
         // you need to be the owner of the NFT
@@ -107,7 +136,10 @@ contract DistributedBetting
         NFTs[NFT_hash].selling = true;
     }
 
-    // this function is used to stop selling your NFT
+    /**
+     * @notice this function is used to stop selling a NFT. It can be called only if the NFT is owned by the sender
+     * @param NFT_hash the hash of the image of the NFT
+     */
     function unsell_NFT(bytes32 NFT_hash) external
     {
         // you need to be the owner of the NFT
@@ -116,7 +148,10 @@ contract DistributedBetting
         NFTs[NFT_hash].selling = false;
     }
 
-    // this function is used to buy an NFT from another user (in ether)
+    /**
+     * @notice this function is used to buy a NFT. It can be called only if the NFT is being sold.
+     * @param NFT_hash the hash of the image of the NFT
+     */
     function buy_NFT(bytes32 NFT_hash) payable external
     {
         // the NFT is not being sold
@@ -134,7 +169,12 @@ contract DistributedBetting
         NFTs[NFT_hash].selling = false;
     }
 
-    // this function (called only by the creator) pays a user who won a bet
+    /**
+     * @notice this function is used to pay the winner of a bet. It can be called only by the contract owner.
+     * @param stake the hash of the bet (this bet has to be a winning bet)
+     * @param winner the address of the winner
+     * @param amount the amount of superTokens to pay
+     */
     function pay4win(bytes32 stake, address winner, uint amount) external
     {
         // you need to be the contract owner
@@ -145,7 +185,9 @@ contract DistributedBetting
         emit BetPayed(winner, stake, amount);
     }
 
-    //selfdestruct the contract
+    /**
+     * @notice this function is used to kill the contract. It can be called only by the contract owner.
+     */
     function kill() external
     {
         require(msg.sender == creator, "You are not the contract owner");
